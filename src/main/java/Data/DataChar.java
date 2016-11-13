@@ -37,7 +37,7 @@ public class DataChar extends Data {
 		throws DataException
 	{
 		if ( s.length() != 1 )
-			throw new DataException( "DataChar.Parse: " + s );
+			throw new DataException( "DataChar.Parse: invalid input: " + s );
 		value = s.charAt( 0 );
 	}
 	

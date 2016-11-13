@@ -40,7 +40,7 @@ public class DataShort extends Data {
 			value = Short.parseShort( s );
 		}
 		catch ( NumberFormatException e ) {
-			throw new DataException( "DataShort.Parse: " + s );
+			throw new DataException( "DataShort.Parse: invalid input" + s );
 		}
 	}
 	

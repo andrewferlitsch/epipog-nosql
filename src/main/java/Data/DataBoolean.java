@@ -42,7 +42,7 @@ public class DataBoolean extends Data {
 		else if ( s.equals( "false" ) )
 			value = false;
 		else
-			throw new DataException( "DataBoolean.Parse: " + s );
+			throw new DataException( "DataBoolean.Parse: invalid input: " + s );
 	}
 	
 	// Implementation for equal operator for data type
