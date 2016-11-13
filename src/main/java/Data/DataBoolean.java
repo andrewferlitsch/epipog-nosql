@@ -1,0 +1,77 @@
+/*
+ * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
+ */
+package epipog.data;
+ 
+// Implementation for Accessing Data Item of type Boolean
+//
+public class DataBoolean extends Data {
+
+	// Implementation for getting the data type
+	public String Type() {
+		return "boolean";
+	}
+	
+	// Implementation for getting the size of the data type
+	public Integer Size() {
+		return 1;
+	}
+
+	// Implementation for getting the value of the data item
+	public Boolean Get() {
+		return ( Boolean ) value;
+	}
+	
+	// Implementation for setting the value of the data item
+	public void Set( Object v ) {
+		value = ( Boolean ) v;
+	}
+	
+	// Implementation for string representation of the data item
+	public String AsString() {
+		return String.valueOf( ( Boolean ) value );
+	}
+	
+	// Implementation for converting from String representation to data item
+	public void Parse( String s ) 
+		throws DataException
+	{
+		s = s.toLowerCase();
+		if ( s.equals( "true" ) )
+			value = true;
+		else if ( s.equals( "false" ) )
+			value = false;
+		else
+			throw new DataException( "DataBoolean.Parse: " + s );
+	}
+	
+	// Implementation for equal operator for data type
+	public boolean EQ( Object v ) {
+		return ( Boolean ) value == ( ( DataBoolean ) v ).Get();
+	}
+	
+	// Implementation for not equal operator for data type
+	public boolean NE( Object v ) {
+		return ( Boolean ) value !=( ( DataBoolean ) v ).Get();
+	}
+
+	// Implementation for less than operator for data type
+	public boolean LT( Object v ) {
+		return false;	// not supported
+	}
+	
+	// Implementation for greater than operator for data type
+	public boolean GT( Object v ) {
+		return false;	// not supported
+	}
+	
+	// Implementation for less than or equal operator for data type
+	public boolean LE( Object v ) {
+		return false;	// not supported
+	}
+	
+	// Implementation for greater than or equal operator for data type
+	public boolean GE( Object v ) {
+		return false;	// not supported
+	}
+}

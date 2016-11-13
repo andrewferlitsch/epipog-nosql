@@ -1,0 +1,7 @@
+<tag1/>
+<tag2>this</tag2>
+<tag3><foo/></tag3>
+<tag4>
+	<foo>this</foo>
+</tag4>
+<br/>
