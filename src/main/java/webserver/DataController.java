@@ -21,36 +21,47 @@ public class DataController {
     @RequestMapping(method=RequestMethod.GET)
     public @ResponseBody Response data( @RequestParam(value="method", required=true)  String method,
 										@RequestParam(value="type",   required=false) String type,
-										@RequestParam(value="value",  required=false) String value
+										@RequestParam(value="arg",    required=false) String arg
 									  ) {
+		Long id = counter.incrementAndGet();
 		
-		if ( null != type ) {
-			switch ( type ) {
-			case "short" 	: v = new DataShort(); 		break;
-			case "int"		: v = new DataInteger(); 	break;
-			case "long"		: v = new DataLong(); 		break;
-			case "float"	: v = new DataFloat(); 		break;
-			case "double"	: v = new DataDouble(); 	break;
-			default: return new Response( counter.incrementAndGet(), "Unknown Type");
+		try {
+			if ( null != type ) {
+				switch ( type ) {
+				case "short" 		: v = new DataShort(); 			break;
+				case "int"			: v = new DataInteger(); 		break;
+				case "long"			: v = new DataLong(); 			break;
+				case "float"		: v = new DataFloat(); 			break;
+				case "double"		: v = new DataDouble(); 		break;
+				case "boolean"		: v = new DataBoolean(); 		break;
+				case "char"			: v = new DataChar(); 			break;
+				case "string"		: v = new DataString(); 		break;
+				case "stringfixed"	: v = new DataStringFixed( Integer.parseInt( arg ) ); 	break;
+				case "date"			: v = new DataDate(); 			break;
+				case "time"			: v = new DataTime(); 			break;
+				default				: return new Response( id, 500, "Unknown Type");
+				}
 			}
 		}
+		catch ( DataException e ) { return new Response( id, e.getMessage()); }
 		
-		if ( null == v ) return new Response( counter.incrementAndGet(), "Data is Null");
+		if ( null == v ) return new Response( id, 500, "Data is Null");
 		
 		String result = "";
 		try {
 			switch ( method ) {
 			case "type"	 	: result = v.Type(); break;
 			case "size"	 	: result = v.Size().toString(); break;
-			case "parse"	: v.Parse( value ); break;
+			case "parse"	: v.Parse( arg ); break;
 			case "asstring"	: result = v.AsString(); break;
-			case "set"		: v.Set( Short.parseShort( value ) ); break;
+			case "set"		: v.Set( Short.parseShort( arg ) ); break;
 			case "get"		: result = v.Get().toString(); break;
-			default: return new Response( counter.incrementAndGet(), "Unknown Method");
+			default: return new Response( id, "Unknown Method");
 			}
-		} catch ( DataException e ) { return new Response(counter.incrementAndGet(), e.getMessage() );}
-        
-		return new Response( counter.incrementAndGet(), result );
+		} catch ( DataException e 		  ) { return new Response(id, 500, e.getMessage() );}
+		  catch ( NumberFormatException e ) { return new Response(id, 500, e.getMessage() );}
+		  
+		return new Response( id, result );
     }
 
 }

@@ -39,7 +39,7 @@ public class DataFloat extends Data {
 			value = Float.parseFloat( s );
 		}
 		catch ( NumberFormatException e ) {
-			throw new DataException( "DataFloat.Parse: " + s );
+			throw new DataException( "DataFloat.Parse: invalid input: " + s );
 		}
 	}
 	

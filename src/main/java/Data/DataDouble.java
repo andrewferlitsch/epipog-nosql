@@ -39,7 +39,7 @@ public class DataDouble extends Data {
 			value = Double.parseDouble( s );
 		}
 		catch ( NumberFormatException e ) {
-			throw new DataException( "DataDouble.Parse: " + s );
+			throw new DataException( "DataDouble.Parse: input invalid: " + s );
 		}
 	}
 	

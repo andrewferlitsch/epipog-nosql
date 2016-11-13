@@ -47,7 +47,7 @@ public class DataDate extends Data {
 			value = df.parse( s ).getTime();
 		}
 		catch ( ParseException e ) {
-			throw new DataException( "DataDate.Parse: " + s );
+			throw new DataException( "DataDate.Parse: invalid input: " + s );
 		}
 	}
 	

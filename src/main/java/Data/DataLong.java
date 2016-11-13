@@ -39,7 +39,7 @@ public class DataLong extends Data {
 			value = Long.parseLong( s );
 		}
 		catch ( NumberFormatException e ) {
-			throw new DataException( "DataLong.Parse: "+ s );
+			throw new DataException( "DataLong.Parse: invalid input: "+ s );
 		}
 	}
 	

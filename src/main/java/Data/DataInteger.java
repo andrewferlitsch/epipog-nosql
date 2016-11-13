@@ -40,7 +40,7 @@ public class DataInteger extends Data {
 			value = Integer.parseInt( s );
 		}
 		catch ( NumberFormatException e ) {
-			throw new DataException( "DataInteger.Parse: " + s );
+			throw new DataException( "DataInteger.Parse: invalid input: " + s );
 		}
 	}
 	
