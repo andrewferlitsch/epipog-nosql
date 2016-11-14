@@ -9,6 +9,7 @@ public class _Test5 {
 	public static void main( String args[] ) {
 		Test_SchemaTableS();
 		Test_SchemaTableI(); 
+		Test_StaticMethod();
 
 		System.exit( rc );
 	}
@@ -403,6 +404,43 @@ public class _Test5 {
 		
 		Title( "SchemaTable: ColumnPos invalid");
 		if ( s.ColumnPos( "field4" ) == 0 ) Passed(""); else Failed("");
+	}
+	
+	public static void Test_StaticMethod() {
+		Title( "SchemaFromString: arg is null" );
+		try {
+			Schema.SchemaFromString( null );
+			Failed( "no exception" );
+		}
+		catch ( SchemaException e ) { Passed( ""); }
+		
+		Title( "SchemaFromString: not a valid format" );
+		try {
+			Schema.SchemaFromString( "abcdef" );
+			Failed( "no exception" );
+		}
+		catch ( SchemaException e ) { Passed( "" ); }
+		
+		Title( "SchemaFromString: not a valid type" );
+		try {
+			Schema.SchemaFromString( "field:foo" );
+			Failed( "no exception" );
+		}
+		catch ( SchemaException e ) { Passed( "" ); }
+		
+		Title( "SchemaFromString: valid single key" );
+		try {
+			Schema.SchemaFromString( "field:string" );
+			Passed( "" );
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		
+		Title( "SchemaFromString: valid multiple keys" );
+		try {
+			Schema.SchemaFromString( "field:string,field:integer" );
+			Passed( "" );
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
 	}
 	
 	public static void Title( String title ) {
