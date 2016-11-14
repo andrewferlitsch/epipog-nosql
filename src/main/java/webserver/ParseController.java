@@ -61,13 +61,16 @@ public class ParseController {
 								  default		: return new Response( id, 500, "invalid arg: noop, echo");
 								  }
 								  break;
+			case "NEjected"		: result = String.valueOf( p.NEjected() ); 
+								  break;
 			case "open"			: p.Open();
 								  break;
 			case "close"		: p.Close();
 								  break;
-			case "parse"		: break;
-			case "NImported"	: break;
-			case "NEjected"		: break;
+			case "parse"		: p.Parse(); 
+								  break;
+			case "NImported"	: result = String.valueOf( p.NImported() ); 
+								  break;
 			default: return new Response( id, "Unknown Method");
 			}
 		} catch ( ParseException e 		 ) { return new Response( id, 500, e.getMessage() );}

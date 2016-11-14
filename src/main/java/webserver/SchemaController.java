@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javafx.util.Pair;
+import java.util.ArrayList;
+
 @Controller
 @RequestMapping("/schema")
 public class SchemaController {
@@ -35,12 +38,25 @@ public class SchemaController {
 			}
 		}
 		
-		if ( null == s ) return new Response( id, 500, "Schema is Null");
+		if ( null == s ) return new Response( id, 500, "Schema is null" );
 		
 		String result = "";
 		try {
 			switch ( method ) {
-			case "sets": s.SetS(null); break;
+			case "collection"	: if ( null == arg ) result = s.Collection();
+								  else s.Collection( arg );
+								  break;
+			}
+			
+			if ( null == arg ) return new Response( id, 500, "Arg is null" );
+			
+			ArrayList<Pair<String,Integer>> keys = Schema.SchemaFromString( arg );
+				
+			switch ( method ) {
+			case "sets"			: s.SetS( null ); 
+								  break;
+			case "seti"			: s.SetI( null ); 
+								  break;
 			default: return new Response( id, "Unknown Method");
 			}
 		} catch ( SchemaException e 		 ) { return new Response( id, 500, e.getMessage() );}

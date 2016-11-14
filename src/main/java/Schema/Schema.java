@@ -97,4 +97,37 @@ public interface Schema {
 			return false;
 		} 
 	}
+	
+	// (static) Method to convert Schema in string representation to internal representation
+	//	key:type,key:type,....
+	public static ArrayList<Pair<String,Integer>> SchemaFromString( String schema ) 
+		throws SchemaException
+	{
+		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
+		
+		if ( null == schema )
+			throw new SchemaException( "Schema.SchemaFromString: schema is null" );
+		
+		// Split into key:type pairs
+		String[] skeys = schema.split( "," );
+		
+		for ( String arg : skeys ) {
+			// Split the key:type into key and type
+			String[] pair = arg.split( ":" );
+			
+			if ( pair.length != 2 )
+				throw new SchemaException( "Schema.SchemaFromString: invalid key/value pair: " + arg );
+			
+			// Get the BSON id for the data type
+			int type = BSONType.Find( pair[ 1 ] );
+			if ( 0 == type )
+				throw new SchemaException( "Schema.SchemaFromString: invalid type: " + pair[ 1 ] );
+			
+			// Add the key/type pair to the internal schema representation
+			//
+			keys.add( new Pair<String,Integer>( pair[ 0 ], type ) );
+		}
+		
+		return keys;
+	}
 }
