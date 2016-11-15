@@ -5,6 +5,7 @@ package epipog.collection;
 
 import epipog.schema.Schema;
 import epipog.index.Index;
+import epipog.annotations.*;
 
 import java.util.ArrayList;
 
@@ -15,20 +16,24 @@ public class Collection {
 	private Index  index;			// Index(s) for collection
 	
 	// Constructor
+	@Constructor
 	public Collection( String collectionName ) {
 		this.collectionName = collectionName;
 	}
 
 	// Set (assign) a schema for this collection
+	@Setter
 	public void Schema( Schema schema ) {
 		this.schema = schema;
 	}
 	
 	// Get the schema assigned to this collection
+	@Getter
 	public Schema Schema() {
 		return schema;
 	}
 	
+	// Method to insert column data, where order of fields is same as in schema
 	public void Insert( ArrayList<String> record ) {
 		
 	}

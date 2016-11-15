@@ -23,7 +23,7 @@ public abstract class Parse {
 	private   boolean	 hasHeader	= true;				// input file has header (e.g., csv,psv,tsv)
 	private   boolean    skip		= false;			// skip non-parseable input records
 	private   Ejector    ejector    = new Ejector();	// ejector object for handling non-parseable input
-	private   int		 nImported	= 0;				// number of records imported
+	protected int		 nImported	= 0;				// number of records imported
 	protected Collection collection = null;				// Collection to insert data into
 	
 	// Getter/Setter for whether input file has a header
@@ -71,14 +71,7 @@ public abstract class Parse {
 	public int NEjected() {
 		return ejector.NEjected();
 	}
-	
-	// Method to insert record into collection
-	protected void Import( ArrayList<String> cols ) {
-		nImported++;
-		if ( null != collection )
-			collection.Insert( cols );
-	}
-	
+
 	// Getter for the number of records imported
 	@Getter
 	public int NImported() {
@@ -123,4 +116,7 @@ public abstract class Parse {
 	
 	// Method (Interface) to parse input file
 	public abstract void Parse() throws ParseException;
+	
+	// Method to insert record into collection
+	protected abstract void Import( Object record );
 }

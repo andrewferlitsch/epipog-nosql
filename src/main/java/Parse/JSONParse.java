@@ -274,6 +274,11 @@ public class JSONParse extends Parse {
 		
 	}	
 	
+	// Method to insert record into collection
+	protected void Import( Object record ) {
+		nImported++;
+	}
+	
 	private int 	currPos     = 0;		// current position in current line
 	private int 	lineLen		= 0;		// length of line
 	private String  line 		= null;		// line being tokenized

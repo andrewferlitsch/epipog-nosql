@@ -128,6 +128,14 @@ public abstract class SVParse extends Parse {
 		}
 	}
 	
+	// Method to insert record into collection
+	protected void Import( Object record ) {
+		ArrayList<String> cols = (ArrayList<String>) record;
+		nImported++;
+		if ( null != collection )
+			collection.Insert( cols );
+	}
+	
 	// Split a character sequence separated line
 	//	line 		: line to split
 	//	separator 	: delimiter
