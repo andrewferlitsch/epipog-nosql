@@ -20,6 +20,7 @@ public interface Schema {
 	// Pair =
 	//	L = Field Name
 	//	R = Field Type ( String, Integer, Long, Float, Double, Date, Time, etc )
+	// CONSIDER OBSOLETING
 	@Setter
 	public void SetS( ArrayList<Pair<String,String>>  keys ) throws SchemaException;
 	
@@ -29,6 +30,7 @@ public interface Schema {
 	
 	// Method for dynamically extending the schema, where data type is in string representation
 	@Setter
+	// CONSIDER OBSOLETING
 	public void ExtendS( ArrayList<Pair<String,String>>  keys ) throws SchemaException;
 	
 	// Method for dynamically extending the schema, where data type is in an integer representation

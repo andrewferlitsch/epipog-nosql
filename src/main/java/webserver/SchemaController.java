@@ -45,21 +45,27 @@ public class SchemaController {
 			switch ( method ) {
 			case "collection"	: if ( null == arg ) result = s.Collection();
 								  else s.Collection( arg );
-								  break;
+								  return new Response( id, result );
 			}
 			
 			if ( null == arg ) return new Response( id, 500, "Arg is null" );
 			
-			ArrayList<Pair<String,Integer>> keys = Schema.SchemaFromString( arg );
+			ArrayList<Pair<String,Integer>> keys = null;
 				
 			switch ( method ) {
-			case "sets"			: s.SetS( null ); 
+			case "seti"			: keys = Schema.SchemaFromString( arg ); s.SetI( keys ); 
 								  break;
-			case "seti"			: s.SetI( null ); 
+			case "extendi"		: keys = Schema.SchemaFromString( arg ); s.SetI( keys ); 
+								  break;
+			case "isdefined"	: result = String.valueOf( s.IsDefined( arg ) );
+								  break;
+			//case "isvalid"		: result = String.valueOf( s.IsValid( arg ) );
+								  //break;
+			case "columnpos"	: result = String.valueOf( s.ColumnPos( arg ) );
 								  break;
 			default: return new Response( id, "Unknown Method");
 			}
-		} catch ( SchemaException e 		 ) { return new Response( id, 500, e.getMessage() );}
+		} catch ( SchemaException e ) { return new Response( id, 500, e.getMessage() );}
           
 		return new Response( id, result );
     }
