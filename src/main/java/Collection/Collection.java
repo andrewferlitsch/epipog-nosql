@@ -6,8 +6,8 @@ package epipog.collection;
 import epipog.schema.Schema;
 import epipog.index.Index;
 
-// Abstract Layer for Collections
-public abstract class Collection {
+// Implemented Layer for Collections
+public class Collection {
 	private String collectionName;	// Name of the Collection
 	private Schema schema;			// Schema associated with the collection
 	private Index  index;			// Index(s) for collection

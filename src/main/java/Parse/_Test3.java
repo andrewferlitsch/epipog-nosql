@@ -1,4 +1,5 @@
 import epipog.parse.*;
+import epipog.collection.Collection;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ public class _Test3 {
 		Test_TSVParse();
 		
 		Test_SVSplit();
+		Test_Misc();
 		
 		System.exit( rc );
 	}
@@ -778,6 +780,14 @@ public class _Test3 {
 		if ( cols.size() == 2 ) Passed( "" ); else Failed("");
 		if ( cols.get( 0 ).equals( "field1") && cols.get( 1 ).equals( "field2 \r\nfield3" ) ) Passed( "" ); else Failed( "");
 
+	}
+	
+	public static void Test_Misc() {
+		CSVParse p = new CSVParse( "foobar" );
+		
+		Title( "Parse: Collection" );
+		p.Collection( new Collection( "foobar" ) );
+		Passed( "" );
 	}
 	
 	public static void Title( String title ) {

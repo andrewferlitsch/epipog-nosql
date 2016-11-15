@@ -66,10 +66,10 @@ public class SchemaTable implements Schema {
 		for ( int i = 0; i < len; i++ ) {
 			String key = keys.get( i ).getKey();
 			if ( key == null ) { 
-				this.keys = null; throw new SchemaException( "Schema.SetS: key name is null" ); 
+				this.keys = null; throw new SchemaException( "Schema.SetI: key name is null" ); 
 			}
 			if ( key.equals( "" ) ) { 
-				this.keys = null; throw new SchemaException( "Schema.SetS: key name is empty" ); 
+				this.keys = null; throw new SchemaException( "Schema.SetI: key name is empty" ); 
 			}
 			
 			// look for duplicate
