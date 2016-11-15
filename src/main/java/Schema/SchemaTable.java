@@ -153,4 +153,10 @@ public class SchemaTable implements Schema {
 		
 		return 0;
 	}
+	
+	// Method to get (BSON) data type for key at the specified column position in table based schema
+	@Getter
+	public Integer GetType( Integer pos ) {
+		return keys.get( pos ).getValue();
+	}
 }

@@ -42,7 +42,7 @@ public class Collection {
 			throw new CollectionException( "Collection.Insert: number of values does not match columns in table" );
 		
 		for ( int i = 0; i < vlen; i++ ) {
-			
+			Integer type = schema.GetType( i );
 		}
 	}
 }

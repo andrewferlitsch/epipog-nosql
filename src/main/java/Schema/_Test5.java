@@ -272,6 +272,9 @@ public class _Test5 {
 		
 		Title( "SchemaTable: SetI/Ncols" );
 		if ( s.NCols() == 2 ) Passed(""); else Failed("");
+		
+		Title( "SchemaTable: GetType : string");
+		if ( s.GetType( 1 ) == 2 ) Passed(""); else Failed( "Type = " + s.GetType( 1 ) );
 	}
 	
 	public static void Test_StaticMethod() {
