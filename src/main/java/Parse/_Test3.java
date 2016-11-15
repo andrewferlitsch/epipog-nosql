@@ -1,5 +1,6 @@
 import epipog.parse.*;
 import epipog.collection.Collection;
+import epipog.schema.Schema;
 
 import java.util.ArrayList;
 
@@ -783,11 +784,24 @@ public class _Test3 {
 	}
 	
 	public static void Test_Misc() {
-		CSVParse p = new CSVParse( "foobar" );
+		CSVParse p = new CSVParse( "tests\\2.txt" );
 		
 		Title( "Parse: Collection" );
 		p.Collection( new Collection( "foobar" ) );
 		Passed( "" );
+		
+		Title( "SVParse: header added to schema");
+		try { 
+			p.Reader( Reader.ReaderType.READERMEM );
+			p.Open();
+			p.Parse(); Passed( "" );
+		}
+		catch ( ParseException e ) { Failed( "" ); }
+		if ( p.NImported() == 0 ) Passed( "" ); else Failed( "" );
+		Collection c = p.Collection();
+		Schema s = c.Schema();
+		if ( s.IsDefined( "field1") && s.IsDefined( "field2") ) Passed( "" ); else Failed( "");
+		p.Close();
 	}
 	
 	public static void Title( String title ) {

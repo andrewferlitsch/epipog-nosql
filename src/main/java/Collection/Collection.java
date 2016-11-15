@@ -17,4 +17,13 @@ public class Collection {
 		this.collectionName = collectionName;
 	}
 
+	// Set (assign) a schema for this collection
+	public void Schema( Schema schema ) {
+		this.schema = schema;
+	}
+	
+	// Get the schema assigned to this collection
+	public Schema Schema() {
+		return schema;
+	}
 }

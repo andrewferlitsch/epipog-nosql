@@ -2,6 +2,8 @@
  * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
  */
 package epipog.parse;
+
+import epipog.schema.*;
  
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ public abstract class SVParse extends Parse {
 		// set number of columns if preset
 		ncols = ( heading != null ) ? heading.size() : 0;
 		
-		// if has header, get the first line
+		// if expect header in file, get the first line
 		if ( Header() ) {
 			// Read the header line
 			line = reader.ReadLine();
@@ -68,7 +70,7 @@ public abstract class SVParse extends Parse {
 			for ( int i = 0; i < tmp.size(); i++ )
 				tmp.set( i, tmp.get( i ).toLowerCase() );
 			
-			// header pre-specified
+			// header (schema) was pre-specified
 			if ( ncols > 0 ) {
 				// check that heading matches pre-specified heading
 				if ( ncols != tmp.size() )
@@ -80,12 +82,21 @@ public abstract class SVParse extends Parse {
 						throw new ParseException( "SVParse.Parse: column name mismatch: " + tmp.get( i ) + " != " + heading.get( i ) );
 				}
 			}
-			// header not pre-specified
+			// header (schema) not pre-specified
 			else {
-				// a collection has been bound to this parse
+				// A collection has been bound to this parse
 				if ( null != collection )
 				{
-					
+					// (but) This collection has no Schema
+					if ( collection.Schema() == null ) {
+						// Set the header column names as the table based schema
+						SchemaTable schema = new SchemaTable();
+						try {
+							schema.Set( tmp );
+						}
+						catch ( SchemaException e ) { throw new ParseException( e.getMessage() ); }
+						collection.Schema( schema );
+					}
 				}
  			}
 			

@@ -80,6 +80,11 @@ public abstract class Parse {
 		this.collection = collection;
 	}
 	
+	// Getter for the collection bound to the parsed input
+	public Collection Collection() {
+		return collection;
+	}
+	
 	// Method to open the input file
 	public void Open()
 		throws ParseException
