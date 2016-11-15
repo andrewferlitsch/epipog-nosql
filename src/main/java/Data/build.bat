@@ -1,2 +1,3 @@
-javac -d ..\..\..\..\build -cp ..\..\..\..\build *.java
-java -cp .;..\..\..\..\build _Test1 | find "FAILED"
+set BUILD=..\..\..\..\build
+javac -d %BUILD% -cp %BUILD% *.java
+java -cp .;%BUILD% _Test1 | find "FAILED"

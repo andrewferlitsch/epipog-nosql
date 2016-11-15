@@ -80,6 +80,14 @@ public abstract class SVParse extends Parse {
 						throw new ParseException( "SVParse.Parse: column name mismatch: " + tmp.get( i ) + " != " + heading.get( i ) );
 				}
 			}
+			// header not pre-specified
+			else {
+				// a collection has been bound to this parse
+				if ( null != collection )
+				{
+					
+				}
+ 			}
 			
 			// set the header information
 			heading = tmp;

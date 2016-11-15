@@ -9,23 +9,46 @@ import java.util.ArrayList;
 // Implementation for Table Schema
 //
 public class SchemaTable implements Schema {
-	@Constructor
-	public SchemaTable( String collectionName ) {
-		Collection( collectionName );
-	}
-	
-	private String collectionName;	// collection name
-	
+
 	// table schema: (Restriction) schema definition must be in same order as table definition
 	protected ArrayList<Pair<String,Integer>> keys;
 	
-	// Set/Get a collection name to the schema
+	// Method for dynamically specifying the schema, where data type is in string representation
 	@Setter
-	public void Collection( String collectionName ) {
-		this.collectionName = collectionName;
+	public void Set( ArrayList<String> keys )
+		throws SchemaException
+	{
+		if ( null == keys )
+			throw new SchemaException( "Schema.Set: keys is null" );
+		if ( keys.size() == 0 )
+			throw new SchemaException( "Schema.Set: keys is empty" );
+		if ( null != this.keys )
+			throw new SchemaException( "Schema.Set: cannot replace existing schema" );	
+		
+		// Allocate new Schema
+		this.keys = new ArrayList<Pair<String,Integer>>();
+		
+		int len = keys.size();
+		for ( int i = 0; i < len; i++ ) {
+			String key = keys.get( i );
+			if ( key == null ) { 
+				this.keys = null; throw new SchemaException( "Schema.Set: key name is null" ); 
+			}
+			if ( key.equals( "" ) ) { 
+				this.keys = null; throw new SchemaException( "Schema.Set: key name is empty" ); 
+			}
+			
+			// look for duplicate
+			for ( int j = i + 1; j < len; j++ ) {
+				if ( key.equals( keys.get( j ) ) ) { 
+					this.keys = null; throw new SchemaException( "Schema.Set: duplicate key : " + key ); 
+				}
+			}
+
+			// Add the key/type pair to the Schema
+			this.keys.add( new Pair<String, Integer>( key, BSONType.STRING.GetVal() ) );
+		}
 	}
-	@Getter
-	public String Collection() { return collectionName; }
 	
 	// Method for dynamically specifying the schema, where data type is in string representation
 	// Pair =
@@ -110,6 +133,14 @@ public class SchemaTable implements Schema {
 
 		// Retain the keys
 		this.keys = keys;
+	}
+	
+	// Method for dynamically extending the schema, where data type defaults to string
+	@Setter
+	public void Extend( ArrayList<String>  keys ) 
+		throws SchemaException
+	{
+		throw new SchemaException( "SchemaTable.Extend: unsupported" );
 	}
 	
 	// Method for dynamically extending the schema, where data type is in a string representation

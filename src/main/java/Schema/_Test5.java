@@ -18,16 +18,9 @@ public class _Test5 {
 		Schema s = null;
 		
 		Title( "SchemaTable: constructor" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable();
 		Passed( "" );
-		
-		Title( "SchemaTable: Collection get" );
-		if ( s.Collection().equals( "myname" ) ) Passed(""); else Failed( "");
-		
-		Title( "SchemaTable: Collection set" );
-		s.Collection( "foo" );
-		if ( s.Collection().equals( "foo" ) ) Passed(""); else Failed( "");
-		
+
 		Title( "SchemaTable: SetS null" );
 		try
 		{
@@ -89,7 +82,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetS valid: double,float,decimal" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "double" ) );
 		keys.add( new Pair<String,String>( "field2", "float" ) );
@@ -101,7 +94,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetS valid: int,short,long" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "integer" ) );
 		keys.add( new Pair<String,String>( "field2", "short" ) );
@@ -113,7 +106,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetS valid: bool,char,bindata" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable( );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "boolean" ) );
 		keys.add( new Pair<String,String>( "field2", "char" ) );
@@ -125,7 +118,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetS valid: null,undefined,object,objectid,array" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "null" ) );
 		keys.add( new Pair<String,String>( "field2", "undefined" ) );
@@ -139,7 +132,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetS valid: date,time,timestamp" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "date" ) );
 		keys.add( new Pair<String,String>( "field2", "time" ) );
@@ -151,7 +144,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetS valid: regex,javascript,url" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "regex" ) );
 		keys.add( new Pair<String,String>( "field2", "javascript" ) );
@@ -163,7 +156,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetS duplicate key" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "string" ) );
 		keys.add( new Pair<String,String>( "field2", "string" ) );
@@ -175,7 +168,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Passed( "" );}
 		
 		Title( "SchemaTable: SetS schema already set" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "string" ) );
 		keys.add( new Pair<String,String>( "field2", "string" ) );
@@ -220,7 +213,7 @@ public class _Test5 {
 	}
 	
 	public static void Test_SchemaTableI() {
-		Schema s = new SchemaTable( "" );
+		Schema s = new SchemaTable();
 		
 		Title( "SchemaTable: SetI empty keys" );
 		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
@@ -276,7 +269,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetI valid: double,float,decimal" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 1 ) );
 		keys.add( new Pair<String,Integer>( "field2", 51 ) );
@@ -288,7 +281,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 
 		Title( "SchemaTable: SetI valid: int,short,long" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 16 ) );
 		keys.add( new Pair<String,Integer>( "field2", 53 ) );
@@ -300,7 +293,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetI valid: bool,char,bindata" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 8 ) );
 		keys.add( new Pair<String,Integer>( "field2", 56 ) );
@@ -312,7 +305,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetI valid: null,undefined,object,objectid,array" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 10 ) );
 		keys.add( new Pair<String,Integer>( "field2", 6 ) );
@@ -326,7 +319,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetI valid: date,time,timestamp" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 9 ) );
 		keys.add( new Pair<String,Integer>( "field2", 54 ) );
@@ -338,7 +331,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetI valid: regex,javascript,url" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 11 ) );
 		keys.add( new Pair<String,Integer>( "field2", 13 ) );
@@ -350,7 +343,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaTable: SetI duplicate key" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 2) );
 		keys.add( new Pair<String,Integer>( "field2", 2 ) );
@@ -362,7 +355,7 @@ public class _Test5 {
 		catch ( SchemaException e ) { Passed( "" );}
 		
 		Title( "SchemaTable: SetS schema already set" );
-		s = new SchemaTable( "myname" );
+		s = new SchemaTable(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 2 ) );
 		keys.add( new Pair<String,Integer>( "field2", 2 ) );

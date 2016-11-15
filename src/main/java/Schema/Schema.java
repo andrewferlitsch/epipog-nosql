@@ -10,11 +10,9 @@ import java.util.ArrayList;
 //
 public interface Schema {
 	
-	// Set/Get a collection name to the schema 
+	// Method for dynamically specifying the schema, where data type defaults to string
 	@Setter
-	public void Collection( String collectionName );
-	@Getter
-	public String Collection();
+	public void Set( ArrayList<String> keys ) throws SchemaException;
 	
 	// Method for dynamically specifying the schema, where data type is in string representation
 	// Pair =
@@ -27,6 +25,10 @@ public interface Schema {
 	// Method for dynamically specifying the schema, where data type is in an integer representation
 	@Setter
 	public void SetI( ArrayList<Pair<String,Integer>> keys ) throws SchemaException;
+	
+	// Method for dynamically extending the schema, where data type defaults to string
+	@Setter  
+	public void Extend( ArrayList<String> keys ) throws SchemaException;
 	
 	// Method for dynamically extending the schema, where data type is in string representation
 	@Setter

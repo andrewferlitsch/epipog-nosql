@@ -17,15 +17,8 @@ public class _Test6 {
 		Schema s = null;
 		
 		Title( "SchemaDynamic: constructor" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic();
 		Passed( "" );
-		
-		Title( "SchemaDynamic: Collection get" );
-		if ( s.Collection().equals( "myname" ) ) Passed(""); else Failed( "");
-		
-		Title( "SchemaDynamic: Collection set" );
-		s.Collection( "foo" );
-		if ( s.Collection().equals( "foo" ) ) Passed(""); else Failed( "");
 		
 		Title( "SchemaDynamic: ExtendS null" );
 		try
@@ -88,7 +81,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendS valid: double,float,decimal" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "double" ) );
 		keys.add( new Pair<String,String>( "field2", "float" ) );
@@ -100,7 +93,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendS valid: int,short,long" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "integer" ) );
 		keys.add( new Pair<String,String>( "field2", "short" ) );
@@ -112,7 +105,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendS valid: bool,char,bindata" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "boolean" ) );
 		keys.add( new Pair<String,String>( "field2", "char" ) );
@@ -124,7 +117,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendS valid: null,undefined,object,objectid,array" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "null" ) );
 		keys.add( new Pair<String,String>( "field2", "undefined" ) );
@@ -138,7 +131,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendS valid: date,time,timestamp" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "date" ) );
 		keys.add( new Pair<String,String>( "field2", "time" ) );
@@ -150,7 +143,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendS valid: regex,javascript,url" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "regex" ) );
 		keys.add( new Pair<String,String>( "field2", "javascript" ) );
@@ -162,7 +155,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendS duplicate key" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "string" ) );
 		keys.add( new Pair<String,String>( "field2", "string" ) );
@@ -174,7 +167,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Passed( "" );}
 		
 		Title( "SchemaDynamic: ExtendS schema extended" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,String>>();
 		keys.add( new Pair<String,String>( "field1", "string" ) );
 		keys.add( new Pair<String,String>( "field2", "string" ) );
@@ -225,7 +218,7 @@ public class _Test6 {
 	}
 	
 	public static void Test_SchemaDynamicI() {
-		Schema s = new SchemaDynamic( "" );
+		Schema s = new SchemaDynamic();
 		
 		Title( "SchemaDynamic: ExtendI empty keys" );
 		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
@@ -281,7 +274,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendI valid: double,float,decimal" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 1 ) );
 		keys.add( new Pair<String,Integer>( "field2", 51 ) );
@@ -293,7 +286,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 
 		Title( "SchemaDynamic: ExtendI valid: int,short,long" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 16 ) );
 		keys.add( new Pair<String,Integer>( "field2", 53 ) );
@@ -305,7 +298,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendI valid: bool,char,bindata" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 8 ) );
 		keys.add( new Pair<String,Integer>( "field2", 56 ) );
@@ -317,7 +310,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendI valid: null,undefined,object,objectid,array" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 10 ) );
 		keys.add( new Pair<String,Integer>( "field2", 6 ) );
@@ -331,7 +324,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendI valid: date,time,timestamp" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 9 ) );
 		keys.add( new Pair<String,Integer>( "field2", 54 ) );
@@ -343,7 +336,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendI valid: regex,javascript,url" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 11 ) );
 		keys.add( new Pair<String,Integer>( "field2", 13 ) );
@@ -355,7 +348,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
 		Title( "SchemaDynamic: ExtendI duplicate key" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 2) );
 		keys.add( new Pair<String,Integer>( "field2", 2 ) );
@@ -367,7 +360,7 @@ public class _Test6 {
 		catch ( SchemaException e ) { Passed( "" );}
 		
 		Title( "SchemaDynamic: ExtendI schema extended" );
-		s = new SchemaDynamic( "myname" );
+		s = new SchemaDynamic(  );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", 2 ) );
 		keys.add( new Pair<String,Integer>( "field2", 2 ) );

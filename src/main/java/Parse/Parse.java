@@ -2,6 +2,9 @@
  * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
  */
 package epipog.parse;
+
+import epipog.collection.Collection;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -14,12 +17,13 @@ public abstract class Parse {
 		this.inputFile = inputFile;
 	}
 	
-	private   String 	inputFile 	= null;				// File to parse
-	protected Reader	reader 		= null;				// input data reader
-	private   boolean	hasHeader	= true;				// input file has header (e.g., csv,psv,tsv)
-	private   boolean   skip		= false;			// skip non-parseable input records
-	private   Ejector   ejector     = new Ejector();	// ejector object for handling non-parseable input
-	private   int		nImported	= 0;				// number of records imported
+	private   String 	 inputFile 	= null;				// File to parse
+	protected Reader	 reader 	= null;				// input data reader
+	private   boolean	 hasHeader	= true;				// input file has header (e.g., csv,psv,tsv)
+	private   boolean    skip		= false;			// skip non-parseable input records
+	private   Ejector    ejector    = new Ejector();	// ejector object for handling non-parseable input
+	private   int		 nImported	= 0;				// number of records imported
+	private   Collection collection = null;				// Collection to insert data into
 	
 	// Getter/Setter for whether input file has a header
 	public void Header( boolean hasHeader ) {
@@ -69,6 +73,11 @@ public abstract class Parse {
 	// Getter for the number of records imported
 	public int NImported() {
 		return nImported;
+	}
+	
+	// Setter for binding a collection to the parsed input
+	public void Collection( Collection collection ) {
+		this.collection = collection;
 	}
 	
 	// Method to open the input file

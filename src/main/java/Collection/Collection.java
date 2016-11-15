@@ -1,0 +1,20 @@
+/*
+ * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
+ */
+package epipog.collection;
+
+import epipog.schema.Schema;
+import epipog.index.Index;
+
+// Abstract Layer for Collections
+public abstract class Collection {
+	private String collectionName;	// Name of the Collection
+	private Schema schema;			// Schema associated with the collection
+	private Index  index;			// Index(s) for collection
+	
+	// Constructor
+	public Collection( String collectionName ) {
+		this.collectionName = collectionName;
+	}
+
+}
