@@ -7,212 +7,81 @@ public class _Test5 {
 	
 	// Main entry method
 	public static void main( String args[] ) {
-		Test_SchemaTableS();
-		Test_SchemaTableI(); 
+		Test_Set(); 
+		Test_SetI(); 
 		Test_StaticMethod();
 
 		System.exit( rc );
 	}
 	
-	public static void Test_SchemaTableS() {
-		Schema s = null;
-		
+	public static void Test_Set() {
 		Title( "SchemaTable: constructor" );
-		s = new SchemaTable();
-		Passed( "" );
-
-		Title( "SchemaTable: SetS null" );
+		Schema s = new SchemaTable();
+		Passed("");
+		
+		Title( "SchemaTable: Set empty keys" );
+		ArrayList<String> keys = new ArrayList<String>();
 		try
 		{
-			s.SetS( null ); Failed( "no exception" );
+			s.Set( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed("");}
 		
-		Title( "SchemaTable: SetS empty keys" );
-		ArrayList<Pair<String,String>> keys = new ArrayList<Pair<String,String>>();
+		Title( "SchemaTable: Set name is null" );
+		keys = new ArrayList<String>();
+		keys.add( null );
 		try
 		{
-			s.SetS( keys ); Failed( "no exception" );
-		}
-		catch ( SchemaException e ) { Passed("");}
-		
-		Title( "SchemaTable: SetS name is null" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( null, "string" ) );
-		try
-		{
-			s.SetS( keys ); Failed( "no exception" );
+			s.Set( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed( "" );}
 		
-		Title( "SchemaTable: SetS name is empty" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "", "string" ) );
+		Title( "SchemaTable: Set name is empty" );
+		keys = new ArrayList<String>();
+		keys.add( "" );
 		try
 		{
-			s.SetS( keys ); Failed( "no exception" );
+			s.Set( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed(""); }
 		
-		Title( "SchemaTable: SetS type is null" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", null ) );
+		Title( "SchemaTable: Set valid" );
+		keys = new ArrayList<String>();
+		keys.add( "field1" );
 		try
 		{
-			s.SetS( keys ); Failed( "no exception" );
+			s.Set( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage());}
+		
+		Title( "SchemaTable: Set duplicate key" );
+		s = new SchemaTable(  );
+		keys = new ArrayList<String>();
+		keys.add( "field1" );
+		keys.add( "field2" );
+		keys.add( "field1" );
+		try
+		{
+			s.Set( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed( "" );}
 		
-		Title( "SchemaTable: SetS type is invalid" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "foo" ) );
+		Title( "SchemaTable: Set schema already set" );
+		s = new SchemaTable(  );
+		keys = new ArrayList<String>();
+		keys.add( "field1" );
+		keys.add( "field2" );
 		try
 		{
-			s.SetS( keys ); Failed( "no exception" );
+			s.Set( keys );
+			keys = new ArrayList<String>();
+			keys.add( "field2" );
+			s.Set( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed( "" );}
-		
-		Title( "SchemaTable: SetS valid: string" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		try
-		{
-			s.SetS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaTable: SetS valid: double,float,decimal" );
-		s = new SchemaTable(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "double" ) );
-		keys.add( new Pair<String,String>( "field2", "float" ) );
-		keys.add( new Pair<String,String>( "field3", "decimal" ) );
-		try
-		{
-			s.SetS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaTable: SetS valid: int,short,long" );
-		s = new SchemaTable(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "integer" ) );
-		keys.add( new Pair<String,String>( "field2", "short" ) );
-		keys.add( new Pair<String,String>( "field3", "long" ) );
-		try
-		{
-			s.SetS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaTable: SetS valid: bool,char,bindata" );
-		s = new SchemaTable( );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "boolean" ) );
-		keys.add( new Pair<String,String>( "field2", "char" ) );
-		keys.add( new Pair<String,String>( "field3", "bindata" ) );
-		try
-		{
-			s.SetS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaTable: SetS valid: null,undefined,object,objectid,array" );
-		s = new SchemaTable(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "null" ) );
-		keys.add( new Pair<String,String>( "field2", "undefined" ) );
-		keys.add( new Pair<String,String>( "field3", "object" ) );
-		keys.add( new Pair<String,String>( "field4", "objectid" ) );
-		keys.add( new Pair<String,String>( "field5", "array" ) );
-		try
-		{
-			s.SetS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaTable: SetS valid: date,time,timestamp" );
-		s = new SchemaTable(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "date" ) );
-		keys.add( new Pair<String,String>( "field2", "time" ) );
-		keys.add( new Pair<String,String>( "field3", "timestamp" ) );
-		try
-		{
-			s.SetS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaTable: SetS valid: regex,javascript,url" );
-		s = new SchemaTable(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "regex" ) );
-		keys.add( new Pair<String,String>( "field2", "javascript" ) );
-		keys.add( new Pair<String,String>( "field3", "url" ) );
-		try
-		{
-			s.SetS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaTable: SetS duplicate key" );
-		s = new SchemaTable(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		keys.add( new Pair<String,String>( "field2", "string" ) );
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		try
-		{
-			s.SetS( keys ); Failed( "no exception" );
-		}
-		catch ( SchemaException e ) { Passed( "" );}
-		
-		Title( "SchemaTable: SetS schema already set" );
-		s = new SchemaTable(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		keys.add( new Pair<String,String>( "field2", "string" ) );
-		try
-		{
-			s.SetS( keys );
-			keys = new ArrayList<Pair<String,String>>();
-			keys.add( new Pair<String,String>( "field2", "string" ) );
-			s.SetS( keys ); Failed( "no exception" );
-		}
-		catch ( SchemaException e ) { Passed( "" );}
-		
-		Title( "SchemaTable: IsDefined() true" );
-		if ( s.IsDefined( "field1") && s.IsDefined( "field2" ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaTable: IsDefined() false" );
-		if ( !s.IsDefined( "field3") ) Passed(""); else Failed("");
-		
-		Title( "SchemaTable: IsDefined() null" );
-		if ( !s.IsDefined( null ) ) Passed(""); else Failed("");
-
-		Title( "SchemaTable: IsValid() true" );
-		if ( s.IsValid( "field1", 2 ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaTable: IsValid() false" );
-		if ( !s.IsValid( "field1", 1 ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaTable: IsValid() nonexist" );
-		if ( !s.IsValid( "field4", 2 ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaTable: IsValid() null" );
-		if ( !s.IsValid( null, 2 ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaTable: ColumnPos null");
-		if ( s.ColumnPos( null ) == 0 ) Passed(""); else Failed("");
-		
-		Title( "SchemaTable: ColumnPos valid");
-		if ( s.ColumnPos( "field2" ) == 2 ) Passed(""); else Failed("");
-		
-		Title( "SchemaTable: ColumnPos invalid");
-		if ( s.ColumnPos( "field4" ) == 0 ) Passed(""); else Failed("");
 	}
 	
-	public static void Test_SchemaTableI() {
+	public static void Test_SetI() {
 		Schema s = new SchemaTable();
 		
 		Title( "SchemaTable: SetI empty keys" );

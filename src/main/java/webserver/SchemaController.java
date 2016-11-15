@@ -29,11 +29,9 @@ public class SchemaController {
 		Long id = counter.incrementAndGet();
 		
 		if ( null != type ) {
-			if ( null == arg )
-				return new Response( id, 500, "Arg is null");
 			switch ( type ) {
-			case "table" 		: s = new SchemaTable( arg ); 	break;
-			case "dynamic"		: s = new SchemaDynamic( arg ); 	break;
+			case "table" 		: s = new SchemaTable(); 	break;
+			case "dynamic"		: s = new SchemaDynamic( ); break;
 			default				: return new Response( id, 500, "Unknown Type");
 			}
 		}
@@ -42,12 +40,6 @@ public class SchemaController {
 		
 		String result = "";
 		try {
-			switch ( method ) {
-			case "collection"	: if ( null == arg ) result = s.Collection();
-								  else s.Collection( arg );
-								  return new Response( id, result );
-			}
-			
 			if ( null == arg ) return new Response( id, 500, "Arg is null" );
 			
 			ArrayList<Pair<String,Integer>> keys = null;

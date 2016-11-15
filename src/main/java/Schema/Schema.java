@@ -14,14 +14,6 @@ public interface Schema {
 	@Setter
 	public void Set( ArrayList<String> keys ) throws SchemaException;
 	
-	// Method for dynamically specifying the schema, where data type is in string representation
-	// Pair =
-	//	L = Field Name
-	//	R = Field Type ( String, Integer, Long, Float, Double, Date, Time, etc )
-	// CONSIDER OBSOLETING
-	@Setter
-	public void SetS( ArrayList<Pair<String,String>>  keys ) throws SchemaException;
-	
 	// Method for dynamically specifying the schema, where data type is in an integer representation
 	@Setter
 	public void SetI( ArrayList<Pair<String,Integer>> keys ) throws SchemaException;
@@ -29,11 +21,6 @@ public interface Schema {
 	// Method for dynamically extending the schema, where data type defaults to string
 	@Setter  
 	public void Extend( ArrayList<String> keys ) throws SchemaException;
-	
-	// Method for dynamically extending the schema, where data type is in string representation
-	@Setter
-	// CONSIDER OBSOLETING
-	public void ExtendS( ArrayList<Pair<String,String>>  keys ) throws SchemaException;
 	
 	// Method for dynamically extending the schema, where data type is in an integer representation
 	@Setter

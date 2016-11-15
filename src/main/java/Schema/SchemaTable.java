@@ -50,52 +50,6 @@ public class SchemaTable implements Schema {
 		}
 	}
 	
-	// Method for dynamically specifying the schema, where data type is in string representation
-	// Pair =
-	//	L = Field Name
-	//	R = Field Type ( String, Integer, Long, Float, Double, Date, Time, etc )
-	@Setter
-	public void SetS( ArrayList<Pair<String,String>>  keys ) 
-		throws SchemaException
-	{
-		if ( null == keys )
-			throw new SchemaException( "Schema.SetS: keys is null" );
-		if ( keys.size() == 0 )
-			throw new SchemaException( "Schema.SetS: keys is empty" );
-		if ( null != this.keys )
-			throw new SchemaException( "Schema.SetS: cannot replace existing schema" );
-		
-		// Allocate new Schema
-		this.keys = new ArrayList<Pair<String,Integer>>();
-		
-		int len = keys.size();
-		for ( int i = 0; i < len; i++ ) {
-			String key = keys.get( i ).getKey();
-			if ( key == null ) { 
-				this.keys = null; throw new SchemaException( "Schema.SetS: key name is null" ); 
-			}
-			if ( key.equals( "" ) ) { 
-				this.keys = null; throw new SchemaException( "Schema.SetS: key name is empty" ); 
-			}
-			
-			// look for duplicate
-			for ( int j = i + 1; j < len; j++ ) {
-				if ( key.equals( keys.get( j ).getKey() ) ) { 
-					this.keys = null; throw new SchemaException( "Schema.SetS: duplicate key : " + key ); 
-				}
-			}
-			
-			// Get the BSON id for the data type
-			int type = BSONType.Find( keys.get( i ).getValue() );
-			if ( 0 == type ) {
-				this.keys = null; throw new SchemaException( "Schema.SetS: invalid type: " + keys.get( i ).getValue() );
-			}
-		
-			// Add the key/type pair to the Schema
-			this.keys.add( new Pair<String,Integer>( key, type ) );
-		}
-	}
-	
 	// Method for dynamically specifying the schema, where data type is in an integer representation
 	@Setter
 	public void SetI( ArrayList<Pair<String,Integer>> keys ) 
@@ -141,14 +95,6 @@ public class SchemaTable implements Schema {
 		throws SchemaException
 	{
 		throw new SchemaException( "SchemaTable.Extend: unsupported" );
-	}
-	
-	// Method for dynamically extending the schema, where data type is in a string representation
-	@Setter
-	public void ExtendS( ArrayList<Pair<String,String>>  keys ) 
-		throws SchemaException
-	{
-		throw new SchemaException( "SchemaTable.ExtendS: unsupported" );
 	}
 
 	// Method for dynamically extending the schema, where data type is in an integer representation

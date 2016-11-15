@@ -7,217 +7,80 @@ public class _Test6 {
 	
 	// Main entry method
 	public static void main( String args[] ) {
-		Test_SchemaDynamicS();
-		Test_SchemaDynamicI();
+		Test_Extend();
+		Test_ExtendI();
 		
 		System.exit( rc );
-	}
+	}	
 	
-	public static void Test_SchemaDynamicS() {
-		Schema s = null;
-		
+	public static void Test_Extend() {
 		Title( "SchemaDynamic: constructor" );
-		s = new SchemaDynamic();
-		Passed( "" );
+		Schema s = new SchemaDynamic();
+		Passed("");
 		
-		Title( "SchemaDynamic: ExtendS null" );
+		Title( "SchemaDynamic: Extend empty keys" );
+		ArrayList<String> keys = new ArrayList<String>();
 		try
 		{
-			s.ExtendS( null ); Failed( "no exception" );
+			s.Extend( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed("");}
 		
-		Title( "SchemaDynamic: ExtendS empty keys" );
-		ArrayList<Pair<String,String>> keys = new ArrayList<Pair<String,String>>();
+		Title( "SchemaDynamic: Extend name is null" );
+		keys = new ArrayList<String>();
+		keys.add( null );
 		try
 		{
-			s.ExtendS( keys ); Failed( "no exception" );
-		}
-		catch ( SchemaException e ) { Passed("");}
-		
-		Title( "SchemaDynamic: ExtendS name is null" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( null, "string" ) );
-		try
-		{
-			s.ExtendS( keys ); Failed( "no exception" );
+			s.Extend( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed( "" );}
 		
 		Title( "SchemaDynamic: Extend name is empty" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "", "string" ) );
+		keys = new ArrayList<String>();
+		keys.add( "" );
 		try
 		{
-			s.ExtendS( keys ); Failed( "no exception" );
+			s.Extend( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed(""); }
 		
-		Title( "SchemaDynamic: ExtendS type is null" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", null ) );
+		Title( "SchemaDynamic: Set valid" );
+		keys = new ArrayList<String>();
+		keys.add( "field1" );
 		try
 		{
-			s.ExtendS( keys ); Failed( "no exception" );
-		}
-		catch ( SchemaException e ) { Passed( "" );}
-	
-		Title( "SchemaDynamic: ExtendS type is invalid" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "foo" ) );
-		try
-		{
-			s.ExtendS( keys ); Failed( "no exception" );
-		}
-		catch ( SchemaException e ) { Passed( "" );}
-		
-		Title( "SchemaDynamic: ExtendS valid: string" );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		try
-		{
-			s.ExtendS( keys ); Passed("");
+			s.Extend( keys ); Passed("");
 		}
 		catch ( SchemaException e ) { Failed( e.getMessage());}
 		
-		Title( "SchemaDynamic: ExtendS valid: double,float,decimal" );
-		s = new SchemaDynamic(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "double" ) );
-		keys.add( new Pair<String,String>( "field2", "float" ) );
-		keys.add( new Pair<String,String>( "field3", "decimal" ) );
+		Title( "SchemaDynamic: Extend duplicate key" );
+		s = new SchemaTable(  );
+		keys = new ArrayList<String>();
+		keys.add( "field1" );
+		keys.add( "field2" );
+		keys.add( "field1" );
 		try
 		{
-			s.ExtendS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaDynamic: ExtendS valid: int,short,long" );
-		s = new SchemaDynamic(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "integer" ) );
-		keys.add( new Pair<String,String>( "field2", "short" ) );
-		keys.add( new Pair<String,String>( "field3", "long" ) );
-		try
-		{
-			s.ExtendS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaDynamic: ExtendS valid: bool,char,bindata" );
-		s = new SchemaDynamic(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "boolean" ) );
-		keys.add( new Pair<String,String>( "field2", "char" ) );
-		keys.add( new Pair<String,String>( "field3", "bindata" ) );
-		try
-		{
-			s.ExtendS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaDynamic: ExtendS valid: null,undefined,object,objectid,array" );
-		s = new SchemaDynamic(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "null" ) );
-		keys.add( new Pair<String,String>( "field2", "undefined" ) );
-		keys.add( new Pair<String,String>( "field3", "object" ) );
-		keys.add( new Pair<String,String>( "field4", "objectid" ) );
-		keys.add( new Pair<String,String>( "field5", "array" ) );
-		try
-		{
-			s.ExtendS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaDynamic: ExtendS valid: date,time,timestamp" );
-		s = new SchemaDynamic(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "date" ) );
-		keys.add( new Pair<String,String>( "field2", "time" ) );
-		keys.add( new Pair<String,String>( "field3", "timestamp" ) );
-		try
-		{
-			s.ExtendS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaDynamic: ExtendS valid: regex,javascript,url" );
-		s = new SchemaDynamic(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "regex" ) );
-		keys.add( new Pair<String,String>( "field2", "javascript" ) );
-		keys.add( new Pair<String,String>( "field3", "url" ) );
-		try
-		{
-			s.ExtendS( keys ); Passed("");
-		}
-		catch ( SchemaException e ) { Failed( e.getMessage());}
-		
-		Title( "SchemaDynamic: ExtendS duplicate key" );
-		s = new SchemaDynamic(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		keys.add( new Pair<String,String>( "field2", "string" ) );
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		try
-		{
-			s.ExtendS( keys ); Failed( "no exception" );
+			s.Extend( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed( "" );}
 		
-		Title( "SchemaDynamic: ExtendS schema extended" );
+		Title( "SchemaDynamic: Extend schema already set" );
 		s = new SchemaDynamic(  );
-		keys = new ArrayList<Pair<String,String>>();
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		keys.add( new Pair<String,String>( "field2", "string" ) );
+		keys = new ArrayList<String>();
+		keys.add( "field1" );
+		keys.add( "field2" );
 		try
 		{
-			s.ExtendS( keys );
-			keys = new ArrayList<Pair<String,String>>();
-			keys.add( new Pair<String,String>( "field3", "string" ) );
-			s.ExtendS( keys ); Passed( "");
+			s.Set( keys );
+			keys = new ArrayList<String>();
+			keys.add( "field3" );
+			s.Extend( keys ); Passed( "");
 		}
-		catch ( SchemaException e ) { Failed( e.getMessage() ); }
-		
-		Title( "SchemaDynamic: ExtendS duplicate key in already extended" );
-		keys.add( new Pair<String,String>( "field1", "string" ) );
-		keys.add( new Pair<String,String>( "field2", "string" ) );
-		try
-		{
-			s.ExtendS( keys ); Failed( "no exception" );
-		}
-		catch ( SchemaException e ) { Passed( "" ); }
-		
-		Title( "SchemaDynamic: IsDefined() true" );
-		if ( s.IsDefined( "field1") && s.IsDefined( "field2" ) && s.IsDefined( "field3") ) Passed(""); else Failed("");
-		
-		Title( "SchemaDynamic: IsDefined() false" );
-		if ( !s.IsDefined( "field4") ) Passed(""); else Failed("");
-		
-		Title( "SchemaDynamic: IsDefined() null" );
-		if ( !s.IsDefined( null ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaDynamic: IsValid() true" );
-		if ( s.IsValid( "field1", 2 ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaDynamic: IsValid() false" );
-		if ( !s.IsValid( "field1", 1 ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaDynamic: IsValid() nonexist" );
-		if ( !s.IsValid( "field4", 2 ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaDynmaic: IsValid() null" );
-		if ( !s.IsValid( null, 2 ) ) Passed(""); else Failed("");
-		
-		Title( "SchemaDynamic: ColumnPos valid");
-		if ( s.ColumnPos( "field2" ) == 2 ) Passed(""); else Failed("");
-		
-		Title( "SchemaDynamic: ColumnPos invalid");
-		if ( s.ColumnPos( "field4" ) == 0 ) Passed(""); else Failed("");
+		catch ( SchemaException e ) { Failed( e.getMessage() );}
 	}
 	
-	public static void Test_SchemaDynamicI() {
+	public static void Test_ExtendI() {
 		Schema s = new SchemaDynamic();
 		
 		Title( "SchemaDynamic: ExtendI empty keys" );

@@ -23,7 +23,7 @@ public abstract class Parse {
 	private   boolean    skip		= false;			// skip non-parseable input records
 	private   Ejector    ejector    = new Ejector();	// ejector object for handling non-parseable input
 	private   int		 nImported	= 0;				// number of records imported
-	private   Collection collection = null;				// Collection to insert data into
+	protected Collection collection = null;				// Collection to insert data into
 	
 	// Getter/Setter for whether input file has a header
 	public void Header( boolean hasHeader ) {
