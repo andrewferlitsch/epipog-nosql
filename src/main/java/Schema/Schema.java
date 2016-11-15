@@ -3,6 +3,8 @@
  */
 package epipog.schema;
 
+import epipog.annotations.*;
+
 import javafx.util.Pair;
 import java.util.ArrayList;
 

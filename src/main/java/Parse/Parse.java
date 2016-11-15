@@ -4,6 +4,7 @@
 package epipog.parse;
 
 import epipog.collection.Collection;
+import epipog.annotations.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,18 +27,23 @@ public abstract class Parse {
 	protected Collection collection = null;				// Collection to insert data into
 	
 	// Getter/Setter for whether input file has a header
+	@Setter
 	public void Header( boolean hasHeader ) {
 		this.hasHeader = hasHeader;
 	}
+	@Getter
 	public boolean Header() { return hasHeader; }
 	
 	// Getter/Setter for whether to skip records that can't be parsed 
+	@Setter
 	public void Skip( boolean skip ) {
 		this.skip = skip;
 	}
+	@Getter
 	public boolean Skip() { return skip; }
 	
 	// Set the input data reader type
+	@Setter
 	public void Reader( Reader.ReaderType type ) {
 		switch ( type ) {
 		case READERMEM   : reader = new ReaderMem   ( inputFile ); break;
@@ -47,6 +53,7 @@ public abstract class Parse {
 	}
 	
 	// Set the ejector for handling non-parseable input data
+	@Setter
 	public void Ejector( Ejector.EjectorType type ) {
 		switch ( type ) {
 		case EJECTNOOP	: ejector = new Ejector(); break;
@@ -60,27 +67,32 @@ public abstract class Parse {
 	}
 	
 	// Getter for number of records ejected
+	@Getter
 	public int NEjected() {
 		return ejector.NEjected();
 	}
 	
-	//
+	// Method to insert record into collection
 	protected void Import( ArrayList<String> cols ) {
 		nImported++;
-			// TODO
+		if ( null != collection )
+			collection.Insert( cols );
 	}
 	
 	// Getter for the number of records imported
+	@Getter
 	public int NImported() {
 		return nImported;
 	}
 	
 	// Setter for binding a collection to the parsed input
+	@Setter
 	public void Collection( Collection collection ) {
 		this.collection = collection;
 	}
 	
 	// Getter for the collection bound to the parsed input
+	@Getter
 	public Collection Collection() {
 		return collection;
 	}

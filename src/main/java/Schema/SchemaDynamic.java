@@ -3,6 +3,8 @@
  */
 package epipog.schema;
 
+import epipog.annotations.*;
+
 import javafx.util.Pair;
 import java.util.ArrayList;
 
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 public class SchemaDynamic extends SchemaTable {
 	
 	// Method for dynamically extending a schema, where data type defaults to string
+	@Setter
 	public void Extend( ArrayList<String> keys ) 
 		throws SchemaException
 	{
@@ -57,6 +60,7 @@ public class SchemaDynamic extends SchemaTable {
 	}
 
 	// Method for dynamically extending a schema, where data type is specified as an integer
+	@Setter
 	public void ExtendI( ArrayList<Pair<String,Integer>> keys ) 
 		throws SchemaException
 	{

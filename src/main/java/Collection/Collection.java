@@ -6,6 +6,8 @@ package epipog.collection;
 import epipog.schema.Schema;
 import epipog.index.Index;
 
+import java.util.ArrayList;
+
 // Implemented Layer for Collections
 public class Collection {
 	private String collectionName;	// Name of the Collection
@@ -25,5 +27,9 @@ public class Collection {
 	// Get the schema assigned to this collection
 	public Schema Schema() {
 		return schema;
+	}
+	
+	public void Insert( ArrayList<String> record ) {
+		
 	}
 }
