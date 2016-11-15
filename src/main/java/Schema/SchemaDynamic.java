@@ -57,6 +57,9 @@ public class SchemaDynamic extends SchemaTable {
 			// Extend the key/type pair to the Schema
 			this.keys.add( new Pair<String,Integer>( key, BSONType.STRING.GetVal() ) );
 		}
+		
+		// save the total number of columns (keys) in table
+		nCols = this.keys.size();
 	}
 
 	// Method for dynamically extending a schema, where data type is specified as an integer
@@ -109,5 +112,8 @@ public class SchemaDynamic extends SchemaTable {
 			// Extend the Schema
 			this.keys.add(  keys.get( i ) );
 		}
+		
+		// save the total number of columns (keys) in table
+		nCols = this.keys.size();
 	}
 }

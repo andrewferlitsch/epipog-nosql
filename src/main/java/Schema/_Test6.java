@@ -78,6 +78,9 @@ public class _Test6 {
 			s.Extend( keys ); Passed( "");
 		}
 		catch ( SchemaException e ) { Failed( e.getMessage() );}
+		
+		Title( "SchemaDynamic: Extend/NCols" );
+		if ( s.NCols() == 3 ) Passed(""); else Failed("");
 	}
 	
 	public static void Test_ExtendI() {
@@ -271,6 +274,9 @@ public class _Test6 {
 		
 		Title( "SchemaDynamic: ColumnPos invalid");
 		if ( s.ColumnPos( "field4" ) == 0 ) Passed(""); else Failed("");
+		
+		Title( "SchemaDynamic: ExtendI/NCols" );
+		if ( s.NCols() == 3 ) Passed(""); else Failed("");
 	}
 	
 	public static void Title( String title ) {

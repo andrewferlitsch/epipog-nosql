@@ -79,6 +79,9 @@ public class _Test5 {
 			s.Set( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed( "" );}
+		
+		Title( "SchemaTable: Set/Ncols" );
+		if ( s.NCols() == 2 ) Passed(""); else Failed("");
 	}
 	
 	public static void Test_SetI() {
@@ -266,6 +269,9 @@ public class _Test5 {
 		
 		Title( "SchemaTable: ColumnPos invalid");
 		if ( s.ColumnPos( "field4" ) == 0 ) Passed(""); else Failed("");
+		
+		Title( "SchemaTable: SetI/Ncols" );
+		if ( s.NCols() == 2 ) Passed(""); else Failed("");
 	}
 	
 	public static void Test_StaticMethod() {

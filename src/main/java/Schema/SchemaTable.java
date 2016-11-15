@@ -14,6 +14,11 @@ public class SchemaTable implements Schema {
 
 	// table schema: (Restriction) schema definition must be in same order as table definition
 	protected ArrayList<Pair<String,Integer>> keys;
+	protected int 							  nCols = 0;	// number of columns (Keys) in table
+	
+	// Getter to return the number of columns (keys) in table-based schema
+	@Getter
+	public Integer NCols() { return nCols; }
 	
 	// Method for dynamically specifying the schema, where data type is in string representation
 	@Setter
@@ -50,6 +55,9 @@ public class SchemaTable implements Schema {
 			// Add the key/type pair to the Schema
 			this.keys.add( new Pair<String, Integer>( key, BSONType.STRING.GetVal() ) );
 		}
+		
+		// save the total number of columns (keys) in table
+		nCols = this.keys.size();
 	}
 	
 	// Method for dynamically specifying the schema, where data type is in an integer representation
@@ -89,6 +97,9 @@ public class SchemaTable implements Schema {
 
 		// Retain the keys
 		this.keys = keys;
+		
+		// save the total number of columns (keys) in table
+		nCols = this.keys.size();
 	}
 	
 	// Method for dynamically extending the schema, where data type defaults to string

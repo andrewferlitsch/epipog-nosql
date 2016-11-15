@@ -37,6 +37,10 @@ public interface Schema {
 	// Method to find column position in table of key (ordinal ordering: starts at 1)
 	public Integer ColumnPos( String key );
 	
+	// Method to get the number of columns (keys) in a table-based schema
+	@Getter
+	public Integer NCols();
+	
 	// Definitions for BSON data types
 	public enum BSONType {
 		DOUBLE	 	("double", 		(byte)1),

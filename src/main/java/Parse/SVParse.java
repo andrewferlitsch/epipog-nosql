@@ -4,6 +4,7 @@
 package epipog.parse;
 
 import epipog.schema.*;
+import epipog.collection.*;
  
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -132,8 +133,12 @@ public abstract class SVParse extends Parse {
 	protected void Import( Object record ) {
 		ArrayList<String> cols = (ArrayList<String>) record;
 		nImported++;
-		if ( null != collection )
-			collection.Insert( cols );
+		if ( null != collection ) {
+			try {
+				collection.Insert( cols );
+			}
+			catch ( CollectionException e ) { /* todo */ }
+		}
 	}
 	
 	// Split a character sequence separated line

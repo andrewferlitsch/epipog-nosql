@@ -3,7 +3,7 @@
  */
 package epipog.collection;
 
-import epipog.schema.Schema;
+import epipog.schema.*;
 import epipog.index.Index;
 import epipog.annotations.*;
 
@@ -34,7 +34,15 @@ public class Collection {
 	}
 	
 	// Method to insert column data, where order of fields is same as in schema
-	public void Insert( ArrayList<String> record ) {
+	public void Insert( ArrayList<String> values ) 
+		throws CollectionException
+	{
+		int vlen = values.size();
+		if ( vlen != schema.NCols() )
+			throw new CollectionException( "Collection.Insert: number of values does not match columns in table" );
 		
+		for ( int i = 0; i < vlen; i++ ) {
+			
+		}
 	}
 }
