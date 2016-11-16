@@ -2,6 +2,9 @@
  * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
  */
 package epipog.parse;
+
+import epipog.annotations.*;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -18,11 +21,13 @@ public class JSONParse extends Parse {
 	private Integer nFields  = 0;		// number of parsed fields
 	
 	// Setter for bulk flag
+	@Setter
 	public void Bulk( boolean bulk ) {
 		this.bulk = bulk;
 	}
 	
 	// Getter for number of objects parsed so far
+	@Getter
 	public Integer NObjects() {
 		return nObjects;
 	}
