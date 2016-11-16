@@ -81,6 +81,12 @@ public class _Test6 {
 		
 		Title( "SchemaDynamic: Extend/NCols" );
 		if ( s.NCols() == 3 ) Passed(""); else Failed("");
+		
+		Title( "Dynamic: Extend/Columns" );
+		ArrayList<String> cols = s.Columns();
+		if ( cols.get( 0 ).equals( "field1") ) Passed(""); else Failed("");
+		if ( cols.get( 1 ).equals( "field2") ) Passed(""); else Failed("");
+		if ( cols.get( 2 ).equals( "field3") ) Passed(""); else Failed("");
 	}
 	
 	public static void Test_ExtendI() {
@@ -277,6 +283,12 @@ public class _Test6 {
 		
 		Title( "SchemaDynamic: ExtendI/NCols" );
 		if ( s.NCols() == 3 ) Passed(""); else Failed("");
+		
+		Title( "Dynamic: ExtendI/Columns" );
+		ArrayList<String> cols = s.Columns();
+		if ( cols.get( 0 ).equals( "field1") ) Passed(""); else Failed("");
+		if ( cols.get( 1 ).equals( "field2") ) Passed(""); else Failed("");
+		if ( cols.get( 2 ).equals( "field3") ) Passed(""); else Failed("");
 	}
 	
 	public static void Title( String title ) {

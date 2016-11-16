@@ -26,8 +26,12 @@ public class SchemaDynamic extends SchemaTable {
 		ArrayList<Pair<String,Integer>> orig = this.keys;	
 		
 		// Allocate new Schema
-		if ( null == this.keys )
+		if ( null == this.keys ) {
 			this.keys = new ArrayList<Pair<String,Integer>>();
+		}
+		
+		// drop the column information cache
+		this.columns = null;
 		
 		int len = keys.size();
 		for ( int i = 0; i < len; i++ ) {
@@ -78,6 +82,9 @@ public class SchemaDynamic extends SchemaTable {
 		// Allocate new Schema
 		if ( null == this.keys )
 			this.keys = new ArrayList<Pair<String,Integer>>();	
+		
+		// drop the column information cache
+		this.columns = null;
 		
 		int len = keys.size();
 		for ( int i = 0; i < len; i++ ) {

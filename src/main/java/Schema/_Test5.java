@@ -82,6 +82,11 @@ public class _Test5 {
 		
 		Title( "SchemaTable: Set/Ncols" );
 		if ( s.NCols() == 2 ) Passed(""); else Failed("");
+		
+		Title( "SchemaTable: Set/Columns" );
+		ArrayList<String> cols = s.Columns();
+		if ( cols.get( 0 ).equals( "field1") ) Passed(""); else Failed( "");
+		if ( cols.get( 1 ).equals( "field2") ) Passed(""); else Failed("");
 	}
 	
 	public static void Test_SetI() {
@@ -239,6 +244,14 @@ public class _Test5 {
 			s.SetI( keys ); Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed( "" );}
+		
+		Title( "SchemaTable: SetI/Ncols" );
+		if ( s.NCols() == 2 ) Passed(""); else Failed("");
+		
+		Title( "SchemaTable: SetI/Columns" );
+		ArrayList<String> cols = s.Columns();
+		if ( cols.get( 0 ).equals( "field1") ) Passed(""); else Failed("");
+		if ( cols.get( 1 ).equals( "field2") ) Passed(""); else Failed("");
 		
 		Title( "SchemaTable: IsDefined() true" );
 		if ( s.IsDefined( "field1") && s.IsDefined( "field2" ) ) Passed(""); else Failed("");

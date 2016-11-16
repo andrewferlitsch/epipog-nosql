@@ -96,7 +96,7 @@ public abstract class Parse {
 	{
 		File f = new File( inputFile );
 		if ( !f.exists() )
-			throw new ParseException( "Parse.Open: no such file" + inputFile );
+			throw new ParseException( "Parse.Open: no such file: " + inputFile );
 		
 		if ( null == reader )
 			throw new ParseException( "Parse.Open: reader not set" );

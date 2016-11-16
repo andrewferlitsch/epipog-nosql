@@ -45,6 +45,10 @@ public interface Schema {
 	@Getter
 	public Integer NCols();
 	
+	// Method to get column (key) names and order in a table-based schema
+	@Getter
+	public ArrayList<String> Columns();
+	
 	// Definitions for BSON data types
 	public enum BSONType {
 		DOUBLE	 	("double", 		(byte)1),

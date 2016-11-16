@@ -58,6 +58,12 @@ public abstract class SVParse extends Parse {
 		if ( null == reader )
 			throw new ParseException( "SVParse.Parse: reader not set" );
 		
+		if ( null != collection ) {
+			Schema s = collection.Schema();
+			if ( null != s )
+				;
+		}
+		
 		// set number of columns if preset
 		ncols = ( heading != null ) ? heading.size() : 0;
 		

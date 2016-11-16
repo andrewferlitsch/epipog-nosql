@@ -43,6 +43,8 @@ public class Collection {
 		
 		for ( int i = 0; i < vlen; i++ ) {
 			Integer type = schema.GetType( i );
+			
+			System.out.println( "INSERT: type = " + type + " , value = " + values.get( i ) );
 		}
 	}
 }

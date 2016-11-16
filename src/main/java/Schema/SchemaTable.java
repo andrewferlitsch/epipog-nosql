@@ -13,12 +13,26 @@ import java.util.ArrayList;
 public class SchemaTable implements Schema {
 
 	// table schema: (Restriction) schema definition must be in same order as table definition
-	protected ArrayList<Pair<String,Integer>> keys;
-	protected int 							  nCols = 0;	// number of columns (Keys) in table
+	protected ArrayList<Pair<String,Integer>> keys;			  // columns/types in table
+	protected int 							  nCols = 0;	  // number of columns (Keys) in table
+	protected ArrayList<String>				  columns = null; // column names only
 	
 	// Getter to return the number of columns (keys) in table-based schema
 	@Getter
 	public Integer NCols() { return nCols; }
+	
+	// Getter to return the column (key) names and order in table-based schema
+	@Getter
+	public ArrayList<String> Columns() {
+		// column information is not cached
+		if ( columns == null ) {
+			// Cache the column information on first request
+			columns = new ArrayList<String>();
+			for ( Pair<String,Integer> pair : keys )
+				columns.add( pair.getKey() );
+		}
+		return columns;
+	}
 	
 	// Method for dynamically specifying the schema, where data type is in string representation
 	@Setter
@@ -33,22 +47,25 @@ public class SchemaTable implements Schema {
 			throw new SchemaException( "Schema.Set: cannot replace existing schema" );	
 		
 		// Allocate new Schema
-		this.keys = new ArrayList<Pair<String,Integer>>();
+		this.keys 	 = new ArrayList<Pair<String,Integer>>();
 		
 		int len = keys.size();
 		for ( int i = 0; i < len; i++ ) {
 			String key = keys.get( i );
 			if ( key == null ) { 
-				this.keys = null; throw new SchemaException( "Schema.Set: key name is null" ); 
+				this.keys = null; 
+				throw new SchemaException( "Schema.Set: key name is null" ); 
 			}
 			if ( key.equals( "" ) ) { 
-				this.keys = null; throw new SchemaException( "Schema.Set: key name is empty" ); 
+				this.keys = null; 
+				throw new SchemaException( "Schema.Set: key name is empty" ); 
 			}
 			
 			// look for duplicate
 			for ( int j = i + 1; j < len; j++ ) {
 				if ( key.equals( keys.get( j ) ) ) { 
-					this.keys = null; throw new SchemaException( "Schema.Set: duplicate key : " + key ); 
+					this.keys = null;  
+					throw new SchemaException( "Schema.Set: duplicate key : " + key ); 
 				}
 			}
 
@@ -76,22 +93,26 @@ public class SchemaTable implements Schema {
 		for ( int i = 0; i < len; i++ ) {
 			String key = keys.get( i ).getKey();
 			if ( key == null ) { 
-				this.keys = null; throw new SchemaException( "Schema.SetI: key name is null" ); 
+				this.keys = null; 
+				throw new SchemaException( "Schema.SetI: key name is null" ); 
 			}
 			if ( key.equals( "" ) ) { 
-				this.keys = null; throw new SchemaException( "Schema.SetI: key name is empty" ); 
+				this.keys = null; 
+				throw new SchemaException( "Schema.SetI: key name is empty" ); 
 			}
 			
 			// look for duplicate
 			for ( int j = i + 1; j < len; j++ ) {
 				if ( key.equals( keys.get( j ).getKey() ) ) {
-					this.keys = null; throw new SchemaException( "Schema.SetI: duplicate key : " + key );
+					this.keys = null; 
+					throw new SchemaException( "Schema.SetI: duplicate key : " + key );
 				}
 			}
 			
 			// check if valid BSON type id
 			if ( !BSONType.Valid( keys.get( i ).getValue() ) ) {
-				this.keys = null; throw new SchemaException( "Schema.SetI: invalid BSON type: " + keys.get( i ).getValue() );
+				this.keys = null; 
+				throw new SchemaException( "Schema.SetI: invalid BSON type: " + keys.get( i ).getValue() );
 			}
 		}
 
