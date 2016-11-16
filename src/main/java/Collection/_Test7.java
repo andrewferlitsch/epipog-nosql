@@ -104,12 +104,11 @@ public class _Test7 {
 		catch ( ParseException e ) { Failed( e.getMessage() ); }
 		if ( p.NImported() == 1 ) Passed( ""); else Failed("");
 		
-		Title( "Collection: Parse another file with no header" );
+		Title( "Collection: Parse another file with no header (reuse schema)" );
 		p = new CSVParse( "tests\\7b.txt" );
 		p.Collection( c );
 		p.Reader( Reader.ReaderType.READERMEM );
 		p.Header( false );
-// Add Heading
 		try {
 			p.Open();
 			p.Parse();
@@ -117,6 +116,87 @@ public class _Test7 {
 		}
 		catch ( ParseException e ) { Failed( e.getMessage() ); }
 		if ( p.NImported() == 2 ) Passed( ""); else Failed("");
+		
+		Title( "Collection: Preset Schema using Set" );
+		c = new Collection( "foobar" );
+		Schema s = new SchemaTable();
+		ArrayList<String> keys = new ArrayList<String>();
+		keys.add( "field1"); keys.add("field2");
+		try {
+			s.Set( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed(e.getMessage() ); }
+		c.Schema( s );
+		p = new CSVParse( "tests\\7a.txt" );
+		p.Collection( c );
+		p.Reader( Reader.ReaderType.READERMEM );
+		try {
+			p.Open();
+			p.Parse();
+			Passed("");
+		}
+		catch ( ParseException e ) { Failed( e.getMessage() ); }
+		if ( p.NImported() == 3 ) Passed( ""); else Failed("");
+		
+		Title( "Collection: Preset Schema using SetI" );
+		c = new Collection( "foobar" );
+		s = new SchemaDynamic();
+		ArrayList<Pair<String,Integer>> ikeys = new ArrayList<Pair<String,Integer>>();
+		ikeys.add( new Pair<String,Integer>( "field1", 2 ) );
+		ikeys.add( new Pair<String,Integer>( "field2", 2 ) );
+		try {
+			s.SetI( ikeys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed(e.getMessage() ); }
+		c.Schema( s );
+		p = new CSVParse( "tests\\7a.txt" );
+		p.Collection( c );
+		p.Reader( Reader.ReaderType.READERMEM );
+		try {
+			p.Open();
+			p.Parse();
+			Passed("");
+		}
+		catch ( ParseException e ) { Failed( e.getMessage() ); }
+		if ( p.NImported() == 3 ) Passed( ""); else Failed("");
+		
+		Title( "Collection: Preset Schema using Extend" );
+		keys = new ArrayList<String>();
+		keys.add( "field3"); 
+		try {
+			s.Extend( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed(e.getMessage() ); }
+		c.Schema( s );
+		p = new CSVParse( "tests\\7c.txt" );
+		p.Collection( c );
+		p.Reader( Reader.ReaderType.READERMEM );
+		try {
+			p.Open();
+			p.Parse();
+			Passed("");
+		}
+		catch ( ParseException e ) { Failed( e.getMessage() ); }
+		if ( p.NImported() == 1 ) Passed( ""); else Failed("");
+		
+		Title( "Collection: Preset Schema using ExtendI" );
+		ikeys = new ArrayList<Pair<String,Integer>>();
+		ikeys.add( new Pair<String,Integer>( "field4", 2 ) );
+		try {
+			s.ExtendI( ikeys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed(e.getMessage() ); }
+		c.Schema( s );
+		p = new CSVParse( "tests\\7d.txt" );
+		p.Collection( c );
+		p.Reader( Reader.ReaderType.READERMEM );
+		try {
+			p.Open();
+			p.Parse();
+			Passed("");
+		}
+		catch ( ParseException e ) { Failed( e.getMessage() ); }
+		if ( p.NImported() == 1 ) Passed( ""); else Failed("");
 	}
 	
 	public static void Title( String title ) {
