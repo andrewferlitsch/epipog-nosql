@@ -13,13 +13,26 @@ Technology into Product.
 Epipog is setup to build using Gradle. If you have not installed gradle, it is recommended
 you use version 2.14.1 or later, which can be found at: http://www.gradle.org .
 
-## Local
+## Development PC
+
+To build with Gradle pre-installed on your PC.
 
 	> gradle build 
 	
-## Portable
+## Portable Build
+
+To build on a PC without Gradle pre-installed, use the Gradle wrapper.
 
 	> .\gradlew
+	
+## Local Build
+
+Each package can be built separately, and it's unit tests ran, without a build management system, by
+executing the build script in each package source directory. The build script will compile all sources in
+the package, run the unit tests (_Test<N>), display any failures and report the total number of tests ran.
+
+	> cd src\main\java\<package>	// e.g., Data, Parse, Schema, Collection, etc
+	> .\build
 	
 # Executing
 

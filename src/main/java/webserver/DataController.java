@@ -56,6 +56,44 @@ public class DataController {
 			case "asstring"	: result = v.AsString(); break;
 			case "set"		: v.Set( Short.parseShort( arg ) ); break;
 			case "get"		: result = v.Get().toString(); break;
+			case "eq"		: 
+			case "ne"		:
+			case "lt"		:
+			case "le"		:
+			case "gt"		:
+			case "ge"		: Data v2 = null;
+							  if ( v instanceof DataShort ) 
+								v2 = new DataShort();
+							  else if ( v instanceof DataInteger )
+								v2 = new DataInteger();
+							  else if ( v instanceof DataLong )
+								v2 = new DataLong();
+							  else if ( v instanceof DataFloat )
+								v2 = new DataFloat();
+							  else if ( v instanceof DataDouble )
+								v2 = new DataDouble();
+							  else if ( v instanceof DataChar )
+								v2 = new DataChar();
+							  else if ( v instanceof DataBoolean )
+								v2 = new DataBoolean();
+							  else if ( v instanceof DataDate )
+								v2 = new DataDate();
+							  else if ( v instanceof DataTime )
+								v2 = new DataTime();
+							  else if ( v instanceof DataString )
+								v2 = new DataString();
+							  else if ( v instanceof DataStringFixed )
+								v2 = new DataStringFixed( 32 );
+							  v2.Parse( arg );
+							  switch ( method ) {
+							  case "eq": result = String.valueOf ( v.EQ( v2 ) ); break;
+							  case "ne": result = String.valueOf ( v.NE( v2 ) ); break;
+							  case "lt": result = String.valueOf ( v.LT( v2 ) ); break;
+							  case "le": result = String.valueOf ( v.LE( v2 ) ); break;
+							  case "gt": result = String.valueOf ( v.GT( v2 ) ); break;
+							  case "ge": result = String.valueOf ( v.GE( v2 ) ); break;
+							  }
+							  break;
 			default: return new Response( id, "Unknown Method");
 			}
 		} catch ( DataException e 		  ) { return new Response(id, 500, e.getMessage() );}

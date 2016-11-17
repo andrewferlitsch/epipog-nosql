@@ -42,11 +42,15 @@ public class ParseController {
 		String result = "";
 		try {
 			switch ( method ) {
-			case "header"	 	: if ( arg == null ) result = String.valueOf( p.Header() );
-								  else p.Header( Boolean.parseBoolean( arg ) );
+			case "header"	 	: if ( arg == null ) 
+									result = String.valueOf( p.Header() );
+								  else 
+									p.Header( Boolean.parseBoolean( arg ) );
 								  break;
-			case "skip"			: if ( arg == null ) result = String.valueOf( p.Skip() );
-								  else p.Skip( Boolean.parseBoolean( arg ) );
+			case "skip"			: if ( arg == null ) 
+									result = String.valueOf( p.Skip() );
+								  else 
+									p.Skip( Boolean.parseBoolean( arg ) );
 								  break;
 			case "reader"		: switch ( arg ) {
 								  case "mem"	: p.Reader( Reader.ReaderType.READERMEM ); break;
@@ -63,13 +67,17 @@ public class ParseController {
 								  break;
 			case "NEjected"		: result = String.valueOf( p.NEjected() ); 
 								  break;
+			case "NImported"	: result = String.valueOf( p.NImported() ); 
+								  break;
 			case "open"			: p.Open();
 								  break;
 			case "close"		: p.Close();
 								  break;
 			case "parse"		: p.Parse(); 
 								  break;
-			case "NImported"	: result = String.valueOf( p.NImported() ); 
+			case "eject"		: /* todo */
+								  break;
+			case "collection"	: /* todo */
 								  break;
 			default: return new Response( id, "Unknown Method");
 			}
