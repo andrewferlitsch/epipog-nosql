@@ -5,6 +5,7 @@ package epipog.parse;
 
 import epipog.schema.*;
 import epipog.collection.*;
+import epipog.annotations.*;
  
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public abstract class SVParse extends Parse {
 	private ArrayList<String> heading  	= null;			// column heading (field names and order of columns)
 	private int				  ncols     = 0;			// number of columns
 	private boolean			  rfc4180   = false;		// enforce RFC 4180 parsing rules
+	private boolean    		  linkedCSV = false;		// input file supports linked CSV (prolog lines)
 	
 	// Setter for the name/order of columns (if not specified in file header)
 	public void Heading( ArrayList<String> heading ) {
@@ -38,13 +40,21 @@ public abstract class SVParse extends Parse {
 	}
 	
 	// Getter for the number of columns
+	@Getter
 	public Integer NCols() {
 		return ncols;
 	}
 	
 	// Setter for enforcing RFC 4180 parsing rules
+	@Setter
 	public void RFC4180( boolean rfc4180 ) {
 		this.rfc4180 = rfc4180;
+	}
+	
+	// Setter for indicating whether the file formats supports Linked CSV (prolog lines)
+	@Setter
+	public void LinkedCSV( boolean linkedCSV ) {
+		this.linkedCSV = linkedCSV;
 	}
 	
 	// Implementation for parsing character delimited file
@@ -139,14 +149,16 @@ public abstract class SVParse extends Parse {
 	}
 	
 	// Method to insert record into collection
-	protected void Import( Object record ) {
+	protected void Import( Object record ) 
+		throws ParseException
+	{
 		ArrayList<String> cols = (ArrayList<String>) record;
 		nImported++;
 		if ( null != collection ) {
 			try {
 				collection.Insert( cols );
 			}
-			catch ( CollectionException e ) { /* todo */ }
+			catch ( CollectionException e ) { throw new ParseException( e.getMessage() ); }
 		}
 	}
 	

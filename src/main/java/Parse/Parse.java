@@ -118,5 +118,5 @@ public abstract class Parse {
 	public abstract void Parse() throws ParseException;
 	
 	// Method to insert record into collection
-	protected abstract void Import( Object record );
+	protected abstract void Import( Object record ) throws ParseException;
 }
