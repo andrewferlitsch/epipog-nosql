@@ -1,6 +1,7 @@
 import epipog.collection.*;
 import epipog.parse.*;
 import epipog.schema.*;
+import epipog.datastore.*;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -25,9 +26,18 @@ public class _Test7 {
 		Title( "Collection: Set Schema");
 		Schema s = new SchemaTable();
 		c.Schema( s );
+		Passed("");
 		
 		Title( "Collection: Get Schema");
 		if ( null != c.Schema() ) Passed( ""); else Failed("");
+		
+		Title( "Collection: Set DataStore");
+		DataStore d = new DataStoreBinary();
+		c.Store( d );
+		Passed("");
+		
+		Title( "Collection: Get Store");
+		if ( null != c.Store() ) Passed( ""); else Failed("");
 	}
 	
 	public static void Test_Insert() {
@@ -35,7 +45,8 @@ public class _Test7 {
 		Collection c = new Collection( "foobar" );
 		Schema s = new SchemaTable();
 		c.Schema( s );
-		
+		DataStore d = new DataStoreBinary();
+		c.Store( d );
 		ArrayList<String> v = new ArrayList<String>();
 		try {
 			c.Insert( v ); Passed("");
@@ -83,6 +94,8 @@ public class _Test7 {
 		Title( "Collection: Parse has fields - dynamically create schema" );
 		p = new CSVParse( "tests\\7a.txt" );
 		p.Collection( c );
+		DataStore d = new DataStoreBinary();
+		c.Store( d );
 		p.Reader( Reader.ReaderType.READERMEM );
 		try {
 			p.Open();
@@ -127,6 +140,7 @@ public class _Test7 {
 		}
 		catch ( SchemaException e ) { Failed(e.getMessage() ); }
 		c.Schema( s );
+		c.Store( d );
 		p = new CSVParse( "tests\\7a.txt" );
 		p.Collection( c );
 		p.Reader( Reader.ReaderType.READERMEM );
@@ -149,6 +163,7 @@ public class _Test7 {
 		}
 		catch ( SchemaException e ) { Failed(e.getMessage() ); }
 		c.Schema( s );
+		c.Store( d );
 		p = new CSVParse( "tests\\7a.txt" );
 		p.Collection( c );
 		p.Reader( Reader.ReaderType.READERMEM );
