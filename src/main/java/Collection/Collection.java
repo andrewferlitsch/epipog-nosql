@@ -5,7 +5,7 @@ package epipog.collection;
 
 import epipog.schema.*;
 import epipog.index.Index;
-import epipog.datastore.DataStore;
+import epipog.datastore.*;
 import epipog.annotations.*;
 
 import java.util.ArrayList;
@@ -39,6 +39,10 @@ public class Collection {
 	@Setter
 	public void Store( DataStore store ) {
 		this.store = store;
+		
+		// Pass this collection to the underlying data store
+		if ( null != store )
+			store.Collection( this );
 	}
 	
 	// Get the data store assigned to this collection
@@ -50,18 +54,19 @@ public class Collection {
 	// Method to insert column data, where order of fields is same as in schema
 	public void Insert( ArrayList<String> values ) 
 		throws CollectionException
-	{
-		int vlen = values.size();
-		if ( vlen != schema.NCols() )
-			throw new CollectionException( "Collection.Insert: number of values does not match columns in table" );
-		
+	{		
+		if ( schema == null )
+			throw new CollectionException( "Collection.Insert: schema is null" );
 		if ( store == null )
 			throw new CollectionException( "Collection.Insert: data store is null" );
 		
-		for ( int i = 0; i < vlen; i++ ) {
-			Integer type = schema.GetType( i );
-				
-			System.out.println( "INSERT: type = " + type + " , value = " + values.get( i ) );
+		if ( values.size() != schema.NCols() )
+			throw new CollectionException( "Collection.Insert: number of values does not match columns in table" );
+	
+		try {
+			store.InsertC( values );
 		}
+		catch ( DataStoreException e ) { throw new CollectionException(""); }
+		
 	}
 }

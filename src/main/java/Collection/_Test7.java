@@ -75,6 +75,22 @@ public class _Test7 {
 			c.Insert( v ); Failed( "no exception" );
 		}
 		catch ( CollectionException e ) { Passed(""); }
+		
+		Title( "Collection: Insert, no Schema" );
+		c = new Collection( "foobar" );
+		v = new ArrayList<String>();
+		try {
+			c.Insert( v ); Failed("no exception");
+		}
+		catch ( CollectionException e ) { Passed(""); }
+		
+		Title( "Collection: Insert, no data store" );
+		s = new SchemaTable();
+		c.Schema( s );
+		try {
+			c.Insert( v ); Failed("no exception");
+		}
+		catch ( CollectionException e ) { Passed(""); }
 	}
 	
 	public static void Test_Parse() {

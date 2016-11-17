@@ -3,7 +3,9 @@
  */
 package epipog.datastore;
 
+import epipog.annotations.*;
 import epipog.storage.*;
+import epipog.collection.Collection;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -12,7 +14,14 @@ import java.util.ArrayList;
 //
 public abstract class DataStore { 
 
-	private   Storage  storage = null;			// data storage
+	private 	Storage    storage    = null;		// data storage
+	protected	Collection collection = null;		// assigned collection
+	
+	// Method to set collection assigned to this instance of a data store
+	@Setter
+	public void Collection( Collection collection ) {
+		this.collection = collection;
+	}
 	
 	// Open the storage 
 	public void Open()

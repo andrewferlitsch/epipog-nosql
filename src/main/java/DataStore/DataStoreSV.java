@@ -3,12 +3,16 @@
  */
 package epipog.datastore;
 
+import epipog.annotations.*;
+import epipog.collection.Collection;
+
 import javafx.util.Pair;
 import java.util.ArrayList;
 
-// Implementation Layer for Accessing DataStore as a SV Store (Separated Value)
+// A Layer for Accessing DataStore as a SV Store (Separated Value)
 //
-public class DataStoreSV extends DataStore { 
+public class DataStoreSV extends DataStore {
+	
 	// Method for inserting into datastore with key (field) name
 	// keyvals:
 	//	L = Name of Key
