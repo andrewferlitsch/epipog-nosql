@@ -5,7 +5,7 @@ package epipog.storage;
 
 // Implementation Layer for Data Storage as a Single File
 //
-public class StorageSingleFile implements Storage { 
+public class StorageMultiFile implements Storage { 
 
 	// Implementation for opening (connecting) to storage
 	public void Open() throws StorageException { throw new StorageException("unsupported"); }

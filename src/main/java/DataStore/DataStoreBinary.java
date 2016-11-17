@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 // Implementation Layer for Accessing DataStore as a Binary Data Store (Fixed Sized Records)
 //
-public class DataStoreBinary implements DataStore { 
+public class DataStoreBinary extends DataStore { 
 	// Method for inserting into datastore with key (field) name
 	// keyvals:
 	//	L = Name of Key
