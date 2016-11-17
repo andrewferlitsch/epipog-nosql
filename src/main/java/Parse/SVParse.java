@@ -104,20 +104,8 @@ public abstract class SVParse extends Parse {
 			}
 			// header (schema) not pre-specified
 			else {
-				// A collection has been bound to this parse
-				if ( null != collection )
-				{
-					// (but) This collection has no Schema
-					if ( collection.Schema() == null ) {
-						// Set the header column names as the table based schema
-						SchemaTable schema = new SchemaTable();
-						try {
-							schema.Set( tmp );
-						}
-						catch ( SchemaException e ) { throw new ParseException( e.getMessage() ); }
-						collection.Schema( schema );
-					}
-				}
+				// Update the Schema for the Collection with the header information
+				Schema( tmp );
  			}
 			
 			// set the header information
@@ -129,6 +117,7 @@ public abstract class SVParse extends Parse {
 			throw new ParseException( "SVParse.Parse: no header information" );
 		
 		// read the remaining lines of input
+		boolean prolog = true;	// for linked CSV
 		while ( null != ( line = reader.ReadLine() ) ) {
 			ArrayList<String> cols = Split( line, separator, rfc4180, reader );
 			
@@ -141,6 +130,21 @@ public abstract class SVParse extends Parse {
 					continue;
 				}
 				throw new ParseException( "SVParse.Parse: number of columns in row incorrect: " + line );
+			}
+			
+			// Check for Linked CSV prolog
+			if ( linkedCSV && prolog ) {
+				// Prolog lines
+				switch ( cols.get( 0 ) ) {
+				case "type": Type( cols ); continue;
+				case "lang":
+				case "meta": 
+				case "url" :
+				case "see" : /* unsupported */
+							 continue;
+				}
+				
+				prolog = false;
 			}
 			
 			// Import the column data
@@ -160,6 +164,42 @@ public abstract class SVParse extends Parse {
 			}
 			catch ( CollectionException e ) { throw new ParseException( e.getMessage() ); }
 		}
+	}
+	
+	// Method to inject a schema into collection
+	private void Schema( ArrayList<String> keys )
+		throws ParseException
+	{
+		if ( null != collection )
+		{
+			// (but) This collection has no Schema
+			if ( collection.Schema() == null ) {
+				// Set the header column names as the table based schema
+				SchemaTable schema = new SchemaTable();
+				try {
+					schema.Set( keys );
+				}
+				catch ( SchemaException e ) { throw new ParseException( e.getMessage() ); }
+				collection.Schema( schema );
+			}
+		}
+	}
+	
+	// Method to update the data types in schema
+	private void Type( ArrayList<String> types ) 
+		throws ParseException
+	{
+		if ( null == collection )
+			throw new ParseException("SVParse.Type: no collection is defined");
+		Schema s = collection.Schema();
+		if ( null == s )
+			throw new ParseException("SVParse.Type: no schema is defined");
+		
+		// Update the data types in the schema
+		try {
+			s.Type( types );
+		}
+		catch ( SchemaException e ) { throw new ParseException( e.getMessage() ); }
 	}
 	
 	// Split a character sequence separated line

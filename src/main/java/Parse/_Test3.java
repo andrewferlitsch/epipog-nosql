@@ -1,6 +1,6 @@
 import epipog.parse.*;
 import epipog.collection.Collection;
-import epipog.schema.Schema;
+import epipog.schema.*;
 
 import java.util.ArrayList;
 
@@ -801,6 +801,22 @@ public class _Test3 {
 		Collection c = p.Collection();
 		Schema s = c.Schema();
 		if ( s.IsDefined( "field1") && s.IsDefined( "field2") ) Passed( "" ); else Failed( "");
+		p.Close();
+		
+		Title( "SVParse: linked CSV" );
+		p = new CSVParse( "tests\\3aa.txt" );
+		p.Collection( new Collection( "foobar" ) );
+		p.LinkedCSV( true );
+		try { 
+			p.Reader( Reader.ReaderType.READERMEM );
+			p.Open();
+			p.Parse(); Passed( "" );
+		}
+		catch ( ParseException e ) { Failed( e.getMessage() ); }
+		if ( p.NImported() == 1 ) Passed( "" ); else Failed( "" );
+		if ( p.Collection().Schema().GetType( 1 ) == Schema.BSONType.INTEGER.GetVal() ) Passed(""); else Failed("");
+		if ( p.Collection().Schema().GetType( 2 ) == Schema.BSONType.STRING.GetVal() ) Passed(""); else Failed("");
+		if ( p.Collection().Schema().GetType( 3 ) == Schema.BSONType.DOUBLE.GetVal() ) Passed(""); else Failed("");
 		p.Close();
 	}
 	

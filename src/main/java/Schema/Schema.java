@@ -28,6 +28,10 @@ public interface Schema {
 	@Setter
 	public void ExtendI( ArrayList<Pair<String,Integer>> keys ) throws SchemaException;
 	
+	// Method for updating the data types of an existing schema, where data type is represented as a string
+	@Setter
+	public void Type( ArrayList<String> types ) throws SchemaException;
+	
 	// Method to check if specified key is in schema
 	public boolean IsDefined( String key );
 	
@@ -35,6 +39,7 @@ public interface Schema {
 	public boolean IsValid( String key, Integer type );
 	
 	// Method to find column position in table of key (ordinal ordering: starts at 1)
+	@Getter
 	public Integer ColumnPos( String key );
 	
 	// Method to get (BSON) data type for key at the specified column position in table based schema

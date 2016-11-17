@@ -139,6 +139,36 @@ public class SchemaTable implements Schema {
 		throw new SchemaException( "SchemaTable.ExtendI: unsupported" );	
 	}
 	
+	// Method for updating the data types of an existing schema, where data type is represented as a string
+	@Setter
+	public void Type( ArrayList<String> types ) 
+		throws SchemaException
+	{
+		if ( null == types )
+			throw new SchemaException( "SchemaTable.Type: types is null" );
+		
+		int len = types.size();
+		
+		if ( len != nCols )
+			throw new SchemaException( "SchemaTable.Type: number of types is incorrect: " + len + " <> " + nCols );
+		
+		// Check if first column is skip column in Linked CSV format
+		int i;	
+		if ( types.get( 0 ).equals( "type") && keys.get( 0 ).getKey().equals( "#" ) )
+			i = 1;
+		else
+			i = 0;
+		
+		for ( /**/; i < len; i++ ) {
+			int type = BSONType.Find( types.get( i ) );
+			if ( 0 == type )
+				throw new SchemaException( "SchemaTable.Type: unrecognized data type: " + types.get( i ) );
+			
+			// Update the data type for this key/type pair
+			keys.set( i, new Pair<String,Integer>( keys.get( i ).getKey(), type ) );
+		}
+	}
+	
 	// Method to check if specified key is in schema
 	public boolean IsDefined( String key ) {
 		if ( null == keys ) 

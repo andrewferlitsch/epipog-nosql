@@ -10,6 +10,7 @@ public class _Test5 {
 		Test_Set(); 
 		Test_SetI(); 
 		Test_StaticMethod();
+		Test_Type();
 
 		System.exit( rc );
 	}
@@ -323,6 +324,47 @@ public class _Test5 {
 		try {
 			Schema.SchemaFromString( "field:string,field:integer" );
 			Passed( "" );
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+	}
+	
+	public static void Test_Type() {
+		Title( "SchemaTable: Types() types is null" );
+		Schema s = new SchemaTable();
+		ArrayList<String> keys = new ArrayList<String>();
+		keys.add( "field1" );
+		keys.add( "field2" );
+		try
+		{
+			s.Set( keys ); Passed( "" );
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		try {
+			s.Type( null ); Failed( "no exception" );
+		}
+		catch ( SchemaException e ) { Passed(""); }
+		
+		Title( "SchemaTable: Types() mismatch length" );
+		ArrayList<String> types = new ArrayList<String>();
+		types.add("string");
+		try {
+			s.Type( types ); Failed( "no exception" );
+		}
+		catch ( SchemaException e ) { Passed(""); }
+		
+		Title( "SchemaTable: Types() unrecognized data types" );
+		types.add( "foobar" );
+		try {
+			s.Type( types ); Failed( "no exception" );
+		}
+		catch ( SchemaException e ) { Passed(""); }
+		
+		Title( "SchemaTable: Types() valid" );
+		types = new ArrayList<String>();
+		types.add("integer");
+		types.add("double");
+		try {
+			s.Type( types ); Passed("");
 		}
 		catch ( SchemaException e ) { Failed( e.getMessage() ); }
 	}
