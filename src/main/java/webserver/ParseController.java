@@ -1,6 +1,10 @@
+/*
+ * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
+ */
 package epipog.webserver;
 
 import epipog.parse.*;
+import epipog.collection.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -35,6 +39,8 @@ public class ParseController {
 			case "json"			: p = new JSONParse( arg ); 	break;
 			default				: return new Response( id, 500, "Unknown Type");
 			}
+			
+			return new Response( id, 200, "" );
 		}
 		
 		if ( null == p ) return new Response( id, 500, "Parse is Null");
@@ -65,9 +71,9 @@ public class ParseController {
 								  default		: return new Response( id, 500, "invalid arg: noop, echo");
 								  }
 								  break;
-			case "NEjected"		: result = String.valueOf( p.NEjected() ); 
+			case "nejected"		: result = String.valueOf( p.NEjected() ); 
 								  break;
-			case "NImported"	: result = String.valueOf( p.NImported() ); 
+			case "nimported"	: result = String.valueOf( p.NImported() ); 
 								  break;
 			case "open"			: p.Open();
 								  break;
@@ -77,7 +83,7 @@ public class ParseController {
 								  break;
 			case "eject"		: /* todo */
 								  break;
-			case "collection"	: /* todo */
+			case "collection"	: p.Collection( new Collection( arg ) );
 								  break;
 			default: return new Response( id, "Unknown Method");
 			}

@@ -1,3 +1,6 @@
+/*
+ * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
+ */
 package epipog.webserver;
 
 import epipog.data.*;
