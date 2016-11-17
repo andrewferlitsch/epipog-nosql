@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 // Abstract Layer for Accessing DataStore
 //
-public class abstract DataStore { 
+public interface DataStore { 
 
 	
 	// Method for inserting into datastore with key (field) name
