@@ -23,6 +23,12 @@ public abstract class DataStore {
 		this.collection = collection;
 	}
 	
+	// Method to set storage type for this instance of a data store
+	@Setter
+	public void Storage( Storage storage ) {
+		this.storage = storage;
+	}
+	
 	// Open the storage 
 	public void Open()
 		throws StorageException
@@ -30,10 +36,6 @@ public abstract class DataStore {
 		if ( null != storage ) {
 			// open the data store
 			storage.Open();
-		
-			// TODO
-			
-			
 		}
 	}
 	
@@ -44,8 +46,6 @@ public abstract class DataStore {
 		if ( null != storage ) {
 			// close the data store
 			storage.Close();
-			
-			// TODO
 		}
 	}
 	
@@ -91,15 +91,169 @@ public abstract class DataStore {
 		return false;
 	}
 	
+	// Write a padded string to storage
+	public void Write( String value, int length )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value, length );
+	}
+	
+	// Write a string 
+	public void Write( String value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
+	// Write a byte 
+	public void Write( byte value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
+	// Write a short to storage
+	public void Write( short value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
+	// Write an integer to storage
+	public void Write( int value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
+	// Write a long to storage
+	public void Write( long value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
+	// Write a float to storage
+	public void Write( float value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
+	// Write a double to storage
+	public void Write( double value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
+	// Write a boolean to storage
+	public void Write( boolean value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
+	// Read string from storage
+	public String Read( int length )
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.Read( length );
+		return null;
+	}
+	
+	// Read byte from storage
+	public byte ReadByte()
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadByte();
+		return -1;
+	}
+	
+	// Read short from storage
+	public Short ReadShort()
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadShort();
+		return -1;
+	}
+	
+	// Read integer from storage
+	public Integer ReadInt()
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadInt();
+		return -1;
+	}
+	
+	// Read long from storage
+	public Long ReadLong()
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadLong();
+		return -1L;
+	}
+	
+	// Read float from storage
+	public float ReadFloat()
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadFloat();
+		return -1;
+	}
+	
+	// Read double from storage
+	public double ReadDouble()
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadDouble();
+		return -1;
+	}
+	
+	// Read boolean from storage
+	public boolean ReadBoolean()
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadBoolean();
+		return false;
+	}
+	
+	// Read a line from storage
+	public String ReadLine() 
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadLine();
+		return null;
+	}
+	
+	
 	// Method for inserting into datastore with key (field) name
 	// keyvals:
 	//	L = Name of Key
 	//	R = Value in String Representation
-	public abstract void Insert( ArrayList<Pair<String,String>> keyVals ) throws DataStoreException;
+	public abstract void Insert( ArrayList<Pair<String,String>> keyVals ) throws DataStoreException, StorageException;
 	
 	// Method for inserting into datastore by predefined column order
 	// values: Value in String Representation
-	public abstract void InsertC( ArrayList<String> values ) throws DataStoreException;
+	public abstract void InsertC( ArrayList<String> values ) throws DataStoreException, StorageException;
 }
 
 

@@ -6,6 +6,7 @@ package epipog.collection;
 import epipog.schema.*;
 import epipog.index.Index;
 import epipog.datastore.*;
+import epipog.storage.*;
 import epipog.annotations.*;
 
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class Collection {
 		try {
 			store.InsertC( values );
 		}
-		catch ( DataStoreException e ) { throw new CollectionException(""); }
-		
+		catch ( DataStoreException e ) { throw new CollectionException( e.getMessage() ); }
+		catch ( StorageException e   ) { throw new CollectionException( e.getMessage() ); }
 	}
 }

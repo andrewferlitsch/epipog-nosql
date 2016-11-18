@@ -5,6 +5,7 @@ package epipog.datastore;
 
 import epipog.annotations.*;
 import epipog.collection.Collection;
+import epipog.storage.*;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class DataStoreJSON extends DataStore {
 	//	L = Name of Key
 	//	R = Value in String Representation
 	public void Insert( ArrayList<Pair<String,String>> keyVals ) 
-		throws DataStoreException
+		throws DataStoreException, StorageException
 	{
 			
 	}
@@ -26,7 +27,7 @@ public class DataStoreJSON extends DataStore {
 	// Method for inserting into datastore by predefined column order
 	// values: Value in String Representation
 	public void InsertC( ArrayList<String> values ) 
-		throws DataStoreException
+		throws DataStoreException, StorageException
 	{
 		
 	}

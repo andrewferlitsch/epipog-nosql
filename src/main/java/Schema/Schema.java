@@ -8,7 +8,7 @@ import epipog.annotations.*;
 import javafx.util.Pair;
 import java.util.ArrayList;
 
-// Interface for Schemas
+// Abstract Layer for Schemas
 //
 public interface Schema {
 	
@@ -107,6 +107,29 @@ public interface Schema {
 			return false;
 		} 
 	}
+	
+	// Integer constant equivalents of BSON types
+	public static final int BSONDouble 		= 1;
+	public static final int BSONString 		= 2;
+	public static final int BSONObject 		= 3;
+	public static final int BSONArray  		= 4;
+	public static final int BSONBinData 	= 5;
+	public static final int BSONUndefined 	= 6;
+	public static final int BSONObjectID	= 7;
+	public static final int BSONBoolean		= 8;
+	public static final int BSONDate		= 9;
+	public static final int BSONNull		= 10;
+	public static final int BSONRegex		= 11;
+	public static final int BSONJavaScript	= 13;
+	public static final int BSONInteger		= 16;
+	public static final int BSONTimeStamp	= 17;
+	public static final int BSONLong		= 18;
+	public static final int BSONFloat		= 51;
+	public static final int BSONDecimal		= 52;
+	public static final int BSONShort		= 53;
+	public static final int BSONTime		= 54;
+	public static final int BSONUrl			= 55;
+	public static final int BSONChar		= 56;
 	
 	// (static) Method to convert Schema in string representation to internal representation
 	//	key:type,key:type,....
