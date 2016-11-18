@@ -18,7 +18,7 @@ public abstract class DataStore {
 	private 	Storage    		storage    = null;					// data storage
 	protected	Collection 		collection = null;					// assigned collection
 	protected	Data.DataModel  dataModel  = Data.DataModel.DATA;	// data model to use
-	
+
 	// Method to set collection assigned to this instance of a data store
 	@Setter
 	public void Collection( Collection collection ) {

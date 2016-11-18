@@ -153,6 +153,19 @@ public class _Test8 {
 		}
 		catch ( StorageException e ) { Failed( e.getMessage() ); }
 
+		Title( "StorageSingleFile: Write/Read Char" );
+		try {
+			s.Open(); 
+			s.Begin();
+			Character c = 'a';
+			s.Write( c );
+			if ( s.Pos() == 2 ) Passed(""); else Failed("POS = " + s.Pos() );
+			s.Begin();
+			Character ret = s.ReadChar();
+			if ( ret == 'a' ) Passed(""); else Failed( String.valueOf( ret ) );
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+
 		Title( "StorageSingleFile: Write/Read Short" );
 		try {
 			s.Open(); 

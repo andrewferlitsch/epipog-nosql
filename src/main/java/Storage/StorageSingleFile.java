@@ -168,6 +168,19 @@ public class StorageSingleFile implements Storage {
 		}
 	}
 	
+	// Implementation for writing a Character to storage
+	public void Write( Character value ) 
+		throws StorageException
+	{
+		try {
+			fd.writeChar( value );	
+		}
+		catch ( IOException e )
+		{
+			throw new StorageException( "StorageSingleFile.Write: Cannot write to storage file" );
+		}
+	}
+	
 	// Implementation for writing a byte to storage
 	public void Write( byte value ) 
 		throws StorageException
@@ -286,6 +299,18 @@ public class StorageSingleFile implements Storage {
 		}
 	}
 	
+	// Implementation for reading a Character from storage
+	public Character ReadChar() 
+		throws StorageException	
+	{
+		try {
+			return fd.readChar();
+		}
+		catch ( IOException e ) {
+			throw new StorageException( "StorageSingleFile.Read: Cannot read from storage file" );
+		}
+	}	
+	
 	// Implementation for reading a byte from storage
 	public byte ReadByte() 
 		throws StorageException	
@@ -297,6 +322,7 @@ public class StorageSingleFile implements Storage {
 			throw new StorageException( "StorageSingleFile.Read: Cannot read from storage file" );
 		}
 	}	
+	
 	// Implementation to Read a short from storage
 	public Short ReadShort() 
 		throws StorageException	

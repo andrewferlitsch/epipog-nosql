@@ -45,6 +45,9 @@ public interface Storage {
 	// Method to write a string to the storage
 	public abstract void Write( String value ) throws StorageException;
 	
+	// Method to write a Character to the storage
+	public abstract void Write( Character value ) throws StorageException;
+	
 	// Method to write a byte to the storage
 	public abstract void Write( byte value ) throws StorageException;
 
@@ -71,6 +74,9 @@ public interface Storage {
 	
 	// Method to Read a String from storage
 	public abstract String Read( int length ) throws StorageException;
+	
+	// Method to Read a Character from storage
+	public abstract Character ReadChar() throws StorageException;
 	
 	// Method to Read a byte from storage
 	public abstract byte ReadByte() throws StorageException;

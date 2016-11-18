@@ -51,6 +51,9 @@ public class StorageMultiFile implements Storage {
 	
 	// Implementation to write a byte to the storage
 	public void Write( byte value ) throws StorageException { throw new StorageException("unsupported"); }
+	
+	// Implementation to write a Character to the storage
+	public void Write( Character value ) throws StorageException { throw new StorageException("unsupported"); }
 
 	// Implementation to write a short to the storage
 	public void Write( Short value ) throws StorageException { throw new StorageException("unsupported"); }
@@ -78,6 +81,9 @@ public class StorageMultiFile implements Storage {
 	
 	// Implementation to Read a byte from storage
 	public byte ReadByte() throws StorageException { throw new StorageException("unsupported"); }
+	
+	// Implementation to Read a Character from storage
+	public Character ReadChar() throws StorageException { throw new StorageException("unsupported"); }
 	
 	// Implementation to Read a short from storage
 	public Short ReadShort() throws StorageException { throw new StorageException("unsupported"); }
