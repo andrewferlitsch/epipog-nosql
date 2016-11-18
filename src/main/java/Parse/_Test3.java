@@ -1,6 +1,7 @@
 import epipog.parse.*;
-import epipog.collection.Collection;
+import epipog.collection.*;
 import epipog.schema.*;
+import epipog.datastore.*;
 
 import java.util.ArrayList;
 
@@ -805,7 +806,10 @@ public class _Test3 {
 		
 		Title( "SVParse: linked CSV" );
 		p = new CSVParse( "tests\\3aa.txt" );
-		p.Collection( new Collection( "foobar" ) );
+		c = new Collection( "foobar" );
+		DataStoreBinary d = new DataStoreBinary();
+		c.Store( d );
+		p.Collection( c );
 		p.LinkedCSV( true );
 		try { 
 			p.Reader( Reader.ReaderType.READERMEM );

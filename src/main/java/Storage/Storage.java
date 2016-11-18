@@ -3,12 +3,20 @@
  */
 package epipog.storage;
 
+import epipog.annotations.*;
+
 import javafx.util.Pair;
 import java.util.ArrayList;
 
 // Abstract Layer for Data Storage
 //
 public interface Storage { 
+
+	// Method to set location for physically storing the data store
+	//	volume : storage location (e.g., directory path)
+	//	path   : pathname of file relative to volume
+	@Setter
+	public void Storage( String volume, String path );
 
 	// Method for opening (connecting) to storage
 	public abstract void Open() throws StorageException;

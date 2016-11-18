@@ -3,10 +3,25 @@
  */
 package epipog.storage;
 
+import epipog.annotations.*;
+
 // Implementation Layer for Data Storage as a Single File
 //
 public class StorageMultiFile implements Storage { 
 
+	// Method to set location for physically storing the data store
+	//	volume : storage location (e.g., directory path)
+	//	dirpath: directory path relative to volume
+	@Setter
+	public void Storage( String volume, String dirpath ) 
+	{
+		this.volume  = volume;
+		this.dirpath = dirpath;
+	}
+		
+	private String volume  = null;	// storage location
+	private String dirpath = null;	// directory path relative to storage location
+	
 	// Implementation for opening (connecting) to storage
 	public void Open() throws StorageException { throw new StorageException("unsupported"); }
 	
