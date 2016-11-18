@@ -77,7 +77,12 @@ public interface Schema {
 		SHORT		("short",  		(byte)53),
 		TIME 		("time",  		(byte)54),
 		URL			("url",  		(byte)55),
-		CHAR		("char",  		(byte)56);
+		CHAR		("char",  		(byte)56),
+		STRING16	("string16",  	(byte)57),
+		STRING32	("string32",  	(byte)58),
+		STRING64	("string64",  	(byte)59),
+		STRING128	("string128",  	(byte)60),
+		STRING256	("string256",  	(byte)61);
 		
 		private String type;	// string representation of type
 		private byte   val;		// integer representation of type
@@ -102,7 +107,7 @@ public interface Schema {
 
 		// Check if type id is valid
 		public static boolean Valid( int bson ) {
-			if ( ( bson >= 1 && bson < 12 ) || bson == 13 || ( bson >= 16 && bson <= 18 ) || ( bson >= 51 && bson <= 56 ) )
+			if ( ( bson >= 1 && bson < 12 ) || bson == 13 || ( bson >= 16 && bson <= 18 ) || ( bson >= 51 && bson <= 61 ) )
 				return true;
 			return false;
 		} 
@@ -130,7 +135,11 @@ public interface Schema {
 	public static final int BSONTime		= 54;
 	public static final int BSONUrl			= 55;
 	public static final int BSONChar		= 56;
-	public static final int BSONStringFixed	= 57;
+	public static final int BSONString16	= 57;
+	public static final int BSONString32	= 58;
+	public static final int BSONString64	= 59;
+	public static final int BSONString128	= 60;
+	public static final int BSONString256	= 61;
 	
 	// (static) Method to convert Schema in string representation to internal representation
 	//	key:type,key:type,....

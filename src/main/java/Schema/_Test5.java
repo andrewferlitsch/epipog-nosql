@@ -128,9 +128,9 @@ public class _Test5 {
 		}
 		catch ( SchemaException e ) { Passed( "" );}
 		
-		Title( "SchemaTable: SetI type is invalid: 57" );
+		Title( "SchemaTable: SetI type is invalid: 62" );
 		keys = new ArrayList<Pair<String,Integer>>();
-		keys.add( new Pair<String,Integer>( "field1", 57 ) );
+		keys.add( new Pair<String,Integer>( "field1", 62 ) );
 		try
 		{
 			s.SetI( keys ); Failed( "no exception" );
@@ -214,6 +214,29 @@ public class _Test5 {
 		keys.add( new Pair<String,Integer>( "field1", 11 ) );
 		keys.add( new Pair<String,Integer>( "field2", 13 ) );
 		keys.add( new Pair<String,Integer>( "field3", 55 ) );
+		try
+		{
+			s.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage());}
+		
+		Title( "SchemaTable: SetI valid: string16,string32,string64" );
+		s = new SchemaTable(  );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", 57 ) );
+		keys.add( new Pair<String,Integer>( "field2", 58 ) );
+		keys.add( new Pair<String,Integer>( "field3", 59 ) );
+		try
+		{
+			s.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage());}
+		
+		Title( "SchemaTable: SetI valid: string128,string256" );
+		s = new SchemaTable(  );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", 60 ) );
+		keys.add( new Pair<String,Integer>( "field2", 61 ) );
 		try
 		{
 			s.SetI( keys ); Passed("");
