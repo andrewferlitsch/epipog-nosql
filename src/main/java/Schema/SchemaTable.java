@@ -16,6 +16,7 @@ public class SchemaTable implements Schema {
 	protected ArrayList<Pair<String,Integer>> keys;			  // columns/types in table
 	protected int 							  nCols = 0;	  // number of columns (Keys) in table
 	protected ArrayList<String>				  columns = null; // column names only
+	protected int							  stringType = 2; // default string length (vs variable length strings)
 	
 	// Getter to return the number of columns (keys) in table-based schema
 	@Getter
@@ -70,7 +71,7 @@ public class SchemaTable implements Schema {
 			}
 
 			// Add the key/type pair to the Schema
-			this.keys.add( new Pair<String, Integer>( key, BSONType.STRING.GetVal() ) );
+			this.keys.add( new Pair<String, Integer>( key, stringType ) );
 		}
 		
 		// save the total number of columns (keys) in table
@@ -209,5 +210,20 @@ public class SchemaTable implements Schema {
 	@Getter
 	public Integer GetType( Integer pos ) {
 		return keys.get( pos ).getValue();
+	}
+	
+	// Method to set a default string length (vs. variable string length)
+	@Setter
+	public void FixedString( int length )
+		throws SchemaException
+	{
+		switch ( length ) {
+		case 16 : stringType = BSONString16;  break;
+		case 32 : stringType = BSONString32;  break;
+		case 64 : stringType = BSONString64;  break;
+		case 128: stringType = BSONString128; break;
+		case 256: stringType = BSONString256; break;
+		default : throw new SchemaException( "SchemaTable.FixedString: not a valid size: " + length );
+		}
 	}
 }

@@ -44,6 +44,7 @@ public class _Test7 {
 		Title( "Collection: Insert, empty schema, empty values" );
 		Collection c = new Collection( "foobar" );
 		Schema s = new SchemaTable();
+		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
 		c.Schema( s );
 		DataStore d = new DataStoreBinary();
 		c.Store( d );
@@ -86,6 +87,7 @@ public class _Test7 {
 		
 		Title( "Collection: Insert, no data store" );
 		s = new SchemaTable();
+		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
 		c.Schema( s );
 		try {
 			c.Insert( v ); Failed("no exception");
@@ -149,6 +151,7 @@ public class _Test7 {
 		Title( "Collection: Preset Schema using Set" );
 		c = new Collection( "foobar" );
 		Schema s = new SchemaTable();
+		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
 		ArrayList<String> keys = new ArrayList<String>();
 		keys.add( "field1"); keys.add("field2");
 		try {
@@ -171,9 +174,10 @@ public class _Test7 {
 		Title( "Collection: Preset Schema using SetI" );
 		c = new Collection( "foobar" );
 		s = new SchemaDynamic();
+		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
 		ArrayList<Pair<String,Integer>> ikeys = new ArrayList<Pair<String,Integer>>();
-		ikeys.add( new Pair<String,Integer>( "field1", 2 ) );
-		ikeys.add( new Pair<String,Integer>( "field2", 2 ) );
+		ikeys.add( new Pair<String,Integer>( "field1", 58 ) );
+		ikeys.add( new Pair<String,Integer>( "field2", 58 ) );
 		try {
 			s.SetI( ikeys ); Passed("");
 		}
@@ -212,7 +216,7 @@ public class _Test7 {
 		
 		Title( "Collection: Preset Schema using ExtendI" );
 		ikeys = new ArrayList<Pair<String,Integer>>();
-		ikeys.add( new Pair<String,Integer>( "field4", 2 ) );
+		ikeys.add( new Pair<String,Integer>( "field4", 58 ) );
 		try {
 			s.ExtendI( ikeys ); Passed("");
 		}

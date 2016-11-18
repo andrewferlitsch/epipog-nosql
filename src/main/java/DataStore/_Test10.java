@@ -70,10 +70,11 @@ public class _Test10 {
 		catch ( StorageException e ) { Passed(""); }
 		
 		Title( "DataStoreBinary: InsertC: schema equals value" );
-		ArrayList<String> keys = new ArrayList<String>();
-		keys.add( "field1" ); keys.add( "field2" );
+		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", 58 ) ); 
+		keys.add( new Pair<String,Integer>( "field2", 58 ) );
 		try {
-			sc.Set( keys ); Passed("");
+			sc.SetI( keys ); Passed("");
 		}
 		catch ( SchemaException e ) { Failed( e.getMessage() ); }
 		values.add( "hoo" );

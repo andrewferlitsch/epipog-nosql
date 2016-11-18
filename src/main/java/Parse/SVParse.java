@@ -177,6 +177,7 @@ public abstract class SVParse extends Parse {
 				// Set the header column names as the table based schema
 				SchemaTable schema = new SchemaTable();
 				try {
+					schema.FixedString( 32 );	// default to 32 byte strings
 					schema.Set( keys );
 				}
 				catch ( SchemaException e ) { throw new ParseException( e.getMessage() ); }

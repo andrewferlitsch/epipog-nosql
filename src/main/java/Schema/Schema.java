@@ -54,6 +54,10 @@ public interface Schema {
 	@Getter
 	public ArrayList<String> Columns();
 	
+	// Method to set a default string length (vs. variable string length)
+	@Setter
+	public void FixedString( int length ) throws SchemaException;
+	
 	// Definitions for BSON data types
 	public enum BSONType {
 		DOUBLE	 	("double", 		(byte)1),

@@ -51,7 +51,7 @@ public class DataStoreBinary extends DataStore {
 				if ( Data.DataModel.DATA == dataModel ) {
 					Data d;
 					switch ( type ) {
-					case Schema.BSONString	  : d = new DataString();  		  d.Parse( values.get( i ) ); /* TODO */ break;
+					case Schema.BSONString	  : d = new DataString();  		  d.Parse( values.get( i ) ); throw new DataStoreException( "not yet supported" ); 
 					case Schema.BSONString16  : d = new DataStringFixed(16);  d.Parse( values.get( i ) ); Write( ( String )  d.Get(), 16 );  break;
 					case Schema.BSONString32  : d = new DataStringFixed(32);  d.Parse( values.get( i ) ); Write( ( String )  d.Get(), 32 );  break;
 					case Schema.BSONString64  : d = new DataStringFixed(64);  d.Parse( values.get( i ) ); Write( ( String )  d.Get(), 64 );  break;
@@ -71,7 +71,7 @@ public class DataStoreBinary extends DataStore {
 				else if ( Data.DataModel.DATASTATE == dataModel ) {
 					DataState d;
 					switch ( type ) {
-					case Schema.BSONString	  : d = new DataStateString();  	   d.Parse( values.get( i ) );/* TODO */ break;
+					case Schema.BSONString	  : d = new DataStateString();  	   d.Parse( values.get( i ) ); throw new DataStoreException( "not yet supported" );
 					case Schema.BSONString16  : d = new DataStateStringFixed(16);  d.Parse( values.get( i ) ); Write( ( String )  d.Get(), 16 );  break;
 					case Schema.BSONString32  : d = new DataStateStringFixed(32);  d.Parse( values.get( i ) ); Write( ( String )  d.Get(), 32 );  break;
 					case Schema.BSONString64  : d = new DataStateStringFixed(64);  d.Parse( values.get( i ) ); Write( ( String )  d.Get(), 64 );  break;

@@ -59,7 +59,7 @@ public class SchemaDynamic extends SchemaTable {
 			}
 			
 			// Extend the key/type pair to the Schema
-			this.keys.add( new Pair<String,Integer>( key, BSONType.STRING.GetVal() ) );
+			this.keys.add( new Pair<String,Integer>( key, stringType ) );
 		}
 		
 		// save the total number of columns (keys) in table
