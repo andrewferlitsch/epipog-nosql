@@ -55,4 +55,11 @@ public abstract class Data {
 		}
 		return false;
 	}
+	
+	// enum flags for types of Data Models
+	public enum DataModel {
+		DATA,
+		DATASTATE,
+		DATEMETA
+	}
 }

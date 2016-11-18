@@ -130,6 +130,7 @@ public interface Schema {
 	public static final int BSONTime		= 54;
 	public static final int BSONUrl			= 55;
 	public static final int BSONChar		= 56;
+	public static final int BSONStringFixed	= 57;
 	
 	// (static) Method to convert Schema in string representation to internal representation
 	//	key:type,key:type,....

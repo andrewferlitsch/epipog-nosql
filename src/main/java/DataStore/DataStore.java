@@ -5,6 +5,7 @@ package epipog.datastore;
 
 import epipog.annotations.*;
 import epipog.storage.*;
+import epipog.data.*;
 import epipog.collection.Collection;
 
 import javafx.util.Pair;
@@ -14,8 +15,9 @@ import java.util.ArrayList;
 //
 public abstract class DataStore { 
 
-	private 	Storage    storage    = null;		// data storage
-	protected	Collection collection = null;		// assigned collection
+	private 	Storage    		storage    = null;					// data storage
+	protected	Collection 		collection = null;					// assigned collection
+	protected	Data.DataModel  dataModel  = Data.DataModel.DATA;	// data model to use
 	
 	// Method to set collection assigned to this instance of a data store
 	@Setter
@@ -27,6 +29,12 @@ public abstract class DataStore {
 	@Setter
 	public void Storage( Storage storage ) {
 		this.storage = storage;
+	}
+	
+	// Method to set the data model to use for validating input
+	@Setter
+	public void DataModel ( Data.DataModel dataModel ) {
+		this.dataModel = dataModel;
 	}
 	
 	// Open the storage 
