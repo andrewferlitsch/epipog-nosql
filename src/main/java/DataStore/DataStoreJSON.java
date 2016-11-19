@@ -29,7 +29,39 @@ public class DataStoreJSON extends DataStore {
 	public void InsertC( ArrayList<String> values ) 
 		throws DataStoreException, StorageException
 	{
+		if ( null == values )
+			return;
 		
+		int vlen = values.size();
+		if ( collection.Schema().NCols() != vlen )
+			throw new DataStoreException( "DataStoreJUSON.InsertC: incorrect number of values" );
+
+		// Seek to the end of the Storage
+		End();
+		
+		ArrayList<String> columns = collection.Schema().Columns();
+		
+		// Write each key value to storage
+		Write( (byte) '{' );
+		for ( int i = 0; i < vlen; i++ ) {
+			String value = values.get( i );
+			
+			// Write Key
+			String key = columns.get( i );
+			Write( (byte) '"' );
+			Write( key );
+			Write( (byte) '"' );
+			Write( (byte) ':' );
+			
+			// Write Value
+			Write( (byte) '"' );
+			Write( value );
+			Write( (byte) '"' );
+			Write( (byte) ',' );
+		}
+		
+		Move( Pos() - 1 );	// remove trailing comma
+		Write( "}\r\n" );
 	}
 }
 

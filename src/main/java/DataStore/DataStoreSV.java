@@ -18,7 +18,7 @@ public abstract class DataStoreSV extends DataStore {
 	
 	@Constructor
 	public DataStoreSV( byte separator ) {
-		this.separator = this.separator;
+		this.separator = separator;
 	}
 		
 	private	byte	separator;			// field separator
@@ -132,7 +132,7 @@ public abstract class DataStoreSV extends DataStore {
 				Write( "\"" + value + "\"" );
 			else
 				Write( value );
-			
+		
 			Write( (byte) separator );
 		}
 		
