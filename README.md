@@ -6,7 +6,9 @@ researchers/students as well as those looking to deploy a NoSQL database for com
 # This Release
 
 This release is a demonstration of the second phase of creating IP (1st stage), turning IP into Technology (2nd stage), and
-Technology into Product.
+Technology into Product (3rd stage).
+
+[Process Methodology](https://github.com/andrewferlitsch/epipog/blob/master/sprints/Methodology.pptx)
 
 # Build
 
@@ -27,7 +29,7 @@ To build on a PC without Gradle pre-installed, use the Gradle wrapper.
 	
 ## Local Build
 
-Each package can be built separately, and it's unit tests ran, without a build management system, by
+Each package can be built separately, and it's automated unit tests ran, without a build management system, by
 executing the build script in each package source directory. The build script will compile all sources in
 the package, run the unit tests (_Test<N>), display any failures and report the total number of tests ran.
 
@@ -39,6 +41,8 @@ the package, run the unit tests (_Test<N>), display any failures and report the 
 This project has a builtin web server interface using Spring.io RESTful web service. If you are not
 familiar with spring.io or using it to build a RESTful web service, a very good tutorial can be found
 at: http://spring.io/guides/gs/rest-service/ .
+
+The endpoints on the service act as a micro-service, where the action has persistence across micro-service invocations.
 
 ## Starting the web server
 
