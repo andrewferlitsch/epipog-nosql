@@ -45,7 +45,6 @@ public class DataStoreBinary extends DataStore {
 		
 		for ( int i = 0; i < vlen; i++ ) {
 			Integer type = collection.Schema().GetType( i );	
-//System.out.println( "INSERT: type = " + type + " , value = " + values.get( i ) );
 			
 			try {
 				if ( Data.DataModel.DATA == dataModel ) {
@@ -77,15 +76,42 @@ public class DataStoreBinary extends DataStore {
 					case Schema.BSONString64  : d = new DataStateStringFixed(64);  d.Parse( values.get( i ) ); Write( ( String )  	d.Get(), 64 );  break;
 					case Schema.BSONString128 : d = new DataStateStringFixed(128); d.Parse( values.get( i ) ); Write( ( String )  	d.Get(), 128 ); break;
 					case Schema.BSONString256 : d = new DataStateStringFixed(256); d.Parse( values.get( i ) ); Write( ( String )  	d.Get(), 256 ); break;
-					case Schema.BSONShort 	  : d = new DataStateShort();   	   d.Parse( values.get( i ) ); Write( ( Short )   	d.Get() ); break;
-					case Schema.BSONInteger	  : d = new DataStateInteger(); 	   d.Parse( values.get( i ) ); Write( ( Integer ) 	d.Get() ); break;
-					case Schema.BSONLong	  : d = new DataStateLong();    	   d.Parse( values.get( i ) ); Write( ( Long )    	d.Get() ); break;
-					case Schema.BSONFloat	  : d = new DataStateFloat();   	   d.Parse( values.get( i ) ); Write( ( Float )   	d.Get() ); break;
-					case Schema.BSONDouble	  : d = new DataStateDouble(); 	 	   d.Parse( values.get( i ) ); Write( ( Double )  	d.Get() ); break;
-					case Schema.BSONBoolean	  : d = new DataStateBoolean(); 	   d.Parse( values.get( i ) ); Write( ( Boolean ) 	d.Get() ); break;
-					case Schema.BSONChar	  : d = new DataStateChar();    	   d.Parse( values.get( i ) ); Write( ( Character ) d.Get() ); break;
-					case Schema.BSONDate	  : d = new DataStateDate();    	   d.Parse( values.get( i ) ); Write( ( Long )    	d.Get() ); break;
-					case Schema.BSONTime	  : d = new DataStateTime();    	   d.Parse( values.get( i ) ); Write( ( Long )    	d.Get() ); break;
+					case Schema.BSONShort 	  : d = new DataStateShort();   	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Short: " + values.get( i ) );
+																											   else 
+																												Write( ( Short )   	d.Get() ); break;
+					case Schema.BSONInteger	  : d = new DataStateInteger(); 	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Integer: " + values.get( i ) );
+																											   else
+																												Write( ( Integer ) 	d.Get() ); break;
+					case Schema.BSONLong	  : d = new DataStateLong();    	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Long: " + values.get( i ) );
+																											   else
+																												Write( ( Long )    	d.Get() ); break;
+					case Schema.BSONFloat	  : d = new DataStateFloat();   	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Float: " + values.get( i ) );
+																											   else
+																												Write( ( Float )   	d.Get() ); break;
+					case Schema.BSONDouble	  : d = new DataStateDouble(); 	 	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Double: " + values.get( i ) );
+																											   else
+																												Write( ( Double )  	d.Get() ); break;
+					case Schema.BSONBoolean	  : d = new DataStateBoolean(); 	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Boolean: " + values.get( i ) );
+																											   else
+																												Write( ( Boolean ) 	d.Get() ); break;
+					case Schema.BSONChar	  : d = new DataStateChar();    	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Char: " + values.get( i ) );
+																											   else
+																												Write( ( Character ) d.Get() ); break;
+					case Schema.BSONDate	  : d = new DataStateDate();    	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Date: " + values.get( i ) );
+																											   else
+																												Write( ( Long )    	d.Get() ); break;
+					case Schema.BSONTime	  : d = new DataStateTime();    	   d.Parse( values.get( i ) ); if ( d.IsNotValid() ) 
+																												throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Time: " + values.get( i ) );
+																											   else
+																												Write( ( Long )    	d.Get() ); break;
 					}
 				}
 			}

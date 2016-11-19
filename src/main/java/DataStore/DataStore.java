@@ -18,6 +18,7 @@ public abstract class DataStore {
 	private 	Storage    		storage    = null;					// data storage
 	protected	Collection 		collection = null;					// assigned collection
 	protected	Data.DataModel  dataModel  = Data.DataModel.DATA;	// data model to use
+	protected 	boolean 		validate = false;					// validate the input according to the data type
 
 	// Method to set collection assigned to this instance of a data store
 	@Setter
@@ -35,6 +36,12 @@ public abstract class DataStore {
 	@Setter
 	public void DataModel ( Data.DataModel dataModel ) {
 		this.dataModel = dataModel;
+	}
+	
+	// Method to set validating input against its data type
+	@Setter
+	public void Validate( boolean validate ) {
+		this.validate = validate;
 	}
 	
 	// Open the storage 

@@ -78,7 +78,8 @@ public class DataStateShort extends DataState {
 			}
 		}
 		catch ( NumberFormatException e ) {
-			NotValid(); value = 0;
+			Short tmp = 0;	// compiler workaround
+			NotValid(); value = tmp;
 		}
 		Validated();
 	}
