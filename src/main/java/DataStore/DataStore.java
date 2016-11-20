@@ -6,6 +6,7 @@ package epipog.datastore;
 import epipog.annotations.*;
 import epipog.storage.*;
 import epipog.data.*;
+import epipog.schema.*;
 import epipog.collection.Collection;
 
 import javafx.util.Pair;
@@ -259,6 +260,75 @@ public abstract class DataStore {
 		return null;
 	}
 	
+	// Method to verify string representation of data according to data type
+	protected String DataCheck( Data.DataModel dataModel, Integer type, String value ) 
+		throws DataStoreException
+	{
+		try {
+			if ( Data.DataModel.DATA == dataModel ) {
+				Data d;
+						switch ( type ) {
+						case Schema.BSONString	  : d = new DataString();  		  d.Parse( value ); break;
+						case Schema.BSONString16  : d = new DataStringFixed(16);  d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONString32  : d = new DataStringFixed(32);  d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONString64  : d = new DataStringFixed(64);  d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONString128 : d = new DataStringFixed(128); d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONString256 : d = new DataStringFixed(256); d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONShort 	  : d = new DataShort();   		  d.Parse( value ); break;
+						case Schema.BSONInteger	  : d = new DataInteger(); 		  d.Parse( value ); break;
+						case Schema.BSONLong	  : d = new DataLong();    		  d.Parse( value ); break;
+						case Schema.BSONFloat	  : d = new DataFloat();   		  d.Parse( value ); break;
+						case Schema.BSONDouble	  : d = new DataDouble();  		  d.Parse( value ); break;
+						case Schema.BSONBoolean	  : d = new DataBoolean(); 		  d.Parse( value ); break;
+						case Schema.BSONChar	  : d = new DataChar();    		  d.Parse( value ); break;
+						case Schema.BSONDate	  : d = new DataDate();    		  d.Parse( value ); break;
+						case Schema.BSONTime	  : d = new DataTime();    		  d.Parse( value ); break;
+						}
+			}
+			else if ( Data.DataModel.DATASTATE == dataModel ) {
+				DataState d;
+						switch ( type ) {
+						case Schema.BSONString	  : d = new DataStateString();  	   	d.Parse( value ); break;
+						case Schema.BSONString16  : d = new DataStateStringFixed(16);  	d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONString32  : d = new DataStateStringFixed(32);  	d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONString64  : d = new DataStateStringFixed(64);  	d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONString128 : d = new DataStateStringFixed(128); 	d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONString256 : d = new DataStateStringFixed(256); 	d.Parse( value ); value = StringNoNull( value ); break;
+						case Schema.BSONShort 	  : d = new DataStateShort();     	  	d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Short: " + value );
+																										  break;
+						case Schema.BSONInteger	  : d = new DataStateInteger();   		d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Integer: " + value );
+																										  break;
+						case Schema.BSONLong	  : d = new DataStateLong();      		d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Long: " + value );
+																										  break;
+						case Schema.BSONFloat	  : d = new DataStateFloat();     		d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Float: " + value );
+																										  break;
+						case Schema.BSONDouble	  : d = new DataStateDouble(); 	  		d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Double: " + value );
+																										  break;
+						case Schema.BSONBoolean	  : d = new DataStateBoolean();   		d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Boolean: " + value );
+																										  break;
+						case Schema.BSONChar	  : d = new DataStateChar();      		d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Char: " + value );
+																										  break;
+						case Schema.BSONDate	  : d = new DataStateDate();      		d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Date: " + value );
+																										  break;
+						case Schema.BSONTime	  : d = new DataStateTime();      		d.Parse( value ); if ( d.IsNotValid() ) 
+																											throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Time: " + value );
+																										  break;
+
+						}
+					}
+		}
+		catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
+		return value;
+	}
+	
 	// Method to return string without ending nulls
 	protected String StringNoNull( String str ) {
 		int len = str.length() - 1;
@@ -274,7 +344,6 @@ public abstract class DataStore {
 		// Return copy of string without nulls
 		return str.substring( 0, len );
 	}
-	
 	
 	// Method for inserting into datastore with key (field) name
 	// keyvals:
