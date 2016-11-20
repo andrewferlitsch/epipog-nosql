@@ -16,7 +16,7 @@ This release is designed using an OOD (Object Oriented Design) using a Factory D
 components which are dynamically instantiated and inject from an abstract or interface definition (the "factory"). Each
 component is additionally supported with a micro-service interface.
 
-[ e2e Design  (https://github.com/andrewferlitsch/epipog/blob/master/specs/stages/Data%20Pipeline.pptx)
+[ e2e Design](https://github.com/andrewferlitsch/epipog/blob/master/specs/stages/Data%20Pipeline.pptx)
 
 # Build
 
