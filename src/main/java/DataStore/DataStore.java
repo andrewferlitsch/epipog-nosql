@@ -65,7 +65,7 @@ public abstract class DataStore {
 	}
 	
 	// Seek to the begin of the storage 
-	public void Begin()
+	protected void Begin()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -73,7 +73,7 @@ public abstract class DataStore {
 	}
 	
 	// Seek to the end of the storage 
-	public void End()
+	protected void End()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -81,7 +81,7 @@ public abstract class DataStore {
 	}
 	
 	// Seek to a location in the storage 
-	public void Move( long pos )
+	protected void Move( long pos )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -89,7 +89,7 @@ public abstract class DataStore {
 	}
 	
 	// Get current position storage 
-	public long Pos()
+	protected long Pos()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -98,7 +98,7 @@ public abstract class DataStore {
 	}
 	
 	// Check if at the end of file
-	public boolean Eof()
+	protected boolean Eof()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -107,7 +107,7 @@ public abstract class DataStore {
 	}
 	
 	// Write a padded string to storage
-	public void Write( String value, int length )
+	protected void Write( String value, int length )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -115,7 +115,7 @@ public abstract class DataStore {
 	}
 	
 	// Write a string 
-	public void Write( String value )
+	protected void Write( String value )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -123,7 +123,7 @@ public abstract class DataStore {
 	}
 	
 	// Write a byte 
-	public void Write( byte value )
+	protected void Write( byte value )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -131,7 +131,7 @@ public abstract class DataStore {
 	}
 	
 	// Write a short to storage
-	public void Write( short value )
+	protected void Write( short value )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -139,7 +139,7 @@ public abstract class DataStore {
 	}
 	
 	// Write an integer to storage
-	public void Write( int value )
+	protected void Write( int value )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -147,7 +147,7 @@ public abstract class DataStore {
 	}
 	
 	// Write a long to storage
-	public void Write( long value )
+	protected void Write( long value )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -155,7 +155,7 @@ public abstract class DataStore {
 	}
 	
 	// Write a float to storage
-	public void Write( float value )
+	protected void Write( float value )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -163,7 +163,7 @@ public abstract class DataStore {
 	}
 	
 	// Write a double to storage
-	public void Write( double value )
+	protected void Write( double value )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -171,7 +171,7 @@ public abstract class DataStore {
 	}
 	
 	// Write a boolean to storage
-	public void Write( boolean value )
+	protected void Write( boolean value )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -179,7 +179,7 @@ public abstract class DataStore {
 	}
 	
 	// Read string from storage
-	public String Read( int length )
+	protected String Read( int length )
 		throws StorageException
 	{
 		if ( null != storage )
@@ -188,7 +188,7 @@ public abstract class DataStore {
 	}
 	
 	// Read byte from storage
-	public byte ReadByte()
+	protected byte ReadByte()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -197,7 +197,7 @@ public abstract class DataStore {
 	}
 	
 	// Read short from storage
-	public Short ReadShort()
+	protected Short ReadShort()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -206,7 +206,7 @@ public abstract class DataStore {
 	}
 	
 	// Read integer from storage
-	public Integer ReadInt()
+	protected Integer ReadInt()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -215,7 +215,7 @@ public abstract class DataStore {
 	}
 	
 	// Read long from storage
-	public Long ReadLong()
+	protected Long ReadLong()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -224,25 +224,25 @@ public abstract class DataStore {
 	}
 	
 	// Read float from storage
-	public float ReadFloat()
+	protected Float ReadFloat()
 		throws StorageException
 	{
 		if ( null != storage )
 			return storage.ReadFloat();
-		return -1;
+		return -1.0F;
 	}
 	
 	// Read double from storage
-	public double ReadDouble()
+	protected Double ReadDouble()
 		throws StorageException
 	{
 		if ( null != storage )
 			return storage.ReadDouble();
-		return -1;
+		return -1.0;
 	}
 	
 	// Read boolean from storage
-	public boolean ReadBoolean()
+	protected boolean ReadBoolean()
 		throws StorageException
 	{
 		if ( null != storage )
@@ -251,12 +251,28 @@ public abstract class DataStore {
 	}
 	
 	// Read a line from storage
-	public String ReadLine() 
+	protected String ReadLine() 
 		throws StorageException
 	{
 		if ( null != storage )
 			return storage.ReadLine();
 		return null;
+	}
+	
+	// Method to return string without ending nulls
+	protected String StringNoNull( String str ) {
+		int len = str.length() - 1;
+		
+		// string has no ending nulls, return original string
+		if ( str.charAt( len ) != '\0' )
+			return str;
+		
+		for ( ; len > 0; len-- )
+			if ( str.charAt( len ) != '\0' )
+				break;
+		
+		// Return copy of string without nulls
+		return str.substring( 0, len );
 	}
 	
 	

@@ -26,7 +26,7 @@ public class SchemaTable implements Schema {
 	@Getter
 	public ArrayList<String> Columns() {
 		// column information is not cached
-		if ( columns == null ) {
+		if ( null == columns && null != keys ) {
 			// Cache the column information on first request
 			columns = new ArrayList<String>();
 			for ( Pair<String,Integer> pair : keys )

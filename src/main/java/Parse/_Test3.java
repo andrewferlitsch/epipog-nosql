@@ -807,7 +807,7 @@ public class _Test3 {
 		Title( "SVParse: linked CSV" );
 		p = new CSVParse( "tests\\3aa.txt" );
 		c = new Collection( "foobar" );
-		DataStoreBinary d = new DataStoreBinary();
+		DataStore d = new DataStoreCSV();
 		c.Store( d );
 		p.Collection( c );
 		p.LinkedCSV( true );

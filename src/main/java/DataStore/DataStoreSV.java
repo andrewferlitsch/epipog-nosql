@@ -130,22 +130,6 @@ public abstract class DataStoreSV extends DataStore {
 		Move( Pos() - 1 );	// remove trailing pipe symbol
 		Write( "\r\n" );
 	}
-	
-	// Method to return string without ending nulls
-	private String StringNoNull( String str ) {
-		int len = str.length() - 1;
-		
-		// string has no ending nulls, return original string
-		if ( str.charAt( len ) != '\0' )
-			return str;
-		
-		for ( ; len > 0; len-- )
-			if ( str.charAt( len ) != '\0' )
-				break;
-		
-		// Return copy of string without nulls
-		return str.substring( 0, len );
-	}
 }
 
 
