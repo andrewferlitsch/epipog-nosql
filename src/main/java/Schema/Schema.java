@@ -54,6 +54,10 @@ public interface Schema {
 	@Getter
 	public ArrayList<String> Columns();
 	
+	// Method to get key/type names and order in a table-based schema
+	@Getter
+	public ArrayList<Pair<String,Integer>> Keys();
+	
 	// Method to set a default string length (vs. variable string length)
 	@Setter
 	public void FixedString( int length ) throws SchemaException;

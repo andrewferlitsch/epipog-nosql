@@ -1,4 +1,5 @@
 import epipog.schema.*;
+
 import javafx.util.Pair;
 import java.util.ArrayList;
 
@@ -88,6 +89,13 @@ public class _Test5 {
 		ArrayList<String> cols = s.Columns();
 		if ( cols.get( 0 ).equals( "field1") ) Passed(""); else Failed( "");
 		if ( cols.get( 1 ).equals( "field2") ) Passed(""); else Failed("");
+		
+		Title( "SchemaTable: Set/Keys" );
+		ArrayList<Pair<String,Integer>> xkeys = s.Keys();
+		if ( xkeys.get( 0 ).getKey().equals( "field1") ) Passed(""); else Failed("");
+		if ( xkeys.get( 1 ).getKey().equals( "field2") ) Passed(""); else Failed("");
+		if ( xkeys.get( 0 ).getValue() == 2 ) Passed(""); else Failed("");
+		if ( xkeys.get( 1 ).getValue() == 2 ) Passed(""); else Failed("");
 	}
 	
 	public static void Test_SetI() {

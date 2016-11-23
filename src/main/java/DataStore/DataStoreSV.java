@@ -30,6 +30,8 @@ public abstract class DataStoreSV extends DataStore {
 	public void Insert( ArrayList<Pair<String,String>> keyVals ) 
 		throws DataStoreException, StorageException
 	{
+		if ( null == keyVals )
+			return;
 			
 	}
 	

@@ -35,6 +35,12 @@ public class SchemaTable implements Schema {
 		return columns;
 	}
 	
+	// Getter to return the column names/types and order in table-based schema
+	@Getter
+	public ArrayList<Pair<String,Integer>> Keys() {
+		return keys;
+	}
+	
 	// Method for dynamically specifying the schema, where data type is in string representation
 	@Setter
 	public void Set( ArrayList<String> keys )
