@@ -86,7 +86,7 @@ public class StorageSingleFile implements Storage {
 	}
 	
 	// Implementation for seeking to the end of the storage
-	public void End() 
+	public long End() 
 		throws StorageException
 	{
 		try {
@@ -96,6 +96,7 @@ public class StorageSingleFile implements Storage {
 		{
 			throw new StorageException( "StorageSingleFile.End: Cannot seek in storage file" );
 		}
+		finally { return Pos(); }
 	}
 		
 	// Implementation to return the current location in storage

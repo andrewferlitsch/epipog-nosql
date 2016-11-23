@@ -46,7 +46,7 @@ public abstract class DataStoreSV extends DataStore {
 			throw new DataStoreException( "DataStoreSV.InsertC: incorrect number of values" );
 		
 		// Seek to the end of the Storage
-		End();
+		long rollback = End();
 		
 		// Set dirty flag to clean
 		Write( "1,");
@@ -59,7 +59,14 @@ public abstract class DataStoreSV extends DataStore {
 			if ( validate ) {
 				Integer type = collection.Schema().GetType( i );
 				
-				value = DataCheck( dataModel, type, value );
+				try {
+					value = DataCheck( dataModel, type, value );
+				}
+				catch ( DataStoreException e ) { throw new DataStoreException( e.getMessage() ); }
+				finally {
+					// rollback any partial writes
+					Move( rollback );
+				}
 			}
 			
 			if ( -1 != value.indexOf ( separator ) )

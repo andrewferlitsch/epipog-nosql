@@ -28,7 +28,7 @@ public interface Storage {
 	public abstract void Begin() throws StorageException;
 	
 	// Method to seek to the end of the storage
-	public abstract void End() throws StorageException;
+	public abstract long End() throws StorageException;
 	
 	// Method to return the current location in storage
 	public abstract long Pos() throws StorageException;

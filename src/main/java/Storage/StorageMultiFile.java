@@ -32,7 +32,7 @@ public class StorageMultiFile implements Storage {
 	public void Begin() throws StorageException { throw new StorageException("unsupported"); }
 	
 	// Implementation to seek to the end of the storage
-	public void End() throws StorageException { throw new StorageException("unsupported"); }
+	public long End() throws StorageException { throw new StorageException("unsupported"); }
 		
 	// Implementation to return the current location in storage
 	public long Pos() throws StorageException { throw new StorageException("unsupported"); }

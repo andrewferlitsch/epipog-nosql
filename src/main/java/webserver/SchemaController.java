@@ -45,6 +45,21 @@ public class SchemaController {
 		
 		String result = "";
 		try {
+			ArrayList<String> cols = null;
+			
+			// Methods not requiring an argument
+			switch ( method ) {
+			case "ncols"		: return new Response( id, String.valueOf( s.NCols() ) );
+			case "columns"		: cols = s.Columns();
+								  result  = "[";
+								  for ( int i = 0; i < cols.size(); i++ ) {
+									  if ( i > 0 ) result += ",";
+									  result += cols.get( i );
+								  }
+								  result += "]";
+								  return new Response( id, result );
+			}
+			
 			if ( null == arg ) return new Response( id, 500, "Arg is null" );
 			
 			ArrayList<Pair<String,Integer>> keys = null;
@@ -66,12 +81,10 @@ public class SchemaController {
 								  break;
 			case "gettype"		: result = String.valueOf( s.GetType( Integer.parseInt( arg ) ) );
 								  break;
-			case "ncols"		: result = String.valueOf( s.NCols() );
-								  break;
-			case "columns"		: /* todo */
-								  break;
 			//case "isvalid"	: result = String.valueOf( s.IsValid( arg ) );
 								  //break;
+			case "fixedstring"	: s.FixedString( Integer.parseInt( arg ) );
+								  break;
 			default: return new Response( id, "Unknown Method");
 			}
 		} catch ( SchemaException e ) { return new Response( id, 500, e.getMessage() );}

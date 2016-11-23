@@ -76,13 +76,13 @@ error occurred.
 The content field holds a JSON object as the response, when the status code is 200, or an
 error string when the status code is 500.
 
-### Data (Model)
-
-The Data (Model) endpoint can take the following parameters:
+Each endpoint can take the following parameters:
 	
 	method=method-name							# Required
 	type=data-type								# Optional
 	arg=value-to-pass-as-an-argument-to-method	# Optional
+
+### Data (Model)
 
 #### Example: Instantiate a data object of type short, and set its value to 6
 

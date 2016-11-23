@@ -39,7 +39,7 @@ public class DataStoreJSON extends DataStore {
 			throw new DataStoreException( "DataStoreJSON.InsertC: incorrect number of values" );
 
 		// Seek to the end of the Storage
-		End();
+		long rollback = End();
 		
 		ArrayList<String> columns = collection.Schema().Columns();
 		
@@ -52,7 +52,14 @@ public class DataStoreJSON extends DataStore {
 			if ( validate ) {
 				Integer type = collection.Schema().GetType( i );
 				
-				value = DataCheck( dataModel, type, value );
+				try {
+					value = DataCheck( dataModel, type, value );
+				}
+				catch ( DataStoreException e ) { throw new DataStoreException( e.getMessage() ); }
+				finally {
+					// rollback any partial writes
+					Move( rollback );
+				}
 			}
 			
 			// Write Key

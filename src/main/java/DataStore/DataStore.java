@@ -74,11 +74,14 @@ public abstract class DataStore {
 	}
 	
 	// Seek to the end of the storage 
-	protected void End()
+	protected long End()
 		throws StorageException
 	{
-		if ( null != storage )
-			storage.End();
+		if ( null != storage ) {
+			return storage.End();
+		}
+		
+		return -1;
 	}
 	
 	// Seek to a location in the storage 
