@@ -28,8 +28,9 @@ import java.io.IOException;
 		// read in all the lines from the input file (as UTF-8 strings)
 		try
 		{
-			lines  = Files.readAllLines( Paths.get( InputFile() ), Charset.forName( "UTF-8" ) );
-			nLines = lines.size();
+			lines     = Files.readAllLines( Paths.get( InputFile() ), Charset.forName( "UTF-8" ) );
+			nLines    = lines.size();
+			currLine  = 0;
 		}
 		catch ( IOException e ) {
 			throw new ParseException( "ReaderMem.Open: cannot read input file: " + InputFile() );

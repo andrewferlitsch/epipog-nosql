@@ -38,6 +38,8 @@ public class ReaderMapped extends Reader {
          
 			//Get direct byte buffer access using channel.map() operation
 			buffer = fileChannel.map( FileChannel.MapMode.READ_ONLY, 0, fileChannel.size() );
+			
+			currPosition = 0;
 		}
 		catch ( IOException e ) {
 			throw new ParseException( "ReaderMapped.Open: cannot read input file: " + InputFile() );

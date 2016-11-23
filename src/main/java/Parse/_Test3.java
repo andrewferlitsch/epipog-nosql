@@ -714,6 +714,43 @@ public class _Test3 {
 		catch ( ParseException e ) { Failed( "" ); }
 		if ( p.NImported() == 2 ) Passed( "" ); else Failed( "" );
 		p.Close();
+		
+		Title( "TSVParse: Parse() Reopen after Close, reader=mem" );
+		try { 
+			p.Open();
+			p.Parse(); Passed( "" );
+		}
+		catch ( ParseException e ) { Failed( "" ); }
+		if ( p.NImported() == 4 ) Passed( "" ); else Failed( "" );
+		p.Close();
+
+		Title( "TSVParse: Parse() Reopen after Close, reader=line" );
+		p = new TSVParse( "tests\\2cc.txt" );
+		try { 
+			p.Reader( Reader.ReaderType.READERLINE );
+			p.Open();
+			p.Parse(); Passed( "" );
+			p.Close();
+			p.Open();
+			p.Parse(); Passed( "" );
+		}
+		catch ( ParseException e ) { Failed( "" ); }
+		if ( p.NImported() == 4 ) Passed( "" ); else Failed( "" );
+		p.Close();
+
+		Title( "TSVParse: Parse() Reopen after Close, reader=mapped" );
+		p = new TSVParse( "tests\\2cc.txt" );
+		try { 
+			p.Reader( Reader.ReaderType.READERMAPPED);
+			p.Open();
+			p.Parse(); Passed( "" );
+			p.Close();
+			p.Open();
+			p.Parse(); Passed( "" );
+		}
+		catch ( ParseException e ) { Failed( "" ); }
+		if ( p.NImported() == 4 ) Passed( "" ); else Failed( "" );
+		p.Close();
 	}
 	
 	public static void Test_SVSplit() {
