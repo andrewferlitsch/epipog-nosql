@@ -103,7 +103,11 @@ import statement:
 
 	import epipog.parse.*;
 	
-[Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Parse.docx)
+[Specification - Parse](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Parse.docx)
+	
+[Specification - Reader](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Reader.docx)
+	
+[Specification - Ejector](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Ejector.docx)
 	
 When using the epipog web server appication, it is accessed as a micro-service.
 

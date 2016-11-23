@@ -78,6 +78,7 @@ public class _Test2 {
 			if ( s.equals( "Sam I am" ) ) Passed( "" ); else Failed("");
 		}
 		catch ( ParseException e ) { Failed( "exception" ); }
+		if ( r.CurrLine() == 2 ) Passed(""); else Failed("");
 		r.Close();
 		
 		Title( "ReaderMem: ReadLine() Diacritic chars" );
@@ -159,6 +160,7 @@ public class _Test2 {
 			if ( s.equals( "Sam I am" ) ) Passed( "" ); else Failed("");
 		}
 		catch ( ParseException e ) { Failed( "exception" ); }
+		if ( r.CurrLine() == 2 ) Passed(""); else Failed("");
 		r.Close();
 		
 		Title( "ReaderLine: ReadLine() Diacritic chars" );
@@ -238,6 +240,7 @@ public class _Test2 {
 			if ( s.equals( "Sam I am" ) ) Passed( "" ); else Failed("");
 		}
 		catch ( ParseException e ) { Failed( "exception" ); }
+		if ( r.CurrLine() == 2 ) Passed(""); else Failed("");
 		r.Close();
 		
 		Title( "ReaderLine: ReadMapped() Diacritic chars" );

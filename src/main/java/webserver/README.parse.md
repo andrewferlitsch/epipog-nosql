@@ -30,7 +30,7 @@ Note: the last line in the data file is in incorrect format (messy data).
 
 #### Example: Instantiate a parse object for a CSV file
 
-	http://localhost:8080/parse?method=cons&type=csv&arg=C:\tmp\data.txt
+	http://localhost:8080/parse?method=cons&type=csv&arg=C:\tmp\data.csv
 	
 	Response: {"id":1,"status":200,"content":""}
 	
@@ -46,7 +46,7 @@ Note: the last line in the data file is in incorrect format (messy data).
 	
 	http://localhost:8080/parse?method=parse
 	
-	Response: {"id":4,"status":500,"content":"SVParse.Parse: number of columns in row incorrect: Australia,Queensland,"}
+	Response: {"id":4,"status":500,"content":"SVParse.Parse: number of columns in row incorrect on line 18: Australia,Queensland,"}
 
 	http://localhost:8080/parse?method=close
 	

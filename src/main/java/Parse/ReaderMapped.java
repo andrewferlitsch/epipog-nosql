@@ -91,6 +91,7 @@ public class ReaderMapped extends Reader {
 			if ( line.length() == 0 )
 				return ReadLine();
 			
+			currLine++;
 			return line;
 		}
 		catch ( UnsupportedEncodingException e ) {

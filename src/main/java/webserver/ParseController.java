@@ -81,8 +81,6 @@ public class ParseController {
 								  break;
 			case "parse"		: p.Parse(); 
 								  break;
-			case "eject"		: /* todo */
-								  break;
 			case "collection"	: p.Collection( new Collection( arg ) );
 								  break;
 			default: return new Response( id, "Unknown Method");

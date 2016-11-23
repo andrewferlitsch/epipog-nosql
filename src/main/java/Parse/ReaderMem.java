@@ -18,7 +18,6 @@ import java.io.IOException;
 	 
 	 private List<String> lines = null;		// list of lines read in from input file
 	 private int 	nLines 		= 0;		// total number of lines in input file
-	 private int 	currLine	= 0;		// current line number being read
 	 
 	 // Implementation to open input file
 	 //

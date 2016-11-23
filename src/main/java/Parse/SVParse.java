@@ -129,7 +129,7 @@ public abstract class SVParse extends Parse {
 					Eject( line );
 					continue;
 				}
-				throw new ParseException( "SVParse.Parse: number of columns in row incorrect: " + line );
+				throw new ParseException( "SVParse.Parse: number of columns in row incorrect on line " + reader.CurrLine() + ": " + line );
 			}
 			
 			// Check for Linked CSV prolog

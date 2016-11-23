@@ -75,6 +75,7 @@ import java.io.IOException;
 		if ( line.length() == 0 )
 			return ReadLine();
 		
+		currLine++;
 		return line;
 	}
  }
