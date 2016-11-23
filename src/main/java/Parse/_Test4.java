@@ -360,6 +360,19 @@ public class _Test4 {
 		p.Close();
 		
 		Title( "JSONParse: Parse() scalar invalid" );
+		// TODO
+		
+		Title( "JSONParse: Parse() array of objects" );
+		p = new JSONParse( "tests\\data.json" );
+		try {
+			p.Reader( Reader.ReaderType.READERMEM );
+			p.Open();
+			p.Parse(); Passed( "");
+		}
+		catch ( ParseException e ) { Failed( e.getMessage() ); }
+		if ( p.NObjects() == 3 ) Passed( "" ); else Failed( "NObjects" );
+		if ( p.NFields()  == 9 ) Passed( "" ); else Failed( "NFields" );
+		p.Close();
 	}
 	
 	public static void Title( String title ) {

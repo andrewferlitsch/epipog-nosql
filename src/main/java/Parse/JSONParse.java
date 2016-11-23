@@ -86,7 +86,7 @@ public class JSONParse extends Parse {
 		boolean first = true;
 		while ( true ) {
 			if ( !Field() && !first )
-				 throw new ParseException( "JSONParse.Object: field expected: " + token );
+				 throw new ParseException( "JSONParse.Object: field expected on line " + reader.CurrLine() + ": " + token );
 			
 			// look ahead for next Field
 			token = ReadToken();
@@ -123,7 +123,7 @@ public class JSONParse extends Parse {
 		if ( token.equals( "{") )
 			return true;
 		
-		throw new ParseException( "JSONParse.StartObject: { not found" + token );
+		throw new ParseException( "JSONParse.StartObject: { not found on line " + reader.CurrLine() + ": " + token );
 	}
 	
 	// Method to parse the end of a JSON object
@@ -145,7 +145,7 @@ public class JSONParse extends Parse {
 				return false;
 			}
 			else
-				throw new ParseException( "JSONParse.EndObject: } not found: " + token );
+				throw new ParseException( "JSONParse.EndObject: } not found on line " + reader.CurrLine() + ": " + token );
 		}
 		
 		return true;
@@ -180,7 +180,7 @@ public class JSONParse extends Parse {
 		}
 
 		if ( token.charAt( 0 ) != '"' || token.charAt( token.length() - 1 ) != '"' )
-			throw new ParseException( "JSONParse.Name: name is not a string: "  + token );
+			throw new ParseException( "JSONParse.Name: name is not a string on line "  + reader.CurrLine() + ": " + token );
 		
 		// Get separator
 		token = ReadToken();
@@ -200,8 +200,8 @@ public class JSONParse extends Parse {
 		String token = ReadToken();
 		
 		if ( token.equals( "}" ) )
-			throw new ParseException( "JSONParse.Value: value not found: }" );
-		
+			throw new ParseException( "JSONParse.Value: Unexpected } on line " + reader.CurrLine() );
+
 		if ( IsArray( token ) )
 			Array();
 		else if ( IsObject( token ) )
@@ -209,7 +209,7 @@ public class JSONParse extends Parse {
 		else if ( IsScalar( token ) )
 			Scalar();
 		else
-			throw new ParseException( "JSONParse.Value: value not found: " + token );
+			throw new ParseException( "JSONParse.Value: value not found on line " + reader.CurrLine() + ": " + token );
 	}
 	
 	// Check if token is start of an Array
@@ -245,12 +245,12 @@ public class JSONParse extends Parse {
 		}
 		
 		if ( !token.equals( "]" ) )
-			throw new ParseException( "JSONParse.Array: missing ]" );
+			throw new ParseException( "JSONParse.Array: missing ] on line " + reader.CurrLine() + ": " + token );
 	}
 	
 	// Check if token is start of an object
 	private boolean IsObject( String token ) {
-		if ( token.charAt( 0 ) == '{' ) {
+		if ( token.equals( "{" ) ) {
 			PushBack( token );
 			return true;
 		}

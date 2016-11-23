@@ -83,6 +83,10 @@ public class ParseController {
 								  break;
 			case "collection"	: p.Collection( new Collection( arg ) );
 								  break;
+			case "nobjects"		: result = String.valueOf( ((JSONParse) p).NObjects() );
+								  break;
+			case "nfields"		: result = String.valueOf( ((JSONParse) p).NFields() );
+								  break;
 			default: return new Response( id, "Unknown Method");
 			}
 		} catch ( ParseException e 		 ) { return new Response( id, 500, e.getMessage() );}

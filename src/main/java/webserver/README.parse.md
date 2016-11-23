@@ -5,7 +5,7 @@ The Parse micro-service is accessed from the following endpoint:
 
 	http://localhost:8080/parse
 	
-The below examples use the following example data input file
+The below examples use the following example CSV data input file
 
 	country,state,city,pop
 	United States,Oregon,Portland,610000
@@ -89,3 +89,45 @@ Note: the last line in the data file is in incorrect format (messy data).
 	http://localhost:8080/parse?method=nejected
 	
 	Response: {"id":13,"status":200,"content":"1"}
+	
+	
+The below examples use the following example JSON data input file
+
+[ { "country":"United States", "state":"Oregon", "city":"Portland"},
+  { "country":"United States", "state":"Oregon", "city":"Salem"},
+  { "country":"United States", "state":"Oregon", "city":"Eugene"}
+]
+
+#### Example: Instantiate a parse object for a JSON file
+
+	http://localhost:8080/parse?method=cons&type=json&arg=C:\tmp\data.json
+	
+	Response: {"id":1,"status":200,"content":""}
+
+#### Example: Set the type of reader for the file, open and parse the contents, and close
+
+	http://localhost:8080/parse?method=reader&arg=mem
+	
+	Response: {"id":2,"status":200,"content":""}
+	
+	http://localhost:8080/parse?method=open
+	
+	Response: {"id":3,"status":200,"content":""}
+	
+	http://localhost:8080/parse?method=parse
+	
+	Response: {"id":4,"status":200,"content":""}
+	
+	http://localhost:8080/parse?method=close
+	
+	Response: {"id":5,"status":200,"content":""}
+	
+#### Example: Get the number of objects and fields parsed
+
+	http://localhost:8080/parse?method=nobjects
+	
+	Response: {"id":6,"status":200,"content":"3"}
+
+	http://localhost:8080/parse?method=nfields
+	
+	Response: {"id":6,"status":200,"content":"9"}
