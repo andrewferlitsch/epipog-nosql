@@ -156,19 +156,27 @@ public interface Schema {
 			throw new SchemaException( "Schema.SchemaFromString: schema is null" );
 		
 		// Split into key:type pairs
-		String[] skeys = schema.split( "," );
+		String[] skeys = schema.split( ",", -1 );
 		
-		for ( String arg : skeys ) {
+		for ( String arg : skeys ) { 
+			if ( arg.isEmpty() )
+				throw new SchemaException( "Schema.SchemaFromString: empty field" );
+			 
 			// Split the key:type into key and type
-			String[] pair = arg.split( ":" );
+			String[] pair = arg.split( ":", -1 );
 			
+			int type;
 			if ( pair.length != 2 )
-				throw new SchemaException( "Schema.SchemaFromString: invalid key/value pair: " + arg );
+				type = BSONString;
+			else {
 			
-			// Get the BSON id for the data type
-			int type = BSONType.Find( pair[ 1 ] );
-			if ( 0 == type )
-				throw new SchemaException( "Schema.SchemaFromString: invalid type: " + pair[ 1 ] );
+				//throw new SchemaException( "Schema.SchemaFromString: invalid key/value pair: " + arg );
+				
+				// Get the BSON id for the data type
+				type = BSONType.Find( pair[ 1 ] );
+				if ( 0 == type )
+					throw new SchemaException( "Schema.SchemaFromString: invalid type: " + pair[ 1 ] );
+			}
 			
 			// Add the key/type pair to the internal schema representation
 			//

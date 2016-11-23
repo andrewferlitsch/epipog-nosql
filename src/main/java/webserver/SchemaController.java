@@ -63,26 +63,38 @@ public class SchemaController {
 			if ( null == arg ) return new Response( id, 500, "Arg is null" );
 			
 			ArrayList<Pair<String,Integer>> keys = null;
+			ArrayList<String> skeys = null;
+			String[] args;
 				
 			switch ( method ) {
-			//case "set"			: s.Set( arg );
-								  //break;
+			case "set"			: args = arg.split( ",", -1 );
+								  skeys = new ArrayList<String>();
+								  for ( String s : args ) skeys.add( s );
+								  s.Set( skeys );
+								  break;
 			case "seti"			: keys = Schema.SchemaFromString( arg ); s.SetI( keys ); 
 								  break;
-			//case "extend"		: s.Extend( arg );
-								  //break;
+			case "extend"		: args = arg.split( ",", -1 );
+								  skeys = new ArrayList<String>();
+								  for ( String s : args ) skeys.add( s );
+								  s.Extend( skeys );
+								  break;
 			case "extendi"		: keys = Schema.SchemaFromString( arg ); s.SetI( keys ); 
 								  break;
-			//case "type"		: s.Type( arg );
-								  //break;
+			case "type"			: args = arg.split( ",", -1 );
+								  skeys = new ArrayList<String>();
+								  for ( String s : args ) skeys.add( s );
+								  s.Type( skeys );
+								  break;
 			case "isdefined"	: result = String.valueOf( s.IsDefined( arg ) );
 								  break;
 			case "columnpos"	: result = String.valueOf( s.ColumnPos( arg ) );
 								  break;
 			case "gettype"		: result = String.valueOf( s.GetType( Integer.parseInt( arg ) ) );
 								  break;
-			//case "isvalid"	: result = String.valueOf( s.IsValid( arg ) );
-								  //break;
+			case "isvalid"		: args = arg.split( ",", -1 );
+								  result = String.valueOf( s.IsValid( args[ 0 ], Integer.parseInt( args[ 1 ] ) ) );
+								  break;
 			case "fixedstring"	: s.FixedString( Integer.parseInt( arg ) );
 								  break;
 			default: return new Response( id, "Unknown Method");

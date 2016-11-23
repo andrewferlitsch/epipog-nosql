@@ -112,3 +112,15 @@ import statement:
 When using the epipog web server appication, it is accessed as a micro-service.
 
 [Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.parse.md)
+
+
+### Schema
+
+The Schema package applying a schema to a dataset. This package can be imported as a Java library with the following
+import statement:
+
+	import epipog.schema.*;
+	
+[Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Schema.docx)
+
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)

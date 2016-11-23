@@ -52,7 +52,7 @@ Note: the last line in the data file is in incorrect format (messy data).
 	
 	Response: {"id":5,"status":200,"content
 	
-#### Example: Get the number of records imported and ejected from the file
+#### Example: Get the number of records (rows) imported and ejected from the file
 
 	http://localhost:8080/parse?method=nimported
 	
@@ -80,7 +80,7 @@ Note: the last line in the data file is in incorrect format (messy data).
 	
 	Response: {"id":11,"status":200,"content
 	
-#### Example: Get the number of records imported and ejected from the file
+#### Example: Get the number of records (rows) imported and ejected from the file
 
 	http://localhost:8080/parse?method=nimported
 	
@@ -131,3 +131,9 @@ The below examples use the following example JSON data input file
 	http://localhost:8080/parse?method=nfields
 	
 	Response: {"id":6,"status":200,"content":"9"}
+	
+#### Example: Get the number of records (documents) imported and ejected from the file
+
+	http://localhost:8080/parse?method=nimported
+	
+	Response: {"id":7,"status":200,"content":"16"}

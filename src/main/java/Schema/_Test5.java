@@ -322,9 +322,16 @@ public class _Test5 {
 		}
 		catch ( SchemaException e ) { Passed( ""); }
 		
-		Title( "SchemaFromString: not a valid format" );
+		Title( "SchemaFromString: not a valid format - no field" );
 		try {
-			Schema.SchemaFromString( "abcdef" );
+			Schema.SchemaFromString( "abcdef,," );
+			Failed( "no exception" );
+		}
+		catch ( SchemaException e ) { Passed( "" ); }
+		
+		Title( "SchemaFromString: not a valid format - no type after comma" );
+		try {
+			Schema.SchemaFromString( "abcdef:" );
 			Failed( "no exception" );
 		}
 		catch ( SchemaException e ) { Passed( "" ); }
@@ -346,6 +353,13 @@ public class _Test5 {
 		Title( "SchemaFromString: valid multiple keys" );
 		try {
 			Schema.SchemaFromString( "field:string,field:integer" );
+			Passed( "" );
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		
+		Title( "SchemaFromString: default type" );
+		try {
+			Schema.SchemaFromString( "field,field:integer" );
 			Passed( "" );
 		}
 		catch ( SchemaException e ) { Failed( e.getMessage() ); }

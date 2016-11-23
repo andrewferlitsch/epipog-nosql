@@ -23,7 +23,7 @@ public class JSONParse extends Parse {
 	private Integer depth    = 0;		// parsing depth
 	private String	name	 = null;	// name (identifier) of current field
 	private String  value    = null;	// value assigned to current name field
-	private ArrayList<Pair<String,String>> record;
+	private ArrayList<Pair<String,String>> record;	// current record to import
 	
 	// Setter for bulk flag
 	@Setter
@@ -112,8 +112,9 @@ public class JSONParse extends Parse {
 		EndObject( false );
 		
 		nObjects++;
-		depth--;	// decrement object (document) depth
-		Import( record );
+		// decrement object (document) depth
+		if ( --depth == 0 ) 
+			Import( record );
 		return true;
 	}
 	
