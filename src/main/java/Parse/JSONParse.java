@@ -7,6 +7,7 @@ import epipog.annotations.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import javafx.util.Pair;
 
 // Derived Layer for parsing JSON input data
 //
@@ -19,6 +20,10 @@ public class JSONParse extends Parse {
 	private String  token 	 = null;	// current token being parsed
 	private Integer nObjects = 0;		// number of parsed objects
 	private Integer nFields  = 0;		// number of parsed fields
+	private Integer depth    = 0;		// parsing depth
+	private String	name	 = null;	// name (identifier) of current field
+	private String  value    = null;	// value assigned to current name field
+	private ArrayList<Pair<String,String>> record;
 	
 	// Setter for bulk flag
 	@Setter
@@ -81,6 +86,8 @@ public class JSONParse extends Parse {
 			return true;
 		}
 		
+		depth++;	// increment object (document) depth
+		record = new ArrayList<Pair<String,String>>();
 
 		// Parse the object's fields
 		boolean first = true;
@@ -105,6 +112,8 @@ public class JSONParse extends Parse {
 		EndObject( false );
 		
 		nObjects++;
+		depth--;	// decrement object (document) depth
+		Import( record );
 		return true;
 	}
 	
@@ -159,6 +168,7 @@ public class JSONParse extends Parse {
 		if ( Name() ) {
 			Value();
 			nFields++;
+			record.add( new Pair<String,String>( name, value ) );
 			return true;
 		}
 		return false;
@@ -182,6 +192,9 @@ public class JSONParse extends Parse {
 		if ( token.charAt( 0 ) != '"' || token.charAt( token.length() - 1 ) != '"' )
 			throw new ParseException( "JSONParse.Name: name is not a string on line "  + reader.CurrLine() + ": " + token );
 		
+		// retain name 
+		name = token;
+		
 		// Get separator
 		token = ReadToken();
 
@@ -202,6 +215,7 @@ public class JSONParse extends Parse {
 		if ( token.equals( "}" ) )
 			throw new ParseException( "JSONParse.Value: Unexpected } on line " + reader.CurrLine() );
 
+		value = "";
 		if ( IsArray( token ) )
 			Array();
 		else if ( IsObject( token ) )
@@ -276,7 +290,7 @@ public class JSONParse extends Parse {
 	}
 	
 	private void Scalar() {
-		
+		value = token;
 	}	
 	
 	// Method to insert record into collection
