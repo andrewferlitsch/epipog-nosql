@@ -84,67 +84,23 @@ Each endpoint can take the following parameters:
 
 ### Data (Model)
 
-#### Example: Instantiate a data object of type short, and set its value to 6
+The Data (Model) package handles the representation of data types within the data pipeline. This package can be imported
+as a Java library with the following import statement:
 
-	http://localhost:8080/data?type=short&method=set&arg=6
+	import epipog.data.*;
 	
-	Response: {"id":2,"status":200,"content":""}
+[specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Data.docx)
 	
-#### Example: Get the value of the existing data object
+When using the epipog web server appication, it is accessed as a micro-service.
 
-	http://localhost:8080/data?method=get
-	
-	Response: {"id":3,"status":200,"content":"6"}
-	
-#### Example: Parse (invalid) input for data object
-
-	http://localhost:8080/data?method=parse&arg=0x2
-	
-	Response: {"id":4,"status":500,"content":"DataShort.Parse: invalid input: 0x2"}
-	
-### Example: Compare existing data value to another value
-
-	http://localhost:8080/data?method=eq&arg=6
-	
-	Response: {"id":5,"status":200,"content":"true"}
-
-	http://localhost:8080/data?method=ne&arg=6
-	
-	Response: {"id":6,"status":200,"content":"false"}
-	
-### Data State (Model)
-
-The Data State (Model), which is an abstract class extended from the Data (Model) is accessed
-by adding /state to the endpoint path:
-
-	http://localhost:8080/data/state
-	
-#### Example: Instantiate a data state object of type short, and set its value to 6
-
-	http://localhost:8080/data/state?type=short&method=set&arg=6
-	
-	Response: {"id":1,"status":200,"content":""}
-	
-#### Example: Get the value of the existing data object
-
-	http://localhost:8080/data/state?method=get
-	
-	Response: {"id":2,"status":200,"content":"6"}
-	
-#### Example: Parse (valid) input for data object
-
-	http://localhost:8080/data/state?method=parse&arg=0x2
-	
-	Response: {"id":3,"status":200,"content":""}
+[micro-service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.data.md)
 
 
 ### Parse
 
-The Parse endpoint can take the following parameters:
-	
-	method=method-name							# Required
-	type=data-type								# Optional
-	arg=value-to-pass-as-an-argument-to-method	# Optional
+The Parse micro-service is accessed from the following endpoint:
+
+	http://localhost:8080/parse
 
 #### Example: Instantiate a parse object for a CSV file
 
