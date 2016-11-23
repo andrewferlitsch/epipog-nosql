@@ -10,6 +10,10 @@ Technology into Product (3rd stage).
 
 [Process Methodology](https://github.com/andrewferlitsch/epipog/blob/master/sprints/Methodology.pptx)
 
+Epipog is development following Agile methodologies using test-driven development.
+
+[Sprints] (https://github.com/andrewferlitsch/epipog/wiki)
+
 # Design
 
 This release is designed using an OOD (Object Oriented Design) using a Factory Design model. The pipeline is partitioned into
