@@ -30,9 +30,69 @@ public abstract class DataStoreSV extends DataStore {
 	public void Insert( ArrayList<Pair<String,String>> keyVals ) 
 		throws DataStoreException, StorageException
 	{
-		if ( null == keyVals )
+		if ( null == keyVals || 0 == keyVals.size() )
 			return;
+		
+		// Get the field names in the schema
+		ArrayList<Pair<String,Integer>> keyTypes = collection.Schema().Keys();
+		if ( null == keyTypes )
+			throw new DataStoreException( "DataStoreSV.Insert: no schema" );
+		
+		int nCols = keyTypes.size();
+		
+		// Verify that each field is in the schema
+		for ( Pair<String,String> keyVal : keyVals ) {
+			int i = 0;
+			for ( /**/; i < nCols; i++ ) {
+				if ( keyVal.getKey().equals( keyTypes.get( i ).getKey() ) )
+					break;
+			}
 			
+			if ( i == nCols ) 
+				throw new DataStoreException( "DataStoreSV.Insert: field is not in schema: " +  keyVal.getKey() );
+		}
+		
+		// Seek to the end of the Storage
+		long rollback = End();	
+				
+		// Set dirty flag to clean
+		Write( "1,");		
+		
+		// Insert the values
+		int nVals = keyVals.size();
+		for ( Pair<String,Integer> keyType : keyTypes ) {
+			String value = "";
+			for ( Pair<String,String> keyVal : keyVals ) {
+				if ( keyType.getKey().equals( keyVal.getKey() ) ) {
+					value = keyVal.getValue();
+					break;
+				}
+			}
+
+			// Validate the input date according to it's data type
+			if ( validate ) {
+				int type = keyType.getValue();
+				
+				try {
+					value = DataCheck( dataModel, type, value );
+				}
+				catch ( DataStoreException e ) { throw new DataStoreException( e.getMessage() ); }
+				finally {
+					// rollback any partial writes
+					Move( rollback );
+				}
+			}
+			
+			if ( -1 != value.indexOf ( separator ) )
+				Write( "\"" + value + "\"" );
+			else
+				Write( value );
+	
+			Write( (byte) separator );
+		}
+		
+		Move( Pos() - 1 );	// remove trailing pipe symbol
+		Write( "\r\n" );
 	}
 	
 	// Method for inserting into datastore by predefined column order

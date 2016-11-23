@@ -35,10 +35,7 @@ public class DataStoreBinary extends DataStore {
 	
 		// Seek to the end of the Storage
 		long rollback = End();
-		
-		// Set dirty flag to clean
-		Write( (byte) 0x01 );		
-		
+	
 		// Verify that each field is in the schema
 		for ( Pair<String,String> keyVal : keyVals ) {
 			int i = 0;
@@ -47,11 +44,12 @@ public class DataStoreBinary extends DataStore {
 					break;
 			}
 			
-			if ( i == nCols ) {
-				Move( rollback );
+			if ( i == nCols )
 				throw new DataStoreException( "DataStoreBinary.Insert: field is not in schema: " +  keyVal.getKey() );
-			}
-		}
+		}	
+		
+		// Set dirty flag to clean
+		Write( (byte) 0x01 );	
 		
 		// Insert the values
 		int nVals = keyVals.size();

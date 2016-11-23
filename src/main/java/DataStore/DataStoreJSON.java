@@ -23,7 +23,32 @@ public class DataStoreJSON extends DataStore {
 	public void Insert( ArrayList<Pair<String,String>> keyVals ) 
 		throws DataStoreException, StorageException
 	{
+		if ( null == keyVals || 0 == keyVals.size() )
+			return;
+		
+		// Get the field names in the schema
+		ArrayList<Pair<String,Integer>> keyTypes = collection.Schema().Keys();
+		if ( null == keyTypes )
+			throw new DataStoreException( "DataStoreJSON.Insert: no schema" );
+		
+		int nCols = keyTypes.size();
 			
+		// Verify that each field is in the schema
+		for ( Pair<String,String> keyVal : keyVals ) {
+			int i = 0;
+			for ( /**/; i < nCols; i++ ) {
+				if ( keyVal.getKey().equals( keyTypes.get( i ).getKey() ) )
+					break;
+			}
+			
+			if ( i == nCols )
+				throw new DataStoreException( "DataStoreJSON.Insert: field is not in schema: " +  keyVal.getKey() );
+		}
+		
+		// Seek to the end of the Storage
+		long rollback = End();	
+		
+		Write( (byte) '{' );
 	}
 	
 	// Method for inserting into datastore by predefined column order
@@ -44,7 +69,7 @@ public class DataStoreJSON extends DataStore {
 		ArrayList<String> columns = collection.Schema().Columns();
 		
 		// Write each key value to storage
-		Write( (byte) '{' );
+		Write( "{ \"clx\": 1, " );
 		for ( int i = 0; i < vlen; i++ ) {
 			String value = values.get( i );
 	
