@@ -126,6 +126,14 @@ public abstract class DataStore {
 			storage.Write( value );
 	}
 	
+	// Write a character
+	protected void Write( Character value )
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Write( value );
+	}
+	
 	// Write a byte 
 	protected void Write( byte value )
 		throws StorageException
@@ -189,6 +197,15 @@ public abstract class DataStore {
 		if ( null != storage )
 			return storage.Read( length );
 		return null;
+	}
+	
+	// Read character from storage
+	protected Character ReadChar()
+		throws StorageException
+	{
+		if ( null != storage )
+			return storage.ReadChar();
+		return (Character) '\uFFFF';
 	}
 	
 	// Read byte from storage
@@ -345,7 +362,7 @@ public abstract class DataStore {
 				break;
 		
 		// Return copy of string without nulls
-		return str.substring( 0, len );
+		return str.substring( 0, len + 1 );
 	}
 	
 	// Method for inserting into datastore with key (field) name
@@ -357,6 +374,8 @@ public abstract class DataStore {
 	// Method for inserting into datastore by predefined column order
 	// values: Value in String Representation
 	public abstract void InsertC( ArrayList<String> values ) throws DataStoreException, StorageException;
+	
+	// Method for selecting from data store
+	public abstract ArrayList<Data[]> Select( ArrayList<String> fields ) throws DataStoreException, StorageException;
 }
-
 

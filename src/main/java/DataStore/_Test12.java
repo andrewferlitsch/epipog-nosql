@@ -13,6 +13,7 @@ public class _Test12 {
 	// Main entry method
 	public static void main( String args[] ) {
 		Test_InsertC();
+		Test_Insert();
 		
 		System.exit( rc );
 	}	
@@ -74,7 +75,7 @@ public class _Test12 {
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e ) { Failed( e.getMessage() ); }
-		
+	
 		Title( "DataStoreJSON: InsertC: schema: short, int, long" );
 		sc = new SchemaTable();
 		c.Schema( sc );
@@ -121,7 +122,7 @@ public class _Test12 {
 		}
 		catch ( DataStoreException e ) { Passed(""); }
 		catch ( StorageException e ) { Failed( e.getMessage() ); }
-		
+
 		Title( "DataStoreJSON: InsertC: schema: float, double" );
 		sc = new SchemaTable();
 		c.Schema( sc );
@@ -587,7 +588,577 @@ public class _Test12 {
 		catch ( DataStoreException e ) { Passed(""); }
 		catch ( StorageException e ) { Failed( e.getMessage() ); }
 	}
+	
+	public static void Test_Insert() {
+		Title( "DataStoreJSON: Insert: null arg" );
+		DataStore ds = new DataStoreJSON();
+		Storage s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" );
+		ds.Storage( s );
+		Collection c = new Collection( "foobar" );
+		Schema sc = new SchemaTable();
+		c.Schema( sc );
+		ds.Collection( c );
+		try
+		{
+			ds.Open();
+			ds.Insert( null ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: no schema and empty" );
+		ArrayList<Pair<String,String>> values = new ArrayList<Pair<String,String>>();
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: no schema and non-empty" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "foo") );
+		try
+		{
+			ds.Insert( values  ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Passed(""); }
+		
+		Title( "DataStoreJSON Insert: schema equals value: fixed size string" );
+		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONString16 ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONString32 ) ); 
+		keys.add( new Pair<String,Integer>( "field3", Schema.BSONString64 ) );
+		keys.add( new Pair<String,Integer>( "field4", Schema.BSONString128 ) ); 
+		keys.add( new Pair<String,Integer>( "field5", Schema.BSONString256 ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values.add( new Pair<String,String>( "field2", "hoo") );
+		values.add( new Pair<String,String>( "field3", "loo") );
+		values.add( new Pair<String,String>( "field4", "this is it") );
+		values.add( new Pair<String,String>( "field5", "he's house, yoo man") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
 
+		Title( "DataStoreJSON: Insert: schema: short, int, long" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONShort ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONInteger ) );
+		keys.add( new Pair<String,Integer>( "field3", Schema.BSONLong ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "1") );
+		values.add( new Pair<String,String>( "field2", "2") );
+		values.add( new Pair<String,String>( "field3", "3") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+	
+		Title( "DataStoreJSON: Insert: schema: short, int, long - invalid - no check" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "0x1") );
+		values.add( new Pair<String,String>( "field2", "2") );
+		values.add( new Pair<String,String>( "field3", "3") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: short, int, long - invalid: check" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "0x1") );
+		values.add( new Pair<String,String>( "field2", "2") );
+		values.add( new Pair<String,String>( "field3", "3") );
+		ds.Validate( true );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: float, double" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONFloat ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONDouble ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "10.6") );
+		values.add( new Pair<String,String>( "field2", "22.7") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: float,double - invalid: no check" );
+		ds.Validate( false );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "10.6") );
+		values.add( new Pair<String,String>( "field2", "1sd") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: float,double - invalid" );
+		ds.Validate( true );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "10.6") );
+		values.add( new Pair<String,String>( "field2", "1sd") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: boolean, char" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONBoolean ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONChar ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "true") );
+		values.add( new Pair<String,String>( "field2", "a") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+
+		Title( "DataStoreJSON: Insert: schema: boolean invalid - no check" );
+		ds.Validate( false );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "f") );
+		values.add( new Pair<String,String>( "field2", "a") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: boolean invalid" );
+		ds.Validate( true );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "f") );
+		values.add( new Pair<String,String>( "field2", "a") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: char invalid - no check" );
+		ds.Validate( false );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		values.add( new Pair<String,String>( "field2", "12") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: char invalid" );
+		ds.Validate( true );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		values.add( new Pair<String,String>( "field2", "add") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+
+		Title( "DataStoreJSON: Insert: schema: unicode char valid" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		values.add( new Pair<String,String>( "field2", "\uFF02") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: date" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONDate ) ); 
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "2016-02-14") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+
+		Title( "DataStoreJSON: Insert: schema: date - invalid - no check" );
+		ds.Validate( false );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: date - invalid" );
+		ds.Validate( true );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: time" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONTime ) ); 
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "10:12:02") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: time - invalid - no check" );
+		ds.Validate( false );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: time - invalid" );
+		ds.Validate( true );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		/* Data State Model */
+		ds.DataModel( Data.DataModel.DATASTATE );
+
+		Title( "DataStoreJSON: Insert: DataState: schema equals value: fixed size string" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONString16 ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONString32 ) ); 
+		keys.add( new Pair<String,Integer>( "field3", Schema.BSONString64 ) );
+		keys.add( new Pair<String,Integer>( "field4", Schema.BSONString128 ) ); 
+		keys.add( new Pair<String,Integer>( "field5", Schema.BSONString256 ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "foo") );
+		values.add( new Pair<String,String>( "field2", "hoo") );
+		values.add( new Pair<String,String>( "field3", "loo") );
+		values.add( new Pair<String,String>( "field4", "this is it") );
+		values.add( new Pair<String,String>( "field5", "he's house, yoo man") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState: short, int, long" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONShort ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONInteger ) );
+		keys.add( new Pair<String,Integer>( "field3", Schema.BSONLong ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "1") );
+		values.add( new Pair<String,String>( "field2", "2") );
+		values.add( new Pair<String,String>( "field3", "3") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState: short, int, long - hex" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "0x1") );
+		values.add( new Pair<String,String>( "field2", "0xFFFF") );
+		values.add( new Pair<String,String>( "field3", "0xAB0011") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+	
+		Title( "DataStoreJSON: Insert: schema: invalid short" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "Daa") );
+		values.add( new Pair<String,String>( "field2", "2") );
+		values.add( new Pair<String,String>( "field3", "3") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+
+		Title( "DataStoreJSON: Insert: schema: invalid int" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "1") );
+		values.add( new Pair<String,String>( "field2", "256frg") );
+		values.add( new Pair<String,String>( "field3", "3") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+	
+		Title( "DataStoreJSON: Insert: schema: invalid long" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "1") );
+		values.add( new Pair<String,String>( "field2", "2") );
+		values.add( new Pair<String,String>( "field3", "3rg") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState: float, double" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONFloat ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONDouble ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "10.6") );
+		values.add( new Pair<String,String>( "field2", "22.7") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: InsertC: schema: DataState float - invalid" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "10,6") );
+		values.add( new Pair<String,String>( "field2", "22.7") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState double - invalid" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "10.6") );
+		values.add( new Pair<String,String>( "field2", "22!7") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState boolean, char" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONBoolean ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONChar ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "true") );
+		values.add( new Pair<String,String>( "field2", "a") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+
+		Title( "DataStoreJSON: Insert: schema: boolean alternate form" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "f") );
+		values.add( new Pair<String,String>( "field2", "a") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+
+		Title( "DataStoreJSON: Insert: schema: DataState boolean invalid" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "go") );
+		values.add( new Pair<String,String>( "field2", "a") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState char invalid" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		values.add( new Pair<String,String>( "field2", "12") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState unicode char valid" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		values.add( new Pair<String,String>( "field2", "\uFF02") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState date" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONDate ) ); 
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "2016-02-14") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState date - invalid" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState time" );
+		sc = new SchemaTable();
+		c.Schema( sc );
+		keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONTime ) ); 
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "10:12:02") );
+		try
+		{
+			ds.Insert( values ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "DataStoreJSON: Insert: schema: DataState time - invalid" );
+		values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "false") );
+		try
+		{
+			ds.Insert( values ); Failed("no exception");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+	}
 
 	public static void Title( String title ) {
 		System.out.println( "Test: " + title );

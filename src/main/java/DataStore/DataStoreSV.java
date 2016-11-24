@@ -8,6 +8,7 @@ import epipog.collection.Collection;
 import epipog.storage.*;
 import epipog.data.*;
 import epipog.schema.*;
+import epipog.parse.SVParse;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -141,6 +142,44 @@ public abstract class DataStoreSV extends DataStore {
 		
 		Move( Pos() - 1 );	// remove trailing pipe symbol
 		Write( "\r\n" );
+	}
+	
+	// Implementation for selection fields from data store
+	public ArrayList<Data[]> Select( ArrayList<String> fields )  
+		throws DataStoreException, StorageException
+	{
+		ArrayList<Data[]> ret = new ArrayList<Data[]>();
+		
+		if ( null == fields || 0 == fields.size() )
+			return ret;
+		
+		// Get Schema
+		Schema schema = collection.Schema();
+		if ( null == schema )
+			throw new DataStoreException( "DataStoreSV.Select: schema is null" );
+		
+		ArrayList<Pair<String,Integer>> keyTypes = schema.Keys();
+		if ( null == keyTypes )
+			throw new DataStoreException( "DataStoreSV.Select: no schema" );
+		
+		// Special case, match all columns
+		if ( 1 == fields.size() && fields.get( 0 ).equals( "*" ) )
+			fields = schema.Columns();
+		
+		// Go to the beginning of the storage
+		Begin();
+		
+		// Read through the file
+		String line;
+		while ( (line = ReadLine() ) != null ) {
+			// Check for Dirty
+			if ( line.charAt( 0 ) == 0x0 )
+				continue;
+			
+			ArrayList<String> values = SVParse.Split( line, ',', true, null );
+		}
+		
+		return ret;
 	}
 }
 

@@ -50,7 +50,7 @@ public class DataStoreBinary extends DataStore {
 		
 		// Set dirty flag to clean
 		Write( (byte) 0x01 );	
-		
+	
 		// Insert the values
 		int nVals = keyVals.size();
 		for ( Pair<String,Integer> keyType : keyTypes ) {
@@ -66,11 +66,8 @@ public class DataStoreBinary extends DataStore {
 			
 			// insert the value into the data store
 			try { InsertValue( value, type ); }
-			catch ( DataStoreException e ) { throw new DataStoreException( e.getMessage() ); }
-			catch ( StorageException e ) { throw new StorageException( e.getMessage() ); }
-			finally {
-				Move( rollback );
-			}
+			catch ( DataStoreException e ) { Move( rollback ); throw new DataStoreException( e.getMessage() ); }
+			catch ( StorageException e )   { Move( rollback ); throw new StorageException( e.getMessage() ); }
 		}
 	}
 	
@@ -96,11 +93,8 @@ public class DataStoreBinary extends DataStore {
 			Integer type = collection.Schema().GetType( i );	
 			
 			try { InsertValue( values.get( i ), type ); }
-			catch ( DataStoreException e ) { throw new DataStoreException( e.getMessage() ); }
-			catch ( StorageException e ) { throw new StorageException( e.getMessage() ); }
-			finally {
-				Move( rollback );
-			}
+			catch ( DataStoreException e ) { Move( rollback ); throw new DataStoreException( e.getMessage() ); }
+			catch ( StorageException e )   { Move( rollback ); throw new StorageException( e.getMessage() ); }
 		}
 	}
 	
@@ -108,76 +102,187 @@ public class DataStoreBinary extends DataStore {
 	private void InsertValue( String value, int type )
 		throws DataStoreException, StorageException
 	{
-			try {
-				if ( Data.DataModel.DATA == dataModel ) {
-					Data d;
-					switch ( type ) {
-					case Schema.BSONString	  : d = new DataString();  		  d.Parse( value ); throw new DataStoreException( "not yet supported" ); 
-					case Schema.BSONString16  : d = new DataStringFixed(16);  d.Parse( value ); Write( ( String )  	d.Get(), 16 );  break;
-					case Schema.BSONString32  : d = new DataStringFixed(32);  d.Parse( value ); Write( ( String )  	d.Get(), 32 );  break;
-					case Schema.BSONString64  : d = new DataStringFixed(64);  d.Parse( value ); Write( ( String )  	d.Get(), 64 );  break;
-					case Schema.BSONString128 : d = new DataStringFixed(128); d.Parse( value ); Write( ( String )  	d.Get(), 128 ); break;
-					case Schema.BSONString256 : d = new DataStringFixed(256); d.Parse( value ); Write( ( String )  	d.Get(), 256 ); break;
-					case Schema.BSONShort 	  : d = new DataShort();   		  d.Parse( value ); Write( ( Short )   	d.Get() ); break;
-					case Schema.BSONInteger	  : d = new DataInteger(); 		  d.Parse( value ); Write( ( Integer ) 	d.Get() ); break;
-					case Schema.BSONLong	  : d = new DataLong();    		  d.Parse( value ); Write( ( Long )    	d.Get() ); break;
-					case Schema.BSONFloat	  : d = new DataFloat();   		  d.Parse( value ); Write( ( Float )   	d.Get() ); break;
-					case Schema.BSONDouble	  : d = new DataDouble();  		  d.Parse( value ); Write( ( Double )  	d.Get() ); break;
-					case Schema.BSONBoolean	  : d = new DataBoolean(); 		  d.Parse( value ); Write( ( Boolean ) 	d.Get() ); break;
-					case Schema.BSONChar	  : d = new DataChar();    		  d.Parse( value ); Write( ( Character )d.Get() ); break;
-					case Schema.BSONDate	  : d = new DataDate();    		  d.Parse( value ); Write( ( Long )    	d.Get() ); break;
-					case Schema.BSONTime	  : d = new DataTime();    		  d.Parse( value ); Write( ( Long )    	d.Get() ); break;
+		try {
+			if ( Data.DataModel.DATA == dataModel ) {
+				Data d;
+				switch ( type ) {
+				case Schema.BSONString	  : d = new DataString();  		  d.Parse( value ); throw new DataStoreException( "not yet supported" ); 
+				case Schema.BSONString16  : d = new DataStringFixed(16);  d.Parse( value ); Write( ( String )  	d.Get(), 16 );  break;
+				case Schema.BSONString32  : d = new DataStringFixed(32);  d.Parse( value ); Write( ( String )  	d.Get(), 32 );  break;
+				case Schema.BSONString64  : d = new DataStringFixed(64);  d.Parse( value ); Write( ( String )  	d.Get(), 64 );  break;
+				case Schema.BSONString128 : d = new DataStringFixed(128); d.Parse( value ); Write( ( String )  	d.Get(), 128 ); break;
+				case Schema.BSONString256 : d = new DataStringFixed(256); d.Parse( value ); Write( ( String )  	d.Get(), 256 ); break;
+				case Schema.BSONShort 	  : d = new DataShort();   		  d.Parse( value ); Write( ( Short )   	d.Get() ); break;
+				case Schema.BSONInteger	  : d = new DataInteger(); 		  d.Parse( value ); Write( ( Integer ) 	d.Get() ); break;
+				case Schema.BSONLong	  : d = new DataLong();    		  d.Parse( value ); Write( ( Long )    	d.Get() ); break;
+				case Schema.BSONFloat	  : d = new DataFloat();   		  d.Parse( value ); Write( ( Float )   	d.Get() ); break;
+				case Schema.BSONDouble	  : d = new DataDouble();  		  d.Parse( value ); Write( ( Double )  	d.Get() ); break;
+				case Schema.BSONBoolean	  : d = new DataBoolean(); 		  d.Parse( value ); Write( ( Boolean ) 	d.Get() ); break;
+				case Schema.BSONChar	  : d = new DataChar();    		  d.Parse( value ); Write( ( Character )d.Get() ); break;
+				case Schema.BSONDate	  : d = new DataDate();    		  d.Parse( value ); Write( ( Long )    	d.Get() ); break;
+				case Schema.BSONTime	  : d = new DataTime();    		  d.Parse( value ); Write( ( Long )    	d.Get() ); break;
+				}
+			}
+			else if ( Data.DataModel.DATASTATE == dataModel ) {
+				DataState d;
+				switch ( type ) {
+				case Schema.BSONString	  : d = new DataStateString();  	   d.Parse( value ); throw new DataStoreException( "not yet supported" );
+				case Schema.BSONString16  : d = new DataStateStringFixed(16);  d.Parse( value ); Write( ( String )  	d.Get(), 16 );  break;
+				case Schema.BSONString32  : d = new DataStateStringFixed(32);  d.Parse( value ); Write( ( String )  	d.Get(), 32 );  break;
+				case Schema.BSONString64  : d = new DataStateStringFixed(64);  d.Parse( value ); Write( ( String )  	d.Get(), 64 );  break;
+				case Schema.BSONString128 : d = new DataStateStringFixed(128); d.Parse( value ); Write( ( String )  	d.Get(), 128 ); break;
+				case Schema.BSONString256 : d = new DataStateStringFixed(256); d.Parse( value ); Write( ( String )  	d.Get(), 256 ); break;
+				case Schema.BSONShort 	  : d = new DataStateShort();   	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Short: " + value );
+																								 else  
+																									Write( ( Short )   	d.Get() ); break;
+				case Schema.BSONInteger	  : d = new DataStateInteger(); 	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Integer: " + value );
+																								  else
+																									Write( ( Integer ) 	d.Get() ); break;
+				case Schema.BSONLong	  : d = new DataStateLong();    	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Long: " + value );
+																								 else
+																									Write( ( Long )    	d.Get() ); break;
+				case Schema.BSONFloat	  : d = new DataStateFloat();   	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Float: " + value );
+																								 else
+																									Write( ( Float )   	d.Get() ); break;
+				case Schema.BSONDouble	  : d = new DataStateDouble(); 	 	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Double: " + value );
+																								 else
+																									Write( ( Double )  	d.Get() ); break;
+				case Schema.BSONBoolean	  : d = new DataStateBoolean(); 	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Boolean: " + value );
+																								 else
+																									Write( ( Boolean ) 	d.Get() ); break;
+				case Schema.BSONChar	  : d = new DataStateChar();    	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Char: " + value );
+																								 else
+																									Write( ( Character ) d.Get() ); break;
+				case Schema.BSONDate	  : d = new DataStateDate();    	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Date: " + value );
+																								 else
+																									Write( ( Long )    	d.Get() ); break;
+				case Schema.BSONTime	  : d = new DataStateTime();    	   d.Parse( value ); if ( d.IsNotValid() ) 
+																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Time: " + value );
+																								 else
+																									Write( ( Long )    	d.Get() ); break;
+				}
+			}
+		}
+		catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
+	}
+	
+	// Implementation for selection fields from data store
+	public ArrayList<Data[]> Select( ArrayList<String> fields )
+		throws DataStoreException, StorageException
+	{
+		ArrayList<Data[]> ret = new ArrayList<Data[]>();
+		
+		if ( null == fields || 0 == fields.size() )
+			return ret;
+		
+		// Get Schema
+		Schema schema = collection.Schema();
+		if ( null == schema )
+			throw new DataStoreException( "DataStoreBinary.Select: schema is null" );
+		
+		ArrayList<Pair<String,Integer>> keyTypes = schema.Keys();
+		if ( null == keyTypes )
+			throw new DataStoreException( "DataStoreBinary.Select: no schema" );
+		
+		// Special case, match all columns
+		int flen = fields.size();
+		int[] fieldOrder = null;
+		if ( 1 == flen && fields.get( 0 ).equals( "*" ) ) {
+			fields = schema.Columns();
+			flen = fields.size();
+		}
+		else {
+			// set the order of the results
+			// TODO
+		}
+		
+		// Go to the beginning of the storage
+		Begin();
+		
+		// Read through the file
+		while ( !Eof() ) {
+			
+			// Check if this is a dirty entry
+			byte clean = ReadByte();
+			if ( 0x0 == clean )
+				continue;
+			
+			// Allocate a result buffer for this row
+			Data[] result = new Data[ flen ];
+				
+			// Get a row at a time
+			for ( Pair<String,Integer> keyType : keyTypes ) {
+
+				String key = keyType.getKey();
+				int i = 0;
+				for (/**/; i < flen; i++ ) {
+					if ( key.equals( fields.get( i ) ) ) {
+						try {
+							Data d;
+							switch ( keyType.getValue() ) {
+							case Schema.BSONString		: throw new DataStoreException( "DataStoreBinary.Select: String unsupported"); 
+							case Schema.BSONString16	: d = new DataStringFixed( 16 );  d.Set( StringNoNull( Read( 16 ) ) );  break;
+							case Schema.BSONString32	: d = new DataStringFixed( 32 );  d.Set( StringNoNull( Read( 32 ) ) );  break;
+							case Schema.BSONString64	: d = new DataStringFixed( 64 );  d.Set( StringNoNull( Read( 64 ) ) );  break;
+							case Schema.BSONString128	: d = new DataStringFixed( 128 ); d.Set( StringNoNull( Read( 128 ) ) ); break;
+							case Schema.BSONString256	: d = new DataStringFixed( 256 ); d.Set( StringNoNull( Read( 256 ) ) ); break;
+							case Schema.BSONShort		: d = new DataShort();			  d.Set( ReadShort() );   	break;
+							case Schema.BSONInteger		: d = new DataInteger();		  d.Set( ReadInt() ); 		break;
+							case Schema.BSONLong		: d = new DataLong();		  	  d.Set( ReadLong() );    	break;
+							case Schema.BSONFloat		: d = new DataFloat();		  	  d.Set( ReadFloat() );    	break;
+							case Schema.BSONDouble		: d = new DataDouble();		  	  d.Set( ReadDouble() );    break;
+							case Schema.BSONBoolean		: d = new DataBoolean();		  d.Set( ReadBoolean() );   break;
+							case Schema.BSONChar		: d = new DataChar();		  	  d.Set( ReadChar() );      break;
+							case Schema.BSONDate		: d = new DataLong();		  	  d.Set( ReadLong() );      break;
+							case Schema.BSONTime		: d = new DataLong();		  	  d.Set( ReadLong() );      break;
+							default						: throw new DataStoreException( "DataStoreBinary.Select: unknown data type" ); 
+							}
+							
+							// place value in result row according to selection order
+							if ( null == fieldOrder )
+								result[ i ] = d;
+							else
+								; // TODO
+							break;
+						}
+						catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
 					}
 				}
-				else if ( Data.DataModel.DATASTATE == dataModel ) {
-					DataState d;
-					switch ( type ) {
-					case Schema.BSONString	  : d = new DataStateString();  	   d.Parse( value ); throw new DataStoreException( "not yet supported" );
-					case Schema.BSONString16  : d = new DataStateStringFixed(16);  d.Parse( value ); Write( ( String )  	d.Get(), 16 );  break;
-					case Schema.BSONString32  : d = new DataStateStringFixed(32);  d.Parse( value ); Write( ( String )  	d.Get(), 32 );  break;
-					case Schema.BSONString64  : d = new DataStateStringFixed(64);  d.Parse( value ); Write( ( String )  	d.Get(), 64 );  break;
-					case Schema.BSONString128 : d = new DataStateStringFixed(128); d.Parse( value ); Write( ( String )  	d.Get(), 128 ); break;
-					case Schema.BSONString256 : d = new DataStateStringFixed(256); d.Parse( value ); Write( ( String )  	d.Get(), 256 ); break;
-					case Schema.BSONShort 	  : d = new DataStateShort();   	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Short: " + value );
-																									 else 
-																										Write( ( Short )   	d.Get() ); break;
-					case Schema.BSONInteger	  : d = new DataStateInteger(); 	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Integer: " + value );
-																									 else
-																										Write( ( Integer ) 	d.Get() ); break;
-					case Schema.BSONLong	  : d = new DataStateLong();    	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Long: " + value );
-																									 else
-																										Write( ( Long )    	d.Get() ); break;
-					case Schema.BSONFloat	  : d = new DataStateFloat();   	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Float: " + value );
-																									 else
-																										Write( ( Float )   	d.Get() ); break;
-					case Schema.BSONDouble	  : d = new DataStateDouble(); 	 	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Double: " + value );
-																									 else
-																										Write( ( Double )  	d.Get() ); break;
-					case Schema.BSONBoolean	  : d = new DataStateBoolean(); 	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Boolean: " + value );
-																									 else
-																										Write( ( Boolean ) 	d.Get() ); break;
-					case Schema.BSONChar	  : d = new DataStateChar();    	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Char: " + value );
-																									else
-																										Write( ( Character ) d.Get() ); break;
-					case Schema.BSONDate	  : d = new DataStateDate();    	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Date: " + value );
-																									 else
-																										Write( ( Long )    	d.Get() ); break;
-					case Schema.BSONTime	  : d = new DataStateTime();    	   d.Parse( value ); if ( d.IsNotValid() ) 
-																										throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Time: " + value );
-																									 else
-																										Write( ( Long )    	d.Get() ); break;
+				
+				// not a selected field, skip past it
+				if ( i == flen ) {
+					switch ( keyType.getValue() ) {
+					case Schema.BSONString16	:	Move( Pos() + 16 );  break;
+					case Schema.BSONString32	:	Move( Pos() + 32 );  break;
+					case Schema.BSONString64	:	Move( Pos() + 64 );  break;
+					case Schema.BSONString128	:	Move( Pos() + 128 ); break;
+					case Schema.BSONString256	:	Move( Pos() + 256 ); break;
+					case Schema.BSONShort		:	Move( Pos() + 2 );   break;
+					case Schema.BSONInteger		:	Move( Pos() + 4 );   break;
+					case Schema.BSONLong		:	Move( Pos() + 8 );   break;
+					case Schema.BSONFloat		:	Move( Pos() + 4 );   break;
+					case Schema.BSONDouble		:	Move( Pos() + 8 );   break;
+					case Schema.BSONBoolean		:	Move( Pos() + 1 );   break;
+					case Schema.BSONChar		:	Move( Pos() + 2 );   break;
+					case Schema.BSONDate		:	Move( Pos() + 8 );   break;
+					case Schema.BSONTime		:	Move( Pos() + 8 );   break;
 					}
 				}
 			}
-			catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
+			
+			// Add the selected fields to the result
+			ret.add( result );
+		}
+		
+		return ret;
 	}
 }
 

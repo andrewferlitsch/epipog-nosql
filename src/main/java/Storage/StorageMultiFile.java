@@ -105,6 +105,9 @@ public class StorageMultiFile implements Storage {
 	
 	// Implementation to Read a line from storage
 	public String ReadLine() throws StorageException { throw new StorageException("unsupported"); }
+	
+	// Implementation for Deleting storage
+	public void Delete() throws StorageException { throw new StorageException("unsupported"); }
 }
 
 

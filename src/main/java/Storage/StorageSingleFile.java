@@ -407,6 +407,29 @@ public class StorageSingleFile implements Storage {
 			throw new StorageException( "StorageSingleFile.Read: Cannot read from storage file" );
 		}
 	}
+
+	// Implementation for Deleting storage
+	public void Delete() 
+		throws StorageException
+	{
+		if ( null == volume )
+			throw new StorageException( "StorageSingleFile.Delete: no volume set" );
+		if ( null == path )
+			throw new StorageException( "StorageSingleFile.Delete: no path set" );
+		
+		String dataFile = volume + "/" + path + ".dat";	
+		
+		// Check if the data file exists
+		File f = new File( dataFile );
+		if ( !f.exists() )
+			return;
+		
+		// Delete the data file
+		try {
+			f.delete();
+		}
+		catch ( SecurityException e ) { throw new StorageException( "StorageSingleFile.Delete: " + e.getMessage() ); }
+	}
 }
 
 

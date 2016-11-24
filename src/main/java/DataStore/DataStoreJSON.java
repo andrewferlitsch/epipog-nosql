@@ -48,7 +48,48 @@ public class DataStoreJSON extends DataStore {
 		// Seek to the end of the Storage
 		long rollback = End();	
 		
-		Write( (byte) '{' );
+		Write( "{ \"clx\": 1," );		
+		
+		// Insert the values
+		int nVals = keyVals.size();
+		for ( Pair<String,Integer> keyType : keyTypes ) {
+			String value = "";
+			for ( Pair<String,String> keyVal : keyVals ) {
+				if ( keyType.getKey().equals( keyVal.getKey() ) ) {
+					value = keyVal.getValue();
+					break;
+				}
+			}
+
+			// Validate the input date according to it's data type
+			if ( validate ) {
+				int type = keyType.getValue();
+				
+				try {
+					value = DataCheck( dataModel, type, value );
+				}
+				catch ( DataStoreException e ) {  
+					// rollback any partial writes
+					Move( rollback );
+					throw new DataStoreException( e.getMessage() );
+				}
+			}
+			
+			// Write Key
+			Write( (byte) '"' );
+			Write( keyType.getValue() );
+			Write( (byte) '"' );
+			Write( (byte) ':' );
+			
+			// Write Value
+			Write( (byte) '"' );
+			Write( value );
+			Write( (byte) '"' );
+			Write( (byte) ',' );
+		}
+		
+		Move( Pos() - 1 );	// remove trailing comma
+		Write( "}\r\n" );
 	}
 	
 	// Method for inserting into datastore by predefined column order
@@ -64,12 +105,11 @@ public class DataStoreJSON extends DataStore {
 			throw new DataStoreException( "DataStoreJSON.InsertC: incorrect number of values" );
 
 		// Seek to the end of the Storage
-		long rollback = End();
-		
+		long rollback = End();			
 		ArrayList<String> columns = collection.Schema().Columns();
 		
 		// Write each key value to storage
-		Write( "{ \"clx\": 1, " );
+		Write( "{ \"clx\": 1," );
 		for ( int i = 0; i < vlen; i++ ) {
 			String value = values.get( i );
 	
@@ -80,10 +120,10 @@ public class DataStoreJSON extends DataStore {
 				try {
 					value = DataCheck( dataModel, type, value );
 				}
-				catch ( DataStoreException e ) { throw new DataStoreException( e.getMessage() ); }
-				finally {
+				catch ( DataStoreException e ) { 
 					// rollback any partial writes
 					Move( rollback );
+					throw new DataStoreException( e.getMessage() ); 
 				}
 			}
 			
@@ -102,7 +142,30 @@ public class DataStoreJSON extends DataStore {
 		}
 		
 		Move( Pos() - 1 );	// remove trailing comma
-		Write( "}\r\n" );
+		Write( "},\r\n" );
+	}
+	
+	// Implementation for selection fields from data store
+	public ArrayList<Data[]> Select( ArrayList<String> fields ) 
+		throws DataStoreException, StorageException
+	{
+		ArrayList<Data[]> ret = new ArrayList<Data[]>();
+		
+		if ( null == fields || 0 == fields.size() )
+			return ret;
+
+		Schema schema = collection.Schema();
+		if ( null == schema )
+			throw new DataStoreException( "DataStoreBinary.Select: schema is null" );
+		
+		// Special case, match all columns
+		if ( 1 == fields.size() && fields.get( 0 ).equals( "*" ) )
+			fields = schema.Columns();
+		
+		// Go to the beginning of the storage
+		Begin();
+		
+		return ret;
 	}
 }
 

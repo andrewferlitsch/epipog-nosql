@@ -101,7 +101,9 @@ public interface Storage {
 	
 	// Method to Read a line from storage
 	public abstract String ReadLine() throws StorageException;
-
+	
+	// Method to Delete storage
+	public abstract void Delete() throws StorageException;
 }
 
 
