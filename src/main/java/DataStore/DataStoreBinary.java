@@ -191,6 +191,7 @@ public class DataStoreBinary extends DataStore {
 		ArrayList<Pair<String,Integer>> keyTypes = schema.Keys();
 		if ( null == keyTypes )
 			throw new DataStoreException( "DataStoreBinary.Select: no schema" );
+		int klen = keyTypes.size();
 		
 		// Special case, match all columns
 		int flen = fields.size();
@@ -201,7 +202,9 @@ public class DataStoreBinary extends DataStore {
 		}
 		else {
 			// set the order of the results
-			// TODO
+			fieldOrder = new int[ flen ];
+			for ( int i = 0; i < flen; i++ ) 
+				fieldOrder[ i ] = schema.ColumnPos( fields.get( i ) ) - 1;
 		}
 		
 		// Go to the beginning of the storage
@@ -219,15 +222,15 @@ public class DataStoreBinary extends DataStore {
 			Data[] result = new Data[ flen ];
 				
 			// Get a row at a time
-			for ( Pair<String,Integer> keyType : keyTypes ) {
+			for ( int k = 0; k < klen; k++ ) {
 
-				String key = keyType.getKey();
+				String key = keyTypes.get( k ).getKey();
 				int i = 0;
 				for (/**/; i < flen; i++ ) {
 					if ( key.equals( fields.get( i ) ) ) {
 						try {
 							Data d;
-							switch ( keyType.getValue() ) {
+							switch ( keyTypes.get( k ).getValue() ) {
 							case Schema.BSONString		: throw new DataStoreException( "DataStoreBinary.Select: String unsupported"); 
 							case Schema.BSONString16	: d = new DataStringFixed( 16 );  d.Set( StringNoNull( Read( 16 ) ) );  break;
 							case Schema.BSONString32	: d = new DataStringFixed( 32 );  d.Set( StringNoNull( Read( 32 ) ) );  break;
@@ -249,8 +252,15 @@ public class DataStoreBinary extends DataStore {
 							// place value in result row according to selection order
 							if ( null == fieldOrder )
 								result[ i ] = d;
-							else
-								; // TODO
+							else {
+								// find the location in the result row to place the value
+								for ( int j = 0; j < flen; j++ ) {
+									if ( fieldOrder[ j ] == k ) {
+										result[ j ] = d;
+										break;
+									}
+								}
+							}
 							break;
 						}
 						catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
@@ -259,7 +269,7 @@ public class DataStoreBinary extends DataStore {
 				
 				// not a selected field, skip past it
 				if ( i == flen ) {
-					switch ( keyType.getValue() ) {
+					switch ( keyTypes.get( k ).getValue() ) {
 					case Schema.BSONString16	:	Move( Pos() + 16 );  break;
 					case Schema.BSONString32	:	Move( Pos() + 32 );  break;
 					case Schema.BSONString64	:	Move( Pos() + 64 );  break;

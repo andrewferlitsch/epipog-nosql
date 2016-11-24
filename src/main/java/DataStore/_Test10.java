@@ -1277,7 +1277,6 @@ public class _Test10 {
 		fields.add( "field12" );
 		try {
 			res = ds.Select( fields );
-			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
@@ -1288,7 +1287,6 @@ public class _Test10 {
 
 		// field order
 		Title( "DataStoreBinary: Select - field order" );
-if ( true ) return;
 		fields = new ArrayList<String>();
 		fields.add( "field8" );
 		fields.add( "field5" );
@@ -1300,6 +1298,10 @@ if ( true ) return;
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.get(0)[ 1 ].Get().equals( "mark"   ) ) Passed(""); else Failed( (String)res.get(0)[ 1 ].Get() );
+		if ( (Long)res.get(0)[ 0 ].Get() == 70000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
+		if ( (Character)res.get(0)[ 3 ].Get() == 'a' ) Passed(""); else Failed( String.valueOf( res.get(0)[ 3 ].Get() ) );
+		if ( (Long)res.get(0)[ 2 ].Get() == 65522000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 2 ].Get() ) );
 	}
 
 	public static void Title( String title ) {

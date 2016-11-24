@@ -163,20 +163,81 @@ public abstract class DataStoreSV extends DataStore {
 			throw new DataStoreException( "DataStoreSV.Select: no schema" );
 		
 		// Special case, match all columns
-		if ( 1 == fields.size() && fields.get( 0 ).equals( "*" ) )
+		int flen = fields.size();
+		int[] fieldOrder = null;
+		if ( 1 == flen && fields.get( 0 ).equals( "*" ) ) {
 			fields = schema.Columns();
+			flen = fields.size();
+		}
+		else {
+			// set the order of the results
+			fieldOrder = new int[ flen ];
+			for ( int i = 0; i < flen; i++ )
+				fieldOrder[ i ] = schema.ColumnPos( fields.get( i ) );
+		}
 		
 		// Go to the beginning of the storage
 		Begin();
 		
-		// Read through the file
+		// Read through the file 
 		String line;
 		while ( (line = ReadLine() ) != null ) {
 			// Check for Dirty
 			if ( line.charAt( 0 ) == 0x0 )
 				continue;
 			
+			// extract the fields from the row
 			ArrayList<String> values = SVParse.Split( line, ',', true, null );
+			
+			// Allocate a result buffer for this row
+			Data[] result = new Data[ flen ];
+			
+			// extract the selected fields (1-based, position 0 is the clean/dirty flag)
+			for ( int i = 0; i < flen; i++ ) {
+				String value;
+				Integer type;
+				
+				// select all values
+				if ( null == fieldOrder ) {
+					value = values.get( i + 1 );
+					type  = schema.GetType( i );
+				}
+				else {
+					// find the location in the result row to place the value
+					value = values.get( fieldOrder[ i ] );
+					type  = schema.GetType( fieldOrder[ i ] - 1 );
+				}
+				
+				Data d = null;
+				try {
+					switch ( type )
+					{
+					case Schema.BSONString		:
+					case Schema.BSONString16	:
+					case Schema.BSONString32	:
+					case Schema.BSONString64	:
+					case Schema.BSONString128	:
+					case Schema.BSONString256	: d = new DataString();  d.Set  ( value ); break;
+					case Schema.BSONShort		: d = new DataShort();   d.Parse( value ); break;
+					case Schema.BSONInteger		: d = new DataInteger(); d.Parse( value ); break;
+					case Schema.BSONLong		: d = new DataLong();    d.Parse( value ); break;
+					case Schema.BSONFloat		: d = new DataFloat();   d.Parse( value ); break;
+					case Schema.BSONDouble		: d = new DataDouble();  d.Parse( value ); break;
+					case Schema.BSONBoolean		: d = new DataBoolean(); d.Parse( value ); break;
+					case Schema.BSONChar		: d = new DataChar();    d.Parse( value ); break;
+					case Schema.BSONDate		: d = new DataDate();    d.Parse( value ); break;
+					case Schema.BSONTime		: d = new DataTime();    d.Parse( value ); break;
+					default						: throw new DataStoreException( "DataStoreSV.Select: unsupported data type" );
+					}
+				}
+				catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
+				
+				// place value in result row according to selection order
+				result[ i ] = d;
+			}	
+			
+			// Add the selected fields to the result
+			ret.add( result );
 		}
 		
 		return ret;
