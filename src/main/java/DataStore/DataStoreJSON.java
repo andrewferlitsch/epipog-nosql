@@ -210,11 +210,44 @@ public class DataStoreJSON extends DataStore {
 					type  = schema.GetType( fieldOrder[ i ] - 1 );
 					name  = schema.GetName( fieldOrder[ i ] - 1 );
 				}
-					
+System.out.println("FIELD " + field );					
 				String[] pair = field.split( ":" );
-				if ( name.equals( pair[ 0 ] ) )
+				String value = pair[ 1 ].substring( 1, pair[ 1 ].length() - 1 );
+System.out.println( "VAL " + value );
+System.out.println( "NAM " +pair[ 0 ].substring( 1, pair[ 0 ].length() - 1 ));
+				if ( !name.equals( pair[ 0 ].substring( 1, pair[ 0 ].length() - 1 ) ) )
 					throw new DataStoreException( "DataStoreJSON.Select: " + pair[ 0 ] );
-			}
+				
+				Data d = null;
+				try {
+					switch ( type )
+					{
+					case Schema.BSONString		:
+					case Schema.BSONString16	:
+					case Schema.BSONString32	:
+					case Schema.BSONString64	:
+					case Schema.BSONString128	:
+					case Schema.BSONString256	: d = new DataString();  d.Set  ( pair[ 1 ] ); break;
+					case Schema.BSONShort		: d = new DataShort();   d.Parse( value ); break;
+					case Schema.BSONInteger		: d = new DataInteger(); d.Parse( pair[ 1 ] ); break;
+					case Schema.BSONLong		: d = new DataLong();    d.Parse( pair[ 1 ] ); break;
+					case Schema.BSONFloat		: d = new DataFloat();   d.Parse( pair[ 1 ] ); break;
+					case Schema.BSONDouble		: d = new DataDouble();  d.Parse( pair[ 1 ] ); break;
+					case Schema.BSONBoolean		: d = new DataBoolean(); d.Parse( pair[ 1 ] ); break;
+					case Schema.BSONChar		: d = new DataChar();    d.Parse( pair[ 1 ] ); break;
+					case Schema.BSONDate		: d = new DataDate();    d.Parse( pair[ 1 ] ); break;
+					case Schema.BSONTime		: d = new DataTime();    d.Parse( pair[ 1 ] ); break;
+					default						: throw new DataStoreException( "DataStoreSV.Select: unsupported data type" );
+					}
+				}
+				catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
+				
+				// place value in result row according to selection order
+				result[ i ] = d;
+			}	
+			
+			// Add the selected fields to the result
+			ret.add( result );
 		}
 		
 		return ret;

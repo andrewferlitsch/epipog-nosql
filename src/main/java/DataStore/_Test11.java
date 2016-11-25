@@ -1161,7 +1161,7 @@ public class _Test11 {
 	}
 		
 	public static void Test_Select() {
-		Title( "DataStoreBinarySV: Select - fixed strings" );
+		Title( "DataStoreSV: Select - fixed strings" );
 		DataStore ds = new DataStoreCSV();
 		Storage s = new StorageSingleFile();
 		s.Storage( "C:/tmp", "goo" );
@@ -1438,7 +1438,6 @@ public class _Test11 {
 		if ( (Character)res.get(0)[ 3 ].Get() == 'a' ) Passed(""); else Failed( String.valueOf( res.get(0)[ 3 ].Get() ) );
 		if ( (Long)res.get(0)[ 2 ].Get() == 65522000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 2 ].Get() ) );
 	}
-
 
 	public static void Title( String title ) {
 		System.out.println( "Test: " + title );
