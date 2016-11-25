@@ -3,6 +3,8 @@
  */
 package epipog.index;
 
+// Interface Definition for Index
+//
 public interface Index {
 	// Method for adding a hashed entry to the index
 	// Return:
