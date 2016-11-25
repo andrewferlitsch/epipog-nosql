@@ -1326,6 +1326,7 @@ public class _Test12 {
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+
 		if ( (Long)res.get(0)[ 0 ].Get() == 1455436800000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Long)res.get(0)[ 1 ].Get() == 65522000 )      Passed(""); else Failed( String.valueOf( res.get(0)[ 1 ].Get() ) );
 	

@@ -78,7 +78,7 @@ public class DataStoreJSON extends DataStore {
 			
 			// Write Key
 			Write( (byte) '"' );
-			Write( keyType.getValue() );
+			Write( keyType.getKey() );
 			Write( (byte) '"' );
 			Write( (byte) ':' );
 			
@@ -210,12 +210,11 @@ public class DataStoreJSON extends DataStore {
 					type  = schema.GetType( fieldOrder[ i ] - 1 );
 					name  = schema.GetName( fieldOrder[ i ] - 1 );
 				}
-System.out.println("FIELD " + field );					
-				String[] pair = field.split( ":" );
-				String value = pair[ 1 ].substring( 1, pair[ 1 ].length() - 1 );
-System.out.println( "VAL " + value );
-System.out.println( "NAM " +pair[ 0 ].substring( 1, pair[ 0 ].length() - 1 ));
-				if ( !name.equals( pair[ 0 ].substring( 1, pair[ 0 ].length() - 1 ) ) )
+			
+				String[] pair = SplitField( field );
+				String value = pair[ 1 ];
+		
+				if ( !name.equals( pair[ 0 ] ) )
 					throw new DataStoreException( "DataStoreJSON.Select: " + pair[ 0 ] );
 				
 				Data d = null;
@@ -227,16 +226,16 @@ System.out.println( "NAM " +pair[ 0 ].substring( 1, pair[ 0 ].length() - 1 ));
 					case Schema.BSONString32	:
 					case Schema.BSONString64	:
 					case Schema.BSONString128	:
-					case Schema.BSONString256	: d = new DataString();  d.Set  ( pair[ 1 ] ); break;
+					case Schema.BSONString256	: d = new DataString();  d.Set  ( value ); break;
 					case Schema.BSONShort		: d = new DataShort();   d.Parse( value ); break;
-					case Schema.BSONInteger		: d = new DataInteger(); d.Parse( pair[ 1 ] ); break;
-					case Schema.BSONLong		: d = new DataLong();    d.Parse( pair[ 1 ] ); break;
-					case Schema.BSONFloat		: d = new DataFloat();   d.Parse( pair[ 1 ] ); break;
-					case Schema.BSONDouble		: d = new DataDouble();  d.Parse( pair[ 1 ] ); break;
-					case Schema.BSONBoolean		: d = new DataBoolean(); d.Parse( pair[ 1 ] ); break;
-					case Schema.BSONChar		: d = new DataChar();    d.Parse( pair[ 1 ] ); break;
-					case Schema.BSONDate		: d = new DataDate();    d.Parse( pair[ 1 ] ); break;
-					case Schema.BSONTime		: d = new DataTime();    d.Parse( pair[ 1 ] ); break;
+					case Schema.BSONInteger		: d = new DataInteger(); d.Parse( value ); break;
+					case Schema.BSONLong		: d = new DataLong();    d.Parse( value ); break;
+					case Schema.BSONFloat		: d = new DataFloat();   d.Parse( value ); break;
+					case Schema.BSONDouble		: d = new DataDouble();  d.Parse( value ); break;
+					case Schema.BSONBoolean		: d = new DataBoolean(); d.Parse( value ); break;
+					case Schema.BSONChar		: d = new DataChar();    d.Parse( value ); break;
+					case Schema.BSONDate		: d = new DataDate();    d.Parse( value ); break;
+					case Schema.BSONTime		: d = new DataTime();    d.Parse( value ); break;
 					default						: throw new DataStoreException( "DataStoreSV.Select: unsupported data type" );
 					}
 				}
@@ -250,6 +249,30 @@ System.out.println( "NAM " +pair[ 0 ].substring( 1, pair[ 0 ].length() - 1 ));
 			ret.add( result );
 		}
 		
+		return ret;
+	}
+	
+	// Method to split a field into name and value pair
+	private String[] SplitField( String field ) {
+		
+		// assumes field is in format name:"value"
+		
+		int len 		 = field.length();
+		if ( field.charAt( len - 1 ) == '}' )
+			len--;
+		
+		// drop (skip) leading and ending double quotes
+		int colon = 1;
+		for ( /**/; colon < len - 2; colon++ ) {
+			char ch = field.charAt( colon );
+			if ( ch == ':' ) {
+				break;
+			}
+		}
+		
+		String[] ret = new String[ 2 ];
+		ret[ 0 ] = field.substring( 0, colon );
+		ret[ 1 ] = field.substring( colon + 2, len - 1 );
 		return ret;
 	}
 }
