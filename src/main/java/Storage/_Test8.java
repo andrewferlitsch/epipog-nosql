@@ -1,4 +1,5 @@
 import epipog.storage.*;
+import epipog.schema.*;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class _Test8 {
 		Test_Close();
 		Test_Seek();
 		Test_ReadWrite();
+		Test_Schema();
 		
 		System.exit( rc );
 	}	
@@ -256,6 +258,58 @@ public class _Test8 {
 		}
 		catch ( StorageException e ) { Failed( e.getMessage() ); }
 	}	
+	
+	public static void Test_Schema() {
+
+		Title( "StorageSingleFile: Write empty Schema" );
+		Storage s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" ); 
+		Schema sc = new SchemaTable();
+		try {
+			s.Open(); 
+			s.Write( sc ); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		
+		Title( "StorageSingleFile: Read empty Schema" );
+		ArrayList<Pair<String,Integer>> keys = null;
+		try {
+			keys = s.ReadSchema(); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		if ( keys.size() == 0 ) Passed(""); else Failed("");
+		
+		Title( "StorageSingleFile: Write non-empty Schema" );
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONString16 ) );
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONString32 ) );
+		keys.add( new Pair<String,Integer>( "field3", Schema.BSONShort ) );
+		try {
+			sc.SetI( keys );
+			s.Write( sc ); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }	
+		
+		Title( "StorageSingleFile: Read non-empty Schema" );
+		try {
+			keys = s.ReadSchema(); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		if ( keys.size() == 3 ) Passed(""); else Failed( String.valueOf( keys.size() ) );
+		if ( keys.get(0).getKey().equals( "field1")) Passed(""); else Failed(keys.get(0).getKey());
+		if ( keys.get(1).getKey().equals( "field2")) Passed(""); else Failed(keys.get(1).getKey());
+		if ( keys.get(2).getKey().equals( "field3")) Passed(""); else Failed(keys.get(2).getKey());
+		if ( keys.get(0).getValue() == Schema.BSONString16 ) Passed(""); else Failed("");
+		if ( keys.get(1).getValue() == Schema.BSONString32 ) Passed(""); else Failed("");
+		if ( keys.get(2).getValue() == Schema.BSONShort ) Passed(""); else Failed("");
+		
+		Title( "StorageSingleFile: Delete schema storage" );
+		try
+		{
+			s.Delete(); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+	}
 
 	public static void Title( String title ) {
 		System.out.println( "Test: " + title );

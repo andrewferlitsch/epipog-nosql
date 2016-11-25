@@ -4,6 +4,10 @@
 package epipog.storage;
 
 import epipog.annotations.*;
+import epipog.schema.Schema;
+
+import javafx.util.Pair;
+import java.util.ArrayList;
 
 // Implementation Layer for Data Storage as a Single File
 //
@@ -108,6 +112,12 @@ public class StorageMultiFile implements Storage {
 	
 	// Implementation for Deleting storage
 	public void Delete() throws StorageException { throw new StorageException("unsupported"); }
+	
+	// Implementation to Write out schema to storage
+	public void Write( Schema schema ) throws StorageException { throw new StorageException("unsupported"); }
+	
+	// Implementation to Read in schema from storage
+	public ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException { throw new StorageException("unsupported"); }
 }
 
 

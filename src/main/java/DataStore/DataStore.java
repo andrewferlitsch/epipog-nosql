@@ -52,6 +52,14 @@ public abstract class DataStore {
 		if ( null != storage ) {
 			// open the data store
 			storage.Open();
+			
+			if ( null != collection ) {
+				// Read in the schema
+				ArrayList<Pair<String,Integer>> keys = storage.ReadSchema();
+// TODO: How to read schema in
+//				if ( keys != null )
+//					collection.Schema( keys );
+			}
 		}
 	}
 	

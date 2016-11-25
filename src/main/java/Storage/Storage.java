@@ -4,6 +4,7 @@
 package epipog.storage;
 
 import epipog.annotations.*;
+import epipog.schema.Schema;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -104,6 +105,12 @@ public interface Storage {
 	
 	// Method to Delete storage
 	public abstract void Delete() throws StorageException;
+	
+	// Method to write a Schema to storage
+	public void Write( Schema schema ) throws StorageException;
+	
+	// Method to Read a Schema from storage
+	public abstract ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException;
 }
 
 

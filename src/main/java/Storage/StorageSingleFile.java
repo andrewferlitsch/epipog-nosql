@@ -4,11 +4,14 @@
 package epipog.storage;
 
 import epipog.annotations.*;
+import epipog.schema.Schema;
 
 import java.io.RandomAccessFile;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
+import javafx.util.Pair;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.UnsupportedEncodingException;
 
@@ -417,18 +420,115 @@ public class StorageSingleFile implements Storage {
 		if ( null == path )
 			throw new StorageException( "StorageSingleFile.Delete: no path set" );
 		
-		String dataFile = volume + "/" + path + ".dat";	
+		String dataFile   = volume + "/" + path + ".dat";	
+		String schemaFile = volume + "/" + path + ".sch";
 		
 		// Check if the data file exists
-		File f = new File( dataFile );
-		if ( !f.exists() )
+		File df = new File( dataFile );
+		if ( !df.exists() )
 			return;
 		
-		// Delete the data file
+		File sf = new File( schemaFile );
+		
+		// Delete the data and schema files
 		try {
-			f.delete();
+			df.delete();
+			sf.delete();
 		}
 		catch ( SecurityException e ) { throw new StorageException( "StorageSingleFile.Delete: " + e.getMessage() ); }
+	}
+	
+	private RandomAccessFile sc = null;		// file pointer for schema storage file
+	
+	// Implementation to Write out schema to storage
+	public void Write( Schema schema ) 
+		throws StorageException
+	{
+		String schemaFile = volume + "/" + path + ".sch";
+		
+		File f = new File( schemaFile );
+		if( f.exists() ) 
+			f.delete();
+		
+		// Open the schema file
+		try
+		{
+			sc = new RandomAccessFile( schemaFile, "rw" );
+		}
+		catch ( FileNotFoundException e ) {
+			throw new StorageException( "SingleFileStorage.Write: Schema File not Found: " + schemaFile );
+		}
+		
+		// Write schema in CSV format
+		ArrayList<Pair<String,Integer>> keys = schema.Keys();
+		if ( keys != null ) {
+			for ( Pair<String,Integer> key : keys ) {
+				try {
+					String value = key.getKey() + "," + key.getValue() + "\r\n";
+					byte[] bytes = value.getBytes();
+					sc.write( bytes, 0, bytes.length );	
+				}
+				catch ( IOException e ) {
+					throw new StorageException( "SingleFileStorage.Write: Cannot write to schema file" );
+				}
+			}
+		}
+		
+		// Close the schema file
+		try {
+			sc.close();
+		}
+		catch ( IOException e )
+		{
+			throw new StorageException( "SingleFileStorage.Write: Cannot close schema file" );
+		}
+	}
+	
+	// Implementation to Read in schema from storage
+	public ArrayList<Pair<String,Integer>> ReadSchema() 
+		throws StorageException
+	{	
+		String schemaFile = volume + "/" + path + ".sch";
+		
+		// check if schema exists yet
+		File f = new File( schemaFile );
+		if( !f.exists() ) 
+			return null;
+	
+		try
+		{
+			sc = new RandomAccessFile( schemaFile, "r" );
+		}
+		catch ( FileNotFoundException e ) {
+			throw new StorageException( "SingleFileStorage.Read: Cannot open schema file: " + schemaFile );
+		}
+		
+		// Allocate list for key/type pairs
+		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
+		
+		// Read in the pairs of key/type
+		try
+		{
+			String line;
+			while ( ( line = sc.readLine() ) != null ) {
+				String[] pair = line.split( "," );
+				keys.add( new Pair( pair[ 0 ], Integer.parseInt( pair[ 1 ] ) ) );
+			}
+		}
+		catch ( IOException e ) {
+			throw new StorageException( "Cannot read from schema file: " + schemaFile );
+		}
+		
+		// Close the schema file
+		try {
+			sc.close();
+		}
+		catch ( IOException e )
+		{
+			throw new StorageException( "SingleFileStorage.Read: Cannot close schema file" );
+		}
+		
+		return keys;
 	}
 }
 
