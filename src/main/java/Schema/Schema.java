@@ -40,7 +40,11 @@ public interface Schema {
 	
 	// Method to find column position in table of key (ordinal ordering: starts at 1)
 	@Getter
-	public Integer ColumnPos( String key );
+	public Integer ColumnPos( String key );	
+	
+	// Method to get name for key at the specified column position in table based schema
+	@Getter
+	public String GetName( Integer pos );
 	
 	// Method to get (BSON) data type for key at the specified column position in table based schema
 	@Getter

@@ -212,6 +212,12 @@ public class SchemaTable implements Schema {
 		return 0;
 	}
 	
+	// Method to get name for key at the specified column position in table based schema
+	@Getter
+	public String GetName( Integer pos ) {
+		return keys.get( pos ).getKey();
+	}
+	
 	// Method to get (BSON) data type for key at the specified column position in table based schema
 	@Getter
 	public Integer GetType( Integer pos ) {

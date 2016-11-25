@@ -8,6 +8,7 @@ import epipog.collection.Collection;
 import epipog.storage.*;
 import epipog.data.*;
 import epipog.schema.*;
+import epipog.parse.SVParse;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class DataStoreJSON extends DataStore {
 		// Seek to the end of the Storage
 		long rollback = End();	
 		
-		Write( "{ \"clx\": 1," );		
+		Write( "{\"clx\":1," );		
 		
 		// Insert the values
 		int nVals = keyVals.size();
@@ -109,7 +110,7 @@ public class DataStoreJSON extends DataStore {
 		ArrayList<String> columns = collection.Schema().Columns();
 		
 		// Write each key value to storage
-		Write( "{ \"clx\": 1," );
+		Write( "{\"clx\":1," );
 		for ( int i = 0; i < vlen; i++ ) {
 			String value = values.get( i );
 	
@@ -156,14 +157,65 @@ public class DataStoreJSON extends DataStore {
 
 		Schema schema = collection.Schema();
 		if ( null == schema )
-			throw new DataStoreException( "DataStoreBinary.Select: schema is null" );
+			throw new DataStoreException( "DataStoreJSON.Select: schema is null" );
 		
 		// Special case, match all columns
-		if ( 1 == fields.size() && fields.get( 0 ).equals( "*" ) )
+		int flen = fields.size();
+		int[] fieldOrder = null;
+		if ( 1 == flen && fields.get( 0 ).equals( "*" ) ) {
 			fields = schema.Columns();
+			flen = fields.size();
+		}
+		else {
+			// set the order of the results
+			fieldOrder = new int[ flen ];
+			for ( int i = 0; i < flen; i++ )
+				fieldOrder[ i ] = schema.ColumnPos( fields.get( i ) );
+		}
 		
 		// Go to the beginning of the storage
 		Begin();
+		
+		// Read each pipe-separated line from storage
+		String line;
+//int nth = 0;
+		while ( null != ( line = ReadLine() ) ) {	// Split the line into columns
+			ArrayList<String> values = SVParse.Split( line, ',', true, null );
+			
+			// Sanity Check on Store
+			if ( '{' != values.get( 0 ).charAt( 0 ) )
+				throw new StorageException( "DataStoreJSON.Select: Bad entry in storage or not a JSON store: " + values.get(0) );
+			
+			// Check if dirty
+			if ( values.get( 0 ).equals("{\"clx\":0") )
+				continue;
+			
+			// Allocate a result buffer for this row
+			Data[] result = new Data[ flen ];
+			
+			// extract the selected fields (1-based, position 0 is the clean/dirty flag)
+			for ( int i = 0; i < flen; i++ ) {
+				String field, name;
+				Integer type;
+				
+				// select all values
+				if ( null == fieldOrder ) {
+					field = values.get( i + 1 );
+					type  = schema.GetType( i );
+					name  = schema.GetName( i );
+				}
+				else {
+					// find the location in the result row to place the value
+					field = values.get( fieldOrder[ i ] );
+					type  = schema.GetType( fieldOrder[ i ] - 1 );
+					name  = schema.GetName( fieldOrder[ i ] - 1 );
+				}
+					
+				String[] pair = field.split( ":" );
+				if ( name.equals( pair[ 0 ] ) )
+					throw new DataStoreException( "DataStoreJSON.Select: " + pair[ 0 ] );
+			}
+		}
 		
 		return ret;
 	}

@@ -320,6 +320,9 @@ public class _Test5 {
 		
 		Title( "SchemaTable: GetType : string");
 		if ( s.GetType( 1 ) == 2 ) Passed(""); else Failed( "Type = " + s.GetType( 1 ) );
+		
+		Title( "SchemaTable: GetName");
+		if ( s.GetName( 1 ).equals("field2") ) Passed(""); else Failed(s.GetName( 1 ) );
 	}
 	
 	public static void Test_StaticMethod() {
