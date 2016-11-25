@@ -193,6 +193,10 @@ public class DataStoreBinary extends DataStore {
 			throw new DataStoreException( "DataStoreBinary.Select: no schema" );
 		int klen = keyTypes.size();
 		
+		// Get the record size, if not already calculated
+		if ( 0 == recordSize )
+			CalcRecordSize( keyTypes );
+		
 		// Special case, match all columns
 		int flen = fields.size();
 		int[] fieldOrder = null;
@@ -215,8 +219,10 @@ public class DataStoreBinary extends DataStore {
 			
 			// Check if this is a dirty entry
 			byte clean = ReadByte();
-			if ( 0x0 == clean )
+			if ( 0x0 == clean ) {
+				Move( recordSize );
 				continue;
+			}
 			
 			// Allocate a result buffer for this row
 			Data[] result = new Data[ flen ];
@@ -293,6 +299,34 @@ public class DataStoreBinary extends DataStore {
 		}
 		
 		return ret;
+	}
+	
+	private int recordSize = 0;	// on-disk size of fixed size record
+	
+	// Method to calculate the byte size of a record
+	private void CalcRecordSize( ArrayList<Pair<String,Integer>> keyTypes )
+		throws DataStoreException
+	{
+		// Sum up the sizes of the fields in the record
+		recordSize = 0;
+		for ( Pair<String,Integer> keyType : keyTypes ) {
+			switch ( keyType.getValue() ) {
+			case Schema.BSONString16	:	recordSize += 16;  break;
+			case Schema.BSONString32	:	recordSize += 32;  break;
+			case Schema.BSONString64	:	recordSize += 64;  break;
+			case Schema.BSONString128	:	recordSize += 128; break;
+			case Schema.BSONString256	:	recordSize += 256; break;
+			case Schema.BSONShort		:	recordSize += 2;   break;
+			case Schema.BSONInteger		:	recordSize += 4;   break;
+			case Schema.BSONLong		:	recordSize += 8;   break;
+			case Schema.BSONFloat		:	recordSize += 4;   break;
+			case Schema.BSONDouble		:	recordSize += 8;   break;
+			case Schema.BSONBoolean		:	recordSize += 1;   break;
+			case Schema.BSONChar		:	recordSize += 2;   break;
+			case Schema.BSONDate		:	recordSize += 8;   break;
+			case Schema.BSONTime		:	recordSize += 8;   break;
+			}
+		}
 	}
 }
 

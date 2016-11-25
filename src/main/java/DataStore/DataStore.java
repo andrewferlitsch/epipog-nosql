@@ -56,9 +56,19 @@ public abstract class DataStore {
 			if ( null != collection ) {
 				// Read in the schema
 				ArrayList<Pair<String,Integer>> keys = storage.ReadSchema();
-// TODO: How to read schema in
-//				if ( keys != null )
-//					collection.Schema( keys );
+
+				if ( null != keys ) {
+					// Allocate a (empty) schema if one does not exist
+					if ( null != collection.Schema() ) {
+						SchemaDynamic sc = new SchemaDynamic();
+						collection.Schema( sc );
+					}
+					
+					// Add the read in schema to the collection
+					try {
+						collection.Schema().SetI( keys );
+					} catch ( SchemaException e ) { throw new StorageException( e.getMessage() ); }
+				}
 			}
 		}
 	}
