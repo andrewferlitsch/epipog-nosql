@@ -394,6 +394,6 @@ public abstract class DataStore {
 	public abstract void InsertC( ArrayList<String> values ) throws DataStoreException, StorageException;
 	
 	// Method for selecting from data store
-	public abstract ArrayList<Data[]> Select( ArrayList<String> fields ) throws DataStoreException, StorageException;
+	public abstract ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> where ) throws DataStoreException, StorageException;
 }
 

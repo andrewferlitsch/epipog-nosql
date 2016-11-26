@@ -1199,7 +1199,7 @@ public class _Test11 {
 		fields.add( "*" );
 		ArrayList<Data[]> res = null;
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1232,7 +1232,7 @@ public class _Test11 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1262,7 +1262,7 @@ public class _Test11 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1291,7 +1291,7 @@ public class _Test11 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1320,7 +1320,7 @@ public class _Test11 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1356,7 +1356,7 @@ public class _Test11 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1411,7 +1411,7 @@ public class _Test11 {
 		fields.add( "field10" );
 		fields.add( "field12" );
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
@@ -1428,7 +1428,7 @@ public class _Test11 {
 		fields.add( "field12" );
 		fields.add( "field10" );
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }

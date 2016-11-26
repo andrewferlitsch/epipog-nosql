@@ -145,7 +145,7 @@ public abstract class DataStoreSV extends DataStore {
 	}
 	
 	// Implementation for selection fields from data store
-	public ArrayList<Data[]> Select( ArrayList<String> fields )  
+	public ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> where )  
 		throws DataStoreException, StorageException
 	{
 		ArrayList<Data[]> ret = new ArrayList<Data[]>();

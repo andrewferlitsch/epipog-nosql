@@ -1200,7 +1200,7 @@ public class _Test12 {
 		fields.add( "*" );
 		ArrayList<Data[]> res = null;
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1233,7 +1233,7 @@ public class _Test12 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1263,7 +1263,7 @@ public class _Test12 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1271,7 +1271,7 @@ public class _Test12 {
 		if ( (Float) res.get(0)[ 0 ].Get() == 10.6F ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Double)res.get(0)[ 1 ].Get() == 22.7 ) Passed(""); else Failed( String.valueOf( res.get(0)[ 1 ].Get() ) );
 	
-		Title( "DataStoreBinary: Select - boolean, char" );
+		Title( "DataStoreJSON: Select - boolean, char" );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", Schema.BSONBoolean ) ); 
 		keys.add( new Pair<String,Integer>( "field2", Schema.BSONChar ) );
@@ -1292,7 +1292,7 @@ public class _Test12 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1300,7 +1300,7 @@ public class _Test12 {
 		if ( (Boolean) res.get(0)[ 0 ].Get() == true ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Character)res.get(0)[ 1 ].Get() == 'c' ) Passed(""); else Failed( String.valueOf( res.get(0)[ 1 ].Get() ) );
 	
-		Title( "DataStoreBinary: Select - date,time" );
+		Title( "DataStoreJSON: Select - date,time" );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", Schema.BSONDate ) ); 
 		keys.add( new Pair<String,Integer>( "field2", Schema.BSONTime ) );
@@ -1321,7 +1321,7 @@ public class _Test12 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1330,7 +1330,7 @@ public class _Test12 {
 		if ( (Long)res.get(0)[ 0 ].Get() == 1455436800000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Long)res.get(0)[ 1 ].Get() == 65522000 )      Passed(""); else Failed( String.valueOf( res.get(0)[ 1 ].Get() ) );
 	
-		Title( "DataStoreBinary: Select - multiple lines" );
+		Title( "DataStoreJSON: Select - multiple lines" );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", Schema.BSONBoolean ) ); 
 		keys.add( new Pair<String,Integer>( "field2", Schema.BSONChar ) ); 
@@ -1358,7 +1358,7 @@ public class _Test12 {
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
@@ -1367,7 +1367,7 @@ public class _Test12 {
 		if ( (Character)res.get(1)[ 1 ].Get() == 'd' ) Passed(""); else Failed( String.valueOf( res.get(1)[ 1 ].Get() ) );
 		if ( (Integer)res.get(1)[ 2 ].Get() == 21 ) Passed(""); else Failed( String.valueOf( res.get(1)[ 2 ].Get() ) );
 
-		Title( "DataStoreBinary: Select - skip fields" );
+		Title( "DataStoreJSON: Select - skip fields" );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", Schema.BSONString16 ) ); 
 		keys.add( new Pair<String,Integer>( "field2", Schema.BSONString32 ) ); 
@@ -1413,7 +1413,7 @@ public class _Test12 {
 		fields.add( "field10" );
 		fields.add( "field12" );
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
@@ -1423,14 +1423,14 @@ public class _Test12 {
 		if ( (Long)res.get(0)[ 3 ].Get() == 65522000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 3 ].Get() ) );
 
 		// field order
-		Title( "DataStoreBinary: Select - field order" );
+		Title( "DataStoreJSON: Select - field order" );
 		fields = new ArrayList<String>();
 		fields.add( "field8" );
 		fields.add( "field5" );
 		fields.add( "field12" );
 		fields.add( "field10" );
 		try {
-			res = ds.Select( fields );
+			res = ds.Select( fields, null );
 			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
