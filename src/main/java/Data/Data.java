@@ -12,8 +12,11 @@ public abstract class Data {
 	public Data() {
 	}
 
-	// Method for getting the data type
+	// Method for getting the data type (as string)
 	public abstract String Type();
+	
+	// Method for getting the data type (as BSON data type)
+	public abstract int BType();
 	
 	// Method of getting the size of the data type
 	public abstract Integer Size();

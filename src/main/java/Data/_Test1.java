@@ -1,5 +1,6 @@
 
 import epipog.data.*;
+import epipog.schema.Schema;
 
 public class _Test1 {
 	static int rc = 0;
@@ -48,6 +49,9 @@ public class _Test1 {
 		
 		Title( "DataShort Type" );
 		if ( v.Type().equals( "short" ) ) Passed(""); else Failed("");
+		
+		Title( "DataShort BType" );
+		if ( v.BType() == Schema.BSONShort ) Passed(""); else Failed("");
 		
 		Title( "DataShort Size" );
 		if ( v.Size() == 2 ) Passed(""); else Failed("");
@@ -177,7 +181,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataInteger Type" );
-		if ( v.Type().equals( "integer" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "integer" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataInteger BType" );
+		if ( v.BType() == Schema.BSONInteger ) Passed(""); else Failed("");
 		
 		Title( "DataInteger Size" );
 		if ( v.Size() == 4 ) Passed(""); else Failed("");
@@ -305,7 +312,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataLong Type" );
-		if ( v.Type().equals( "long" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "long" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataLong BType" );
+		if ( v.BType() == Schema.BSONLong ) Passed(""); else Failed("");
 		
 		Title( "DataLong Size" );
 		if ( v.Size() == 8 ) Passed(""); else Failed("");
@@ -431,7 +441,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataStateShort Type" );
-		if ( v.Type().equals( "short" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "short" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataStateShort BType" );
+		if ( v.BType() == Schema.BSONShort ) Passed(""); else Failed("");
 		
 		Title( "DataStateShort Size" );
 		if ( v.Size() == 2 ) Passed(""); else Failed("");
@@ -661,7 +674,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataStateInteger Type" );
-		if ( v.Type().equals( "integer" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "integer" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataStateInteger BType" );
+		if ( v.BType() == Schema.BSONInteger ) Passed(""); else Failed("");
 		
 		Title( "DataStateInteger Size" );
 		if ( v.Size() == 4 ) Passed(""); else Failed("");
@@ -958,7 +974,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataStateLong Type" );
-		if ( v.Type().equals( "long" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "long" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataStateLong BType" );
+		if ( v.BType() == Schema.BSONLong ) Passed(""); else Failed("");
 		
 		Title( "DataStateLong Size" );
 		if ( v.Size() == 8 ) Passed(""); else Failed("");
@@ -1278,7 +1297,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataFloat Type" );
-		if ( v.Type().equals( "float" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "float" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataFloat BType" );
+		if ( v.BType() == Schema.BSONFloat ) Passed(""); else Failed("");
 		
 		Title( "DataFloat Size" );
 		if ( v.Size() == 4 ) Passed(""); else Failed("");
@@ -1381,7 +1403,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataDouble Type" );
-		if ( v.Type().equals( "double" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "double" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataDouble BType" );
+		if ( v.BType() == Schema.BSONDouble ) Passed(""); else Failed("");
 		
 		Title( "DataDouble Size" );
 		if ( v.Size() == 8 ) Passed(""); else Failed("");
@@ -1484,7 +1509,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataStateFloat Type" );
-		if ( v.Type().equals( "float" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "float" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataStateFloat BType" );
+		if ( v.BType() == Schema.BSONFloat ) Passed(""); else Failed("");
 		
 		Title( "DataStateFloat Size" );
 		if ( v.Size() == 4 ) Passed(""); else Failed("");
@@ -1634,7 +1662,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataStateDouble Type" );
-		if ( v.Type().equals( "double" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "double" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataStateDouble BType" );
+		if ( v.BType() == Schema.BSONDouble ) Passed(""); else Failed("");
 		
 		Title( "DataStateDouble Size" );
 		if ( v.Size() == 8 ) Passed(""); else Failed("");
@@ -1784,10 +1815,13 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataChar Type" );
-		if ( v.Type().equals( "char" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "char" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataChar BType" );
+		if ( v.BType() == Schema.BSONChar ) Passed(""); else Failed("");
 		
 		Title( "DataChar Size" );
-		if ( v.Size() == 1 ) Passed(""); else Failed("");
+		if ( v.Size() == 2 ) Passed(""); else Failed("");
 		
 		Title( "DataChar Set" );
 		v.Set( 'a' ); Passed( "" );
@@ -1893,10 +1927,13 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataStateChar Type" );
-		if ( v.Type().equals( "char" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "char" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataStateChar BType" );
+		if ( v.BType() == Schema.BSONChar ) Passed(""); else Failed("");
 		
 		Title( "DataStateChar Size" );
-		if ( v.Size() == 1 ) Passed(""); else Failed("");
+		if ( v.Size() == 2 ) Passed(""); else Failed("");
 		
 		Title( "DataStateChar Set" );
 		v.Set( 'a' ); Passed( "" );
@@ -2028,7 +2065,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataString Type" );
-		if ( v.Type().equals( "string" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "string" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataString BType" );
+		if ( v.BType() == Schema.BSONString ) Passed(""); else Failed("");
 		
 		Title( "DataString Size (empty)" );
 		if ( v.Size() == 0 ) Passed(""); else Failed("");
@@ -2165,7 +2205,10 @@ public class _Test1 {
 		Passed( "" );
 		
 		Title( "DataStateString Type" );
-		if ( v.Type().equals( "string" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "string" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataStateString BType" );
+		if ( v.BType() == Schema.BSONString ) Passed(""); else Failed("");
 		
 		Title( "DataStateString Size (empty)" );
 		if ( v.Size() == 0 ) Passed(""); else Failed("");
@@ -2302,19 +2345,22 @@ public class _Test1 {
 		
 		Title( "DataStringFixed Constructor ( size > 0 )");
 		try {
-			v = new DataStringFixed( 10 ); Passed("");
+			v = new DataStringFixed( 16 ); Passed("");
 		} catch ( DataException e ) { Failed( "" ); }
 		
 		Title( "DataStringFixed Type" );
-		if ( v.Type().equals( "string(10)" ) ) Passed(""); else Failed("");
+		if ( v.Type().equals( "string(16)" ) ) Passed(""); else Failed("");	
+		
+		Title( "DataStateFixed BType" );
+		if ( v.BType() == Schema.BSONString16 ) Passed(""); else Failed("");
 		
 		Title( "DataStringFixed Size" );
-		if ( v.Size() == 10 ) Passed(""); else Failed("");
+		if ( v.Size() == 16 ) Passed(""); else Failed("");
 		
 		Title( "DataStringFixed Set" );
 		try {
 			v.Set( "abc" ); Passed( "" );
-			if ( v.Size() == 10 ) Passed(""); else Failed("");
+			if ( v.Size() == 16 ) Passed(""); else Failed("");
 		}
 		catch ( DataException e ) { Failed( "exception" ); }
 		
@@ -2339,7 +2385,7 @@ public class _Test1 {
 		if ( v.Get() == "0123456789" ) Passed(""); else Failed("");
 		
 		Title( "DataStringFixed Parse > size" );
-		try { v.Parse( "01234567890" ); Failed( "exception" ); } 
+		try { v.Parse( "12345678901234567" ); Failed( "no exception" ); } 
 		catch ( DataException e ) { Passed( "" ); }
 		
 		Title( "DataStringFixed EQ true" );
@@ -2447,6 +2493,24 @@ public class _Test1 {
 			a[ 1 ].Set( "efg" ); 
 		} catch ( DataException e ) { Failed( "exception" ); }
 		if ( !v.IN( a ) ) Passed(""); else Failed("");
+		
+		Title( "DataStateFixed BType(32)" );
+		try {
+			v = new DataStringFixed( 32 ); Passed("");
+		} catch ( DataException e ) { Failed( "" ); }
+		if ( v.BType() == Schema.BSONString32 ) Passed(""); else Failed("");
+		
+		Title( "DataStateFixed BType(64)" );
+		try {
+			v = new DataStringFixed( 64 ); Passed("");
+		} catch ( DataException e ) { Failed( "" ); }
+		if ( v.BType() == Schema.BSONString64 ) Passed(""); else Failed("");
+		
+		Title( "DataStateFixed BType(128)" );
+		try {
+			v = new DataStringFixed( 128 ); Passed("");
+		} catch ( DataException e ) { Failed( "" ); }
+		if ( v.BType() == Schema.BSONString128 ) Passed(""); else Failed("");
 	}
 	
 	public static void Test_DataStateStringFixed() {
@@ -2608,6 +2672,9 @@ public class _Test1 {
 		Title( "DataBoolean Type" );
 		if ( v.Type().equals( "boolean" ) ) Passed(""); else Failed("");
 		
+		Title( "DataBoolean BType" );
+		if ( v.BType() == Schema.BSONBoolean ) Passed(""); else Failed("");
+		
 		Title( "DataBoolean Size" );
 		if ( v.Size() == 1 ) Passed(""); else Failed("");
 		
@@ -2687,6 +2754,9 @@ public class _Test1 {
 		
 		Title( "DataStateBoolean Type" );
 		if ( v.Type().equals( "boolean" ) ) Passed(""); else Failed("");
+		
+		Title( "DataBoolean BType" );
+		if ( v.BType() == Schema.BSONBoolean ) Passed(""); else Failed("");
 		
 		Title( "DataStateBoolean Size" );
 		if ( v.Size() == 1 ) Passed(""); else Failed("");
@@ -2845,6 +2915,9 @@ public class _Test1 {
 		Title( "DataTime Type" );
 		if ( v.Type().equals( "time" ) ) Passed(""); else Failed("");
 		
+		Title( "DataTime BType" );
+		if ( v.BType() == Schema.BSONTime ) Passed(""); else Failed("");
+		
 		Title( "DataTime Size" );
 		if ( v.Size() == 8 ) Passed(""); else Failed("");
 		
@@ -2981,6 +3054,9 @@ public class _Test1 {
 		
 		Title( "DataStateTime Type" );
 		if ( v.Type().equals( "time" ) ) Passed(""); else Failed("");
+		
+		Title( "DataStateTime BType" );
+		if ( v.BType() == Schema.BSONTime ) Passed(""); else Failed("");
 		
 		Title( "DataStateTime Size" );
 		if ( v.Size() == 8 ) Passed(""); else Failed("");
@@ -3130,6 +3206,9 @@ public class _Test1 {
 		Title( "DataDate Type" );
 		if ( v.Type().equals( "date" ) ) Passed(""); else Failed("");
 		
+		Title( "DataDate BType" );
+		if ( v.BType() == Schema.BSONDate ) Passed(""); else Failed("");
+		
 		Title( "DataDate Size" );
 		if ( v.Size() == 8 ) Passed(""); else Failed("");
 		
@@ -3247,6 +3326,9 @@ public class _Test1 {
 		
 		Title( "DataStateDate Type" );
 		if ( v.Type().equals( "date" ) ) Passed(""); else Failed("");
+		
+		Title( "DataStateDate BType" );
+		if ( v.BType() == Schema.BSONDate ) Passed(""); else Failed("");
 		
 		Title( "DataStateDate Size" );
 		if ( v.Size() == 8 ) Passed(""); else Failed("");

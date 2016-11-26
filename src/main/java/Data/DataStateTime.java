@@ -2,6 +2,8 @@
  * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
  */
 package epipog.data;
+
+import epipog.schema.Schema;
  
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
@@ -14,6 +16,11 @@ public class DataStateTime extends DataState {
 	// Implementation for getting the data type
 	public String Type() {
 		return "time";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONTime;
 	}
 	
 	// Implementation for getting the size of the data type

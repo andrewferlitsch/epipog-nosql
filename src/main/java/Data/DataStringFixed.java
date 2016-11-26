@@ -3,6 +3,8 @@
  */
 package epipog.data;
 
+import epipog.schema.Schema;
+
 // Implementation for Accessing Data Item of type String
 //
 public class DataStringFixed extends DataString {
@@ -21,6 +23,19 @@ public class DataStringFixed extends DataString {
 	@Override
 	public String Type() {
 		return "string(" + maxLength + ")";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	@Override
+	public int BType() {
+		switch ( maxLength ) {
+		case 16 : return Schema.BSONString16;
+		case 32 : return Schema.BSONString32;
+		case 64 : return Schema.BSONString64;
+		case 128: return Schema.BSONString128;
+		case 256: return Schema.BSONString256;
+		default : return Schema.BSONString;
+		}
 	}
 	
 	// Implementation for getting the size of the data type (can be overridden)

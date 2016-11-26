@@ -2,6 +2,8 @@
  * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
  */
 package epipog.data;
+
+import epipog.schema.Schema;
  
 // Implementation for Accessing Data Item of type Double
 //
@@ -9,6 +11,11 @@ public class DataStateDouble extends DataState {
 	// Implementation for getting the data type
 	public String Type() {
 		return "double";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONDouble;
 	}
 	
 	// Implementation for getting the size of the data type

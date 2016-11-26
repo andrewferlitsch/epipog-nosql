@@ -3,6 +3,8 @@
  */
 package epipog.data;
 
+import epipog.schema.Schema;
+
 // Iplementation for Accessing Data Item of type Short
 //
 public class DataShort extends Data {
@@ -10,6 +12,11 @@ public class DataShort extends Data {
 	// Implementation for getting the data type
 	public String Type() {
 		return "short";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONShort;
 	}
 	
 	// Implementation for getting the size of the data type

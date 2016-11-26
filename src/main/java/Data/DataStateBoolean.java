@@ -3,6 +3,8 @@
  */
 package epipog.data;
 
+import epipog.schema.Schema;
+
 // Implementation for Accessing Data Item of type Boolean
 //
 public class DataStateBoolean extends DataState {
@@ -10,6 +12,11 @@ public class DataStateBoolean extends DataState {
 	// Implementation for getting the data type
 	public String Type() {
 		return "boolean";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONBoolean;
 	}
 	
 	// Implementation for getting the size of the data type

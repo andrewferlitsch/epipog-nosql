@@ -3,9 +3,19 @@
  */
 package epipog.index;
 
+import epipog.data.Data;
+
 // Interface Definition for Index
 //
 public interface Index {
+	public default int Hash( Data value ) {
+		switch ( value.Type() ) {
+		case "string": break;
+		}
+		
+		return 0;
+	}
+	
 	// Method for adding a hashed entry to the index
 	// Return:
 	//	-1 : new entry (not found)

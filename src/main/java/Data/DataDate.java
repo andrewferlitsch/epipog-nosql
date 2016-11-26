@@ -2,6 +2,8 @@
  * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
  */
 package epipog.data;
+
+import epipog.schema.Schema;
  
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
@@ -14,6 +16,11 @@ public class DataDate extends Data {
 	// Implementation for getting the data type
 	public String Type() {
 		return "date";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONDate;
 	}
 	
 	// Implementation for getting the size of the data type

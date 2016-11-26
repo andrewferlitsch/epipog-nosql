@@ -3,6 +3,8 @@
  */
 package epipog.data;
 
+import epipog.schema.Schema;
+
 // Implementation for Accessing Data Item of type Integer
 //
 public class DataInteger extends Data {
@@ -10,6 +12,11 @@ public class DataInteger extends Data {
 	// Implementation for getting the data type
 	public String Type() {
 		return "integer";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONInteger;
 	}
 	
 	// Implementation for getting the size of the data type

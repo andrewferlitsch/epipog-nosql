@@ -3,12 +3,19 @@
  */
 package epipog.data;
 
+import epipog.schema.Schema;
+
 // Implementation for Accessing Data Item of type Long
 //
 public class DataStateLong extends DataState {
 	// Implementation for getting the data type
 	public String Type() {
 		return "long";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONLong;
 	}
 	
 	// Implementation for getting the size of the data type

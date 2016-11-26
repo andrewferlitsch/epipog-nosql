@@ -3,6 +3,8 @@
  */
 package epipog.data;
 
+import epipog.schema.Schema;
+
 // Implementation for Accessing Data Item of type String
 //
 public class DataString extends Data {
@@ -11,6 +13,11 @@ public class DataString extends Data {
 	// Implementation for getting the data type (can be overwritten)
 	public String Type() {
 		return "string";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONString;
 	}
 	
 	// Implementation for getting the size of the data type (can be overridden)

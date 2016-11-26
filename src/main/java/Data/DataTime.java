@@ -3,6 +3,8 @@
  */
 package epipog.data;
 
+import epipog.schema.Schema;
+
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,6 +16,11 @@ public class DataTime extends Data {
 	// Implementation for getting the data type
 	public String Type() {
 		return "time";
+	}
+	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONTime;
 	}
 	
 	// Implementation for getting the size of the data type

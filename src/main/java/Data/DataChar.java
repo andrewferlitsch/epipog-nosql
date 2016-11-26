@@ -3,6 +3,8 @@
  */
 package epipog.data;
 
+import epipog.schema.Schema;
+
 // Implementation for Accessing Data Item of type char
 //
 public class DataChar extends Data {
@@ -12,9 +14,14 @@ public class DataChar extends Data {
 		return "char";
 	}
 	
+	// Method for getting the data type (as BSON data type)
+	public int BType() {
+		return Schema.BSONChar;
+	}
+	
 	// Implementation for getting the size of the data type
 	public Integer Size() {
-		return 1;
+		return 2;
 	}
 
 	// Implementation for getting the value of the data item
