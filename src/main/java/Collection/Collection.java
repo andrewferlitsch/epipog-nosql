@@ -8,15 +8,16 @@ import epipog.index.Index;
 import epipog.datastore.*;
 import epipog.storage.*;
 import epipog.annotations.*;
+import epipog.data.Data;
 
 import java.util.ArrayList;
 
 // Implemented Layer for Collections
 public class Collection {
-	private String 	  collectionName;	// Name of the Collection
-	private Schema 	  schema;			// Schema associated with the collection
-	private Index  	  index;			// Index(s) for collection
-	private DataStore store;			// Data Store for collection
+	private String 	  			collectionName;	// Name of the Collection
+	private Schema 	  			schema;			// Schema associated with the collection
+	private ArrayList<Index>  	indices;		// Index(s) for collection
+	private DataStore 			store;			// Data Store for collection
 	
 	// Constructor
 	@Constructor
@@ -38,12 +39,16 @@ public class Collection {
 	
 	// Set (assign) a data store for this collection
 	@Setter
-	public void Store( DataStore store ) {
-		this.store = store;
-		
+	public void Store( DataStore store ) 
+		throws CollectionException
+	{
 		// Pass this collection to the underlying data store
-		if ( null != store )
+		if ( null == this.store ) {
 			store.Collection( this );
+			this.store = store;
+		}
+		else
+			throw new CollectionException( "Collection.Store: Data store already set" );
 	}
 	
 	// Get the data store assigned to this collection

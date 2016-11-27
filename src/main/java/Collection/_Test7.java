@@ -33,11 +33,21 @@ public class _Test7 {
 		
 		Title( "Collection: Set DataStore");
 		DataStore d = new DataStoreBinary();
-		c.Store( d );
-		Passed("");
+		try {
+			c.Store( d );
+			Passed("");
+		}
+		catch (CollectionException e ) { Failed("");}
 		
 		Title( "Collection: Get Store");
 		if ( null != c.Store() ) Passed( ""); else Failed("");
+		
+		Title( "Collection: Store already set");
+		try {
+			c.Store( d );
+			Failed("no exception");
+		}
+		catch (CollectionException e ) { Passed("");}
 	}
 	
 	public static void Test_Insert() {
@@ -47,7 +57,11 @@ public class _Test7 {
 		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
 		c.Schema( s );
 		DataStore d = new DataStoreBinary();
-		c.Store( d );
+		try {
+			c.Store( d );
+			Passed("");
+		}
+		catch (CollectionException e ) { Failed("");}
 		ArrayList<String> v = new ArrayList<String>();
 		try {
 			c.Insert( v ); Passed("");
@@ -94,7 +108,7 @@ public class _Test7 {
 		}
 		catch ( CollectionException e ) { Passed(""); }
 	}
-	
+
 	public static void Test_Parse() {
 		Title( "Collection: Parse headings only" );
 		Collection c = new Collection( "foobar" );
@@ -113,7 +127,11 @@ public class _Test7 {
 		p = new CSVParse( "tests\\7a.txt" );
 		p.Collection( c );
 		DataStore d = new DataStoreBinary();
-		c.Store( d );
+		try {
+			c.Store( d );
+			Passed("");
+		}
+		catch (CollectionException e ) { Failed("");}
 		p.Reader( Reader.ReaderType.READERMEM );
 		try {
 			p.Open();
@@ -159,7 +177,11 @@ public class _Test7 {
 		}
 		catch ( SchemaException e ) { Failed(e.getMessage() ); }
 		c.Schema( s );
-		c.Store( d );
+		try {
+			c.Store( d );
+			Passed("");
+		}
+		catch (CollectionException e ) { Failed("");}
 		p = new CSVParse( "tests\\7a.txt" );
 		p.Collection( c );
 		p.Reader( Reader.ReaderType.READERMEM );
@@ -183,7 +205,11 @@ public class _Test7 {
 		}
 		catch ( SchemaException e ) { Failed(e.getMessage() ); }
 		c.Schema( s );
-		c.Store( d );
+		try {
+			c.Store( d );
+			Passed("");
+		}
+		catch (CollectionException e ) { Failed("");}
 		p = new CSVParse( "tests\\7a.txt" );
 		p.Collection( c );
 		p.Reader( Reader.ReaderType.READERMEM );

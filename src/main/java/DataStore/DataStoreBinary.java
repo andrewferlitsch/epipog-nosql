@@ -174,7 +174,7 @@ public class DataStoreBinary extends DataStore {
 		catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
 	}
 	
-	// Implementation for selection fields from data store
+	// Implementation for selecting fields from data store
 	public ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> where )
 		throws DataStoreException, StorageException
 	{
