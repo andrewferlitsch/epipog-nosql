@@ -845,7 +845,10 @@ public class _Test3 {
 		p = new CSVParse( "tests\\3aa.txt" );
 		c = new Collection( "foobar" );
 		DataStore d = new DataStoreCSV();
-		c.Store( d );
+		try {
+			c.Store( d );
+		}
+		catch ( CollectionException e ) { Failed( e.getMessage() ); }
 		p.Collection( c );
 		p.LinkedCSV( true );
 		try { 
