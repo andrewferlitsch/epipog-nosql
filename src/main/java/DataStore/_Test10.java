@@ -34,6 +34,30 @@ public class _Test10 {
 		Collection c = new Collection( "foobar" );
 		ds.Collection( c );
 		Passed("");
+		
+		Title( "DataStoreBinary: Delete Collection");
+		s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" );
+		ds.Storage( s );
+		c = new Collection( "foobar" );
+		Schema sc = new SchemaTable();
+		c.Schema( sc );
+		ds.Collection( c );
+		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONString16 ) ); 
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		try {
+			ds.Open();
+			ds.Close(); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		try {
+			ds.Delete(); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
 	}		
 	
 	public static void Test_InsertC() {

@@ -80,6 +80,10 @@ public abstract class DataStore {
 		if ( null != storage ) {
 			// close the data store
 			storage.Close();
+			
+			if ( null != collection ) {
+				storage.Write( collection.Schema() );
+			}
 		}
 	}
 	
@@ -296,6 +300,14 @@ public abstract class DataStore {
 		if ( null != storage )
 			return storage.ReadLine();
 		return null;
+	}
+	
+	// Delete the collection from storage
+	public void Delete() 
+		throws StorageException
+	{
+		if ( null != storage )
+			storage.Delete();
 	}
 	
 	// Method to verify string representation of data according to data type
