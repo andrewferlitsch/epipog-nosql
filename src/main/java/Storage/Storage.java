@@ -5,6 +5,7 @@ package epipog.storage;
 
 import epipog.annotations.*;
 import epipog.schema.Schema;
+import epipog.datastore.DataStore;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -105,6 +106,14 @@ public interface Storage {
 	
 	// Method to Delete storage
 	public abstract void Delete() throws StorageException;
+	
+	// Method to set a data store associated with this storage instance
+	@Setter
+	public void DataStoreType( DataStore dataStore );
+	
+	// Method to get the data store associated with this storage instance
+	@Getter
+	public String DataStoreType();
 	
 	// Method to write a Schema to storage
 	public void Write( Schema schema ) throws StorageException;

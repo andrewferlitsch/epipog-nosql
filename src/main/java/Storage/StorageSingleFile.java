@@ -5,6 +5,7 @@ package epipog.storage;
 
 import epipog.annotations.*;
 import epipog.schema.Schema;
+import epipog.datastore.*;
 
 import java.io.RandomAccessFile;
 import java.io.FileNotFoundException;
@@ -281,7 +282,8 @@ public class StorageSingleFile implements Storage {
 		throws StorageException
 	{
 		Write( value + "\r\n" );	
-	}	
+	}
+	
 	// Implementation to Read a String from storage
 	public String Read( int length )
 		throws StorageException	
@@ -438,7 +440,20 @@ public class StorageSingleFile implements Storage {
 		catch ( SecurityException e ) { throw new StorageException( "StorageSingleFile.Delete: " + e.getMessage() ); }
 	}
 	
-	private RandomAccessFile sc = null;		// file pointer for schema storage file
+	private RandomAccessFile sc  = null;		// file pointer for schema storage file
+	private String dataStoreType = "undefined";	// data store type associated with this storage
+	
+	// Method to set a data store associated with this storage instance
+	@Setter
+	public void DataStoreType( DataStore dataStore ) {
+		dataStoreType = dataStore.getClass().getSimpleName();
+	}
+	
+	// Method to get the data store associated with this storage instance
+	@Getter
+	public String DataStoreType() {
+		return dataStoreType;
+	}
 	
 	// Implementation to Write out schema to storage
 	public void Write( Schema schema ) 
@@ -459,13 +474,23 @@ public class StorageSingleFile implements Storage {
 			throw new StorageException( "SingleFileStorage.Write: Schema File not Found: " + schemaFile );
 		}
 		
+		// First entry is the data store type
+		String value = "datastore," + dataStoreType + "\r\n";
+		byte[] bytes = value.getBytes();
+		try {
+			sc.write( bytes, 0, bytes.length );	
+		}
+		catch ( IOException e ) {
+			throw new StorageException( "SingleFileStorage.Write: Cannot write to schema file" );
+		}
+		
 		// Write schema in CSV format
 		ArrayList<Pair<String,Integer>> keys = schema.Keys();
 		if ( keys != null ) {
 			for ( Pair<String,Integer> key : keys ) {
 				try {
-					String value = key.getKey() + "," + key.getValue() + "\r\n";
-					byte[] bytes = value.getBytes();
+					value = key.getKey() + "," + key.getValue() + "\r\n";
+					bytes = value.getBytes();
 					sc.write( bytes, 0, bytes.length );	
 				}
 				catch ( IOException e ) {
@@ -502,16 +527,24 @@ public class StorageSingleFile implements Storage {
 		catch ( FileNotFoundException e ) {
 			throw new StorageException( "SingleFileStorage.Read: Cannot open schema file: " + schemaFile );
 		}
-		
+
 		// Allocate list for key/type pairs
 		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
 		
 		// Read in the pairs of key/type
 		try
 		{
-			String line;
+			// Read the data store type
+			String line = sc.readLine();
+			String[] pair;
+			if ( null != line ) {
+				pair = line.split( "," );
+				dataStoreType = pair[ 1 ];
+			}
+
+			// Read the Schema
 			while ( ( line = sc.readLine() ) != null ) {
-				String[] pair = line.split( "," );
+				pair = line.split( "," );
 				keys.add( new Pair( pair[ 0 ], Integer.parseInt( pair[ 1 ] ) ) );
 			}
 		}

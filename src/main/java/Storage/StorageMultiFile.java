@@ -5,6 +5,7 @@ package epipog.storage;
 
 import epipog.annotations.*;
 import epipog.schema.Schema;
+import epipog.datastore.DataStore;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -112,6 +113,21 @@ public class StorageMultiFile implements Storage {
 	
 	// Implementation for Deleting storage
 	public void Delete() throws StorageException { throw new StorageException("unsupported"); }
+	
+	private String dataStoreType = "undefined";	// data store type associated with this storage
+	
+	// Method to set a data store associated with this storage instance
+	@Setter
+	public void DataStoreType( DataStore dataStore ) {
+		dataStoreType = dataStore.getClass().getSimpleName();
+	}
+	
+	// Method to get the data store associated with this storage instance
+	@Getter
+	public String DataStoreType() {
+		return dataStoreType;
+	}
+	
 	
 	// Implementation to Write out schema to storage
 	public void Write( Schema schema ) throws StorageException { throw new StorageException("unsupported"); }

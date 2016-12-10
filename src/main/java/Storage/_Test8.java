@@ -1,5 +1,6 @@
 import epipog.storage.*;
 import epipog.schema.*;
+import epipog.datastore.*;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -309,6 +310,18 @@ public class _Test8 {
 			s.Delete(); Passed("");
 		}
 		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		
+		Title( "StorageSingleFile: Set DataStoreType");
+		DataStore ds = new DataStoreBinary();
+		s.DataStoreType( ds ); Passed("");
+		
+		Title( "StorageSingleFile: Get DataStoreType");
+		if ( s.DataStoreType().equals( "DataStoreBinary") ) Passed(""); else Failed( s.DataStoreType() );
+	
+		Title( "StorageSingleFile: get DataStoreType after storage attached to datastore" );
+		ds = new DataStoreJSON();
+		ds.Storage( s );
+		if ( s.DataStoreType().equals( "DataStoreJSON") ) Passed(""); else Failed( s.DataStoreType() );
 	}
 
 	public static void Title( String title ) {

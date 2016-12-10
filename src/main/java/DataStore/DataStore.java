@@ -31,6 +31,10 @@ public abstract class DataStore {
 	@Setter
 	public void Storage( Storage storage ) {
 		this.storage = storage;
+		
+		// Set the DataStore type associated with the Storage
+		if ( storage != null )
+			storage.DataStoreType( this );
 	}
 	
 	// Method to set the data model to use for validating input
