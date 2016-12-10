@@ -57,6 +57,18 @@ public class Collection {
 		return store;
 	}
 	
+	// Delete a collection from Storage
+	public void DeleteCollection() 
+		throws CollectionException
+	{
+		if ( null != store ) {
+			try {
+				store.Delete();
+			}
+			catch ( StorageException e   ) { throw new CollectionException( e.getMessage() ); }
+		}
+	}
+	
 	// Method to insert column data, where order of fields is same as in schema
 	public void Insert( ArrayList<String> values ) 
 		throws CollectionException

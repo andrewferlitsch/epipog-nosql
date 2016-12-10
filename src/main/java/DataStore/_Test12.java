@@ -1439,6 +1439,8 @@ public class _Test12 {
 		if ( (Long)res.get(0)[ 0 ].Get() == 70000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Character)res.get(0)[ 3 ].Get() == 'a' ) Passed(""); else Failed( String.valueOf( res.get(0)[ 3 ].Get() ) );
 		if ( (Long)res.get(0)[ 2 ].Get() == 65522000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 2 ].Get() ) );
+	
+		try {ds.Delete();} catch (StorageException e) {}
 	}
 
 	public static void Title( String title ) {

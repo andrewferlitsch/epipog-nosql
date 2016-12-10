@@ -2,6 +2,7 @@ import epipog.collection.*;
 import epipog.parse.*;
 import epipog.schema.*;
 import epipog.datastore.*;
+import epipog.storage.*;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -48,6 +49,25 @@ public class _Test7 {
 			Failed("no exception");
 		}
 		catch (CollectionException e ) { Passed("");}
+
+		Title( "Collection: Delete Collection");
+		ArrayList<String> k = new ArrayList<String>();
+		k.add( "field1" );
+		try { c.Schema().Set( k ); } catch ( SchemaException e ) {}
+		Storage st = new StorageSingleFile();
+		st.Storage( "C:/tmp", "foo" );
+		try
+		{
+			d.Storage( st );
+			d.Open();
+			d.Close(); Passed("");
+		}
+		catch ( StorageException e ) { Failed(e.getMessage());}
+		
+		try {
+			c.DeleteCollection(); Passed("");
+		}
+		catch ( CollectionException e ) { Failed(e.getMessage());}
 	}
 	
 	public static void Test_Insert() {
