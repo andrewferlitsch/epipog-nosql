@@ -459,6 +459,9 @@ public class StorageSingleFile implements Storage {
 	public void Write( Schema schema ) 
 		throws StorageException
 	{
+		if ( null == schema )
+			return;
+		
 		String schemaFile = volume + "/" + path + ".sch";
 		
 		File f = new File( schemaFile );

@@ -261,11 +261,20 @@ public class _Test8 {
 	}	
 	
 	public static void Test_Schema() {
-
-		Title( "StorageSingleFile: Write empty Schema" );
+		Title( "StorageSingleFile: Write null Schema" );
 		Storage s = new StorageSingleFile();
 		s.Storage( "C:/tmp", "foo" ); 
-		Schema sc = new SchemaTable();
+		Schema sc = null;
+		try {
+			s.Open(); 
+			s.Write( sc ); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		
+		Title( "StorageSingleFile: Write empty Schema" );
+		s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" ); 
+		sc = new SchemaTable();
 		try {
 			s.Open(); 
 			s.Write( sc ); Passed("");

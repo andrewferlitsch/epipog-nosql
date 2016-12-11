@@ -1159,6 +1159,8 @@ public class _Test12 {
 		}
 		catch ( DataStoreException e ) { Passed(""); }
 		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		try {ds.Delete();} catch (StorageException e) {}
 	}
 		
 	public static void Test_Select() {

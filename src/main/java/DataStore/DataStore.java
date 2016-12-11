@@ -63,7 +63,7 @@ public abstract class DataStore {
 
 				if ( null != keys ) {
 					// Allocate a (empty) schema if one does not exist
-					if ( null != collection.Schema() ) {
+					if ( null == collection.Schema() ) {
 						SchemaDynamic sc = new SchemaDynamic();
 						collection.Schema( sc );
 					}

@@ -1,7 +1,10 @@
 set BUILD=..\..\..\..\build
 javac -d %BUILD% -cp %BUILD%;%BUILD%\classes\main *.java
 
+echo off
 IF %ERRORLEVEL% NEQ 1 (  
+	del \tmp\*.dat \tmp\*.sch
+
 	java -cp .;%BUILD% _Test10 >out
 	type out | find "FAILED"
 	type out | find "Test:" /c >res
@@ -23,4 +26,6 @@ IF %ERRORLEVEL% NEQ 1 (
 	@set /a tc=%t10% + %t11% + %t12%
 	@echo TC %tc%
 	del out res
+	
+	del \tmp\*.dat \tmp\*.sch
 )
