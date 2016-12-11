@@ -104,6 +104,12 @@ public interface Storage {
 	// Method to Read a line from storage
 	public abstract String ReadLine() throws StorageException;
 	
+	// Method to write a Schema to storage
+	public void Write( Schema schema ) throws StorageException;
+	
+	// Method to Read a Schema from storage
+	public abstract ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException;
+	
 	// Method to Delete storage
 	public abstract void Delete() throws StorageException;
 	
@@ -115,11 +121,9 @@ public interface Storage {
 	@Getter
 	public String DataStoreType();
 	
-	// Method to write a Schema to storage
-	public void Write( Schema schema ) throws StorageException;
-	
-	// Method to Read a Schema from storage
-	public abstract ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException;
+	// Method to List all Collections in Storage
+	@Getter
+	public ArrayList<String> List();
 }
 
 

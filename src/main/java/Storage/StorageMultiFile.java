@@ -111,6 +111,12 @@ public class StorageMultiFile implements Storage {
 	// Implementation to Read a line from storage
 	public String ReadLine() throws StorageException { throw new StorageException("unsupported"); }
 	
+	// Implementation to Write out schema to storage
+	public void Write( Schema schema ) throws StorageException { throw new StorageException("unsupported"); }
+	
+	// Implementation to Read in schema from storage
+	public ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException { throw new StorageException("unsupported"); }
+	
 	// Implementation for Deleting storage
 	public void Delete() throws StorageException { throw new StorageException("unsupported"); }
 	
@@ -128,12 +134,8 @@ public class StorageMultiFile implements Storage {
 		return dataStoreType;
 	}
 	
-	
-	// Implementation to Write out schema to storage
-	public void Write( Schema schema ) throws StorageException { throw new StorageException("unsupported"); }
-	
-	// Implementation to Read in schema from storage
-	public ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException { throw new StorageException("unsupported"); }
+	// Method to List all Collections in Storage
+	public ArrayList<String> List() { return null; }
 }
 
 

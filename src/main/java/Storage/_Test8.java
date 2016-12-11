@@ -313,6 +313,11 @@ public class _Test8 {
 		if ( keys.get(1).getValue() == Schema.BSONString32 ) Passed(""); else Failed("");
 		if ( keys.get(2).getValue() == Schema.BSONShort ) Passed(""); else Failed("");
 		
+		Title( "StorageSingleFile: List Collections");
+		ArrayList<String> names = s.List();
+		if ( names.size() == 0 ) Failed( "no collections found" );
+		if ( names.get(0).equals( "foo") ) Passed(""); else Failed(names.get(0));
+		
 		Title( "StorageSingleFile: Delete schema storage" );
 		try
 		{

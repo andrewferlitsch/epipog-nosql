@@ -11,6 +11,7 @@ import java.io.RandomAccessFile;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
+import java.io.FilenameFilter;
 import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -412,48 +413,8 @@ public class StorageSingleFile implements Storage {
 			throw new StorageException( "StorageSingleFile.Read: Cannot read from storage file" );
 		}
 	}
-
-	// Implementation for Deleting storage
-	public void Delete() 
-		throws StorageException
-	{
-		if ( null == volume )
-			throw new StorageException( "StorageSingleFile.Delete: no volume set" );
-		if ( null == path )
-			throw new StorageException( "StorageSingleFile.Delete: no path set" );
-		
-		String dataFile   = volume + "/" + path + ".dat";	
-		String schemaFile = volume + "/" + path + ".sch";
-		
-		// Check if the data file exists
-		File df = new File( dataFile );
-		if ( !df.exists() )
-			return;
-		
-		File sf = new File( schemaFile );
-		
-		// Delete the data and schema files
-		try {
-			df.delete();
-			sf.delete();
-		}
-		catch ( SecurityException e ) { throw new StorageException( "StorageSingleFile.Delete: " + e.getMessage() ); }
-	}
 	
 	private RandomAccessFile sc  = null;		// file pointer for schema storage file
-	private String dataStoreType = "undefined";	// data store type associated with this storage
-	
-	// Method to set a data store associated with this storage instance
-	@Setter
-	public void DataStoreType( DataStore dataStore ) {
-		dataStoreType = dataStore.getClass().getSimpleName();
-	}
-	
-	// Method to get the data store associated with this storage instance
-	@Getter
-	public String DataStoreType() {
-		return dataStoreType;
-	}
 	
 	// Implementation to Write out schema to storage
 	public void Write( Schema schema ) 
@@ -565,6 +526,82 @@ public class StorageSingleFile implements Storage {
 		}
 		
 		return keys;
+	}
+		
+	private String dataStoreType = "undefined";	// data store type associated with this storage
+	
+	// Method to set a data store associated with this storage instance
+	@Setter
+	public void DataStoreType( DataStore dataStore ) {
+		dataStoreType = dataStore.getClass().getSimpleName();
+	}
+	
+	// Method to get the data store associated with this storage instance
+	@Getter
+	public String DataStoreType() {
+		return dataStoreType;
+	}
+
+	// Implementation for Deleting storage
+	public void Delete() 
+		throws StorageException
+	{
+		if ( null == volume )
+			throw new StorageException( "StorageSingleFile.Delete: no volume set" );
+		if ( null == path )
+			throw new StorageException( "StorageSingleFile.Delete: no path set" );
+		
+		String dataFile   = volume + "/" + path + ".dat";	
+		String schemaFile = volume + "/" + path + ".sch";
+		
+		// Check if the data file exists
+		File df = new File( dataFile );
+		if ( !df.exists() )
+			return;
+		
+		File sf = new File( schemaFile );
+		
+		// Delete the data and schema files
+		try {
+			df.delete();
+			sf.delete();
+		}
+		catch ( SecurityException e ) { throw new StorageException( "StorageSingleFile.Delete: " + e.getMessage() ); }
+	}
+
+	// Method to List all Collections in Storage
+	public ArrayList<String> List() 
+		//throws StorageException
+	{ 
+		File folder = new File( volume );
+		
+		// create new filename filter
+        FilenameFilter fileNameFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+               if(name.lastIndexOf('.')>0)
+               {
+                  // get last index for '.' char
+                  int lastIndex = name.lastIndexOf('.');
+                  
+                  // get extension
+                  String str = name.substring(lastIndex);
+                  
+                  // match path name extension
+                  if(str.equals(".sch"))
+                  {
+                     return true;
+                  }
+               }
+               return false;
+            }
+        };
+		File[] listOfFiles = folder.listFiles( fileNameFilter );
+		ArrayList<String> names = new ArrayList<String>();
+		for ( File f : listOfFiles ) {
+			names.add( f.getName().substring( 0, f.getName().length() - 4 ) );
+		}
+		return names;
 	}
 }
 

@@ -1,4 +1,6 @@
-
+/*
+ * Epipog, Copyright(c) 2016-17, Andrew Ferlitsch, CC-BY
+ */
 import epipog.collection.*;
 import epipog.storage.*;
 import epipog.datastore.*;
@@ -6,14 +8,20 @@ import epipog.schema.*;
 
 import java.util.ArrayList;
 import javafx.util.Pair;
+import java.io.File;
 
 public class epipog {
 	final static String usage = "Usage: epipog <options>\r\n" +
 								"\t-c collection\t# collection name\r\n" +
 								"\t-D datastore\t# datastore (binary,csv,psv,tsv,json)\r\n" +
-								"\t-x\t\t# delete a collection\r\n" +
+								"\t-e\t\t# extend schema\r\n" +
+								"\t-i insert\t# insert\r\n" +
+								"\t-I file\t\t# insert from file\r\n" +
 								"\t-S schema\t# schema\r\n" +
-								"\t-T storage\t# storage (single, multi)\r\n";
+								"\t-t type\t\t# input file type\r\n" +
+								"\t-T storage\t# storage (single, multi)\r\n" +
+								"\t-x\t\t# delete a collection\r\n" +
+								"\t-v volume\t# storage volume\r\n";
 								
 	// Main entry method
 	public static void main( String args[] ) {
@@ -25,17 +33,24 @@ public class epipog {
 		
 		String  cOption = "tmp";	// Collection Name (default collection is called tmp)
 		String  DOption = "binary";	// Data Store type (default is binary)
+		Boolean eOption = false;	// Extend schema
+		String  iOption = null;		// Insert
+		String  IOption = null;		// Insert from file
 		String  SOption = null;		// Schema (specified on command line)
+		String  tOption = "csv";	// Input File Type (default: csv)
 		String  TOption = "single";	// Storage type (default is single file)
 		String  vOption = "/tmp";	// Storage volume (default /tmp)
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:S:T:v:x", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:i:I:S:t:T:v:x", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
+			case 'i': iOption = GetOpt.Arg(); break;
+			case 'I': IOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
 			case 'S': SOption = GetOpt.Arg(); break;
+			case 't': tOption = GetOpt.Arg(); break;
 			case 'T': TOption = GetOpt.Arg(); break;
 			case 'v': vOption = GetOpt.Arg(); break;
 			case 'x': xOption = true; break;
@@ -52,6 +67,17 @@ public class epipog {
 		default		 : System.err.println( "Invalid argument for -T option: " + TOption );
 					   System.err.println( usage );
 					   System.exit( 1 );
+		}
+		
+		// Verify Storage Volume
+		File v = new File( vOption );
+		if ( !v.exists() ) {
+			System.err.println( "Storage Volume does not exist: " + vOption );
+			System.exit( 1 );
+		}
+		else if ( !v.isDirectory() ) {
+			System.err.println( "Storage Volume is not a directory: " + vOption );
+			System.exit( 1 );
 		}
 		
 		// Set the location in storage of the collection
@@ -145,6 +171,20 @@ public class epipog {
 		catch ( StorageException e ) { 
 			System.err.println( e.getMessage() ); 
 			System.exit( 1 );
+		}
+		
+		// Import a file
+		if ( null != IOption ) {
+			File f = new File( IOption );
+			if ( !f.exists() ) {
+				System.err.println("File does not exist: " + IOption );
+				System.exit( 1 );
+			}
+		}
+		// Insert from command line
+		else
+		{
+			
 		}
 		
 		// Close the Data Store
