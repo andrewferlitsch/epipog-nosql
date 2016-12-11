@@ -117,6 +117,15 @@ public class epipog {
 		// Attach the data store to the storage
 		dataStore.Storage( storage );
 		
+		// Assign the data store to the collection
+		try {
+			collection.Store( dataStore );
+		}
+		catch ( CollectionException e ) {
+			System.err.println( e.getMessage() );
+			System.exit( 1 );
+		}
+		
 		// Delete a collection
 		if ( xOption ) {
 			try {
@@ -127,15 +136,6 @@ public class epipog {
 				System.exit( 1 );
 			}
 			System.exit( 0 );
-		}
-		
-		// Assign the data store to the collection
-		try {
-			collection.Store( dataStore );
-		}
-		catch ( CollectionException e ) {
-			System.err.println( e.getMessage() );
-			System.exit( 1 );
 		}
 		
 		// Open the Data Store
