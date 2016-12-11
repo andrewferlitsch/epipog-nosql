@@ -588,7 +588,7 @@ public class StorageSingleFile implements Storage {
                   String str = name.substring(lastIndex);
                   
                   // match path name extension
-                  if(str.equals(".sch"))
+                  if( str.equals(".sch") || str.equals( ".dat" ) )
                   {
                      return true;
                   }
@@ -596,10 +596,12 @@ public class StorageSingleFile implements Storage {
                return false;
             }
         };
+		
 		File[] listOfFiles = folder.listFiles( fileNameFilter );
 		ArrayList<String> names = new ArrayList<String>();
 		for ( File f : listOfFiles ) {
-			names.add( f.getName().substring( 0, f.getName().length() - 4 ) );
+			String name = f.getName().substring( 0, f.getName().length() - 4 );
+			if ( !names.contains( name ) ) names.add( name );
 		}
 		return names;
 	}

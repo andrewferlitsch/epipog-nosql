@@ -17,6 +17,7 @@ public class epipog {
 								"\t-e\t\t# extend schema\r\n" +
 								"\t-i insert\t# insert\r\n" +
 								"\t-I file\t\t# insert from file\r\n" +
+								"\t-l\t\t# list collections\r\n" +
 								"\t-S schema\t# schema\r\n" +
 								"\t-t type\t\t# input file type\r\n" +
 								"\t-T storage\t# storage (single, multi)\r\n" +
@@ -33,9 +34,10 @@ public class epipog {
 		
 		String  cOption = "tmp";	// Collection Name (default collection is called tmp)
 		String  DOption = "binary";	// Data Store type (default is binary)
-		Boolean eOption = false;	// Extend schema
+//		Boolean eOption = false;	// Extend schema
 		String  iOption = null;		// Insert
 		String  IOption = null;		// Insert from file
+		Boolean lOption = false;	// List collections in storage
 		String  SOption = null;		// Schema (specified on command line)
 		String  tOption = "csv";	// Input File Type (default: csv)
 		String  TOption = "single";	// Storage type (default is single file)
@@ -43,17 +45,18 @@ public class epipog {
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:i:I:S:t:T:v:x", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:i:I:lS:t:T:v:x", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
+			case 'D': DOption = GetOpt.Arg(); break;
 			case 'i': iOption = GetOpt.Arg(); break;
 			case 'I': IOption = GetOpt.Arg(); break;
-			case 'D': DOption = GetOpt.Arg(); break;
+			case 'l': lOption = true; 		  break;
 			case 'S': SOption = GetOpt.Arg(); break;
 			case 't': tOption = GetOpt.Arg(); break;
 			case 'T': TOption = GetOpt.Arg(); break;
 			case 'v': vOption = GetOpt.Arg(); break;
-			case 'x': xOption = true; break;
+			case 'x': xOption = true; 		  break;
 			}
 		}
 		
@@ -82,6 +85,14 @@ public class epipog {
 		
 		// Set the location in storage of the collection
 		storage.Storage( vOption, cOption );
+		
+		// List Collections in storage
+		if ( lOption ) {
+			ArrayList<String> names = storage.List();
+			for ( String name : names )
+				System.out.println( name + ", " );
+			System.exit( 0 );
+		}
 		
 		// Read the schema from Storage
 		try

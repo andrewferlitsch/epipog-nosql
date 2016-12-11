@@ -77,18 +77,23 @@ echo Test: set collection with arguments - valid
 java -cp .;%BUILD% epipog -c foo 2>err
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
-echo Test: delete collection
-java -cp .;%BUILD% epipog -c foo -x 
-IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
-
 echo Test: alternate volume
 mkdir \tmp\epipog
 java -cp .;%BUILD% epipog -v /tmp/epipog -c tom
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
 echo Test: show collections in storage
-java -cp .;%BUILD% epipog -v /tmp/epipog -L
+java -cp .;%BUILD% epipog -v /tmp/epipog -l >out
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+find "tom" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
+echo Test: delete collection
+java -cp .;%BUILD% epipog -c foo -x 
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
+echo Test: delete collection alternate volume
+java -cp .;%BUILD% epipog -c tom -v /tmp/epipog -x
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
-del err res \tmp\*.dat \tmp\*.sch
+del err out res \tmp\*.dat \tmp\*.sch
