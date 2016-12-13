@@ -18,6 +18,7 @@ public class epipog {
 								"\t-i insert\t# insert\r\n" +
 								"\t-I file\t\t# insert from file\r\n" +
 								"\t-l\t\t# list collections\r\n" +
+								"\t-L\t\t# list schema in collection\r\n" +
 								"\t-S schema\t# schema\r\n" +
 								"\t-t type\t\t# input file type\r\n" +
 								"\t-T storage\t# storage (single, multi)\r\n" +
@@ -34,10 +35,11 @@ public class epipog {
 		
 		String  cOption = "tmp";	// Collection Name (default collection is called tmp)
 		String  DOption = "binary";	// Data Store type (default is binary)
-//		Boolean eOption = false;	// Extend schema
+		Boolean eOption = false;	// Extend schema
 		String  iOption = null;		// Insert
 		String  IOption = null;		// Insert from file
 		Boolean lOption = false;	// List collections in storage
+		Boolean LOption = false;		// List schema in collection
 		String  SOption = null;		// Schema (specified on command line)
 		String  tOption = "csv";	// Input File Type (default: csv)
 		String  TOption = "single";	// Storage type (default is single file)
@@ -45,13 +47,15 @@ public class epipog {
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:i:I:lS:t:T:v:x", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLS:t:T:v:x", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
+			case 'e': eOption = true;		  break;
 			case 'i': iOption = GetOpt.Arg(); break;
 			case 'I': IOption = GetOpt.Arg(); break;
 			case 'l': lOption = true; 		  break;
+			case 'L': LOption = true; 		  break;
 			case 'S': SOption = GetOpt.Arg(); break;
 			case 't': tOption = GetOpt.Arg(); break;
 			case 'T': TOption = GetOpt.Arg(); break;
@@ -93,11 +97,22 @@ public class epipog {
 				System.out.println( name + ", " );
 			System.exit( 0 );
 		}
-		
+	
 		// Read the schema from Storage
 		try
 		{
-			storage.ReadSchema();
+			ArrayList<Pair<String,Integer>> keys = storage.ReadSchema();
+			if ( null != keys ) {
+				SchemaDynamic schema = new SchemaDynamic();
+				try {
+					schema.SetI( keys );
+				}
+				catch ( SchemaException e ) {
+					System.err.println( e.getMessage() );
+					System.exit( 1 );
+				}
+				collection.Schema( schema );
+			}
 		}
 		catch ( StorageException e ) { 
 			System.err.println( e.getMessage() );
@@ -105,7 +120,7 @@ public class epipog {
 		}
 		
 		// Check if collection has an existing schema
-		if ( null != collection.Schema() ) {
+		if ( null != collection.Schema() && !eOption ) {
 			if ( SOption != null ) {
 				System.err.println( "Collection already has a schema" );
 				System.exit( 1 );
@@ -116,13 +131,35 @@ public class epipog {
 			SchemaDynamic schema = new SchemaDynamic();
 			try {
 				ArrayList<Pair<String,Integer>> keys = Schema.SchemaFromString( SOption );
-				schema.SetI( keys );
+				if ( eOption ) {
+					schema.ExtendI( keys );
+				}
+				else
+					schema.SetI( keys );
 				collection.Schema( schema );
 			}
 			catch ( SchemaException e ) { 
 				System.err.println( e.getMessage() );
 				System.exit( 1 );
 			}
+		}
+		
+		// List the schema in a collection
+		if ( LOption ) {
+			if ( null == collection ) {
+				System.err.println( "No collection specified for -L option" );
+				System.err.println( usage );
+				System.exit( 1 );
+			}
+			
+			if ( null == collection.Schema() ) {
+				System.err.println( "No schema found" );
+				System.err.println( usage );
+				System.exit( 1 );
+			}
+			
+			System.out.println( collection.Schema().Keys() );
+			System.exit( 0 );
 		}
 		
 		// Get the datastore type from the schema (if any)
@@ -174,7 +211,7 @@ public class epipog {
 			}
 			System.exit( 0 );
 		}
-		
+
 		// Open the Data Store
 		try {
 			dataStore.Open();
@@ -183,7 +220,7 @@ public class epipog {
 			System.err.println( e.getMessage() ); 
 			System.exit( 1 );
 		}
-		
+	
 		// Import a file
 		if ( null != IOption ) {
 			File f = new File( IOption );
@@ -197,7 +234,7 @@ public class epipog {
 		{
 			
 		}
-		
+	
 		// Close the Data Store
 		try
 		{
@@ -208,6 +245,4 @@ public class epipog {
 			System.exit( 1 );
 		}
 	}
-	
-	// Open the collection data store
 }

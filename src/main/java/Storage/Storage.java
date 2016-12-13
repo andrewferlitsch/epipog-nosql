@@ -21,97 +21,97 @@ public interface Storage {
 	public void Storage( String volume, String path );
 
 	// Method for opening (connecting) to storage
-	public abstract void Open() throws StorageException;
+	public void Open() throws StorageException;
 	
 	// Method for closing (disconnecting) from storage
-	public abstract void Close() throws StorageException;
+	public void Close() throws StorageException;
 	
 	// Method to seek to the begin of the storage
-	public abstract void Begin() throws StorageException;
+	public void Begin() throws StorageException;
 	
 	// Method to seek to the end of the storage
-	public abstract long End() throws StorageException;
+	public long End() throws StorageException;
 	
 	// Method to return the current location in storage
-	public abstract long Pos() throws StorageException;
+	public long Pos() throws StorageException;
 	
 	// Method to move to a location in storage
-	public abstract void Move( long pos ) throws StorageException;
+	public void Move( long pos ) throws StorageException;
 	
 	// Method to check for at end of file in storage
-	public abstract boolean Eof() throws StorageException;
+	public boolean Eof() throws StorageException;
 	
 	// Method to write a padded string to the storage
-	public abstract void Write( String value, int length ) throws StorageException;
+	public void Write( String value, int length ) throws StorageException;
 		
 	// Method to write a string to the storage
-	public abstract void Write( String value ) throws StorageException;
+	public void Write( String value ) throws StorageException;
 	
 	// Method to write a Character to the storage
-	public abstract void Write( Character value ) throws StorageException;
+	public void Write( Character value ) throws StorageException;
 	
 	// Method to write a byte to the storage
-	public abstract void Write( byte value ) throws StorageException;
+	public void Write( byte value ) throws StorageException;
 
 	// Method to write a short to the storage
-	public abstract void Write( Short value ) throws StorageException;
+	public void Write( Short value ) throws StorageException;
 
 	// Method to write an integer to the storage
-	public abstract void Write( Integer value ) throws StorageException;
+	public void Write( Integer value ) throws StorageException;
 	
 	// Method to write a long to the storage
-	public abstract void Write( Long value ) throws StorageException;
+	public void Write( Long value ) throws StorageException;
 	
 	// Method to write a float to the storage
-	public abstract void Write( Float value ) throws StorageException;
+	public void Write( Float value ) throws StorageException;
 	
 	// Method to write a double to the storage
-	public abstract void Write( Double value ) throws StorageException;
+	public void Write( Double value ) throws StorageException;
 	
 	// Method to write a boolean to the storage
-	public abstract void Write( Boolean value ) throws StorageException;
+	public void Write( Boolean value ) throws StorageException;
 	
 	// Method to write a line to storage
-	public abstract void WriteLine( String value ) throws StorageException;
+	public void WriteLine( String value ) throws StorageException;
 	
 	// Method to Read a String from storage
-	public abstract String Read( int length ) throws StorageException;
+	public String Read( int length ) throws StorageException;
 	
 	// Method to Read a Character from storage
-	public abstract Character ReadChar() throws StorageException;
+	public Character ReadChar() throws StorageException;
 	
 	// Method to Read a byte from storage
-	public abstract byte ReadByte() throws StorageException;
+	public byte ReadByte() throws StorageException;
 	
 	// Method to Read a short from storage
-	public abstract Short ReadShort() throws StorageException;
+	public Short ReadShort() throws StorageException;
 	
 	// Method to Read an Integer from storage
-	public abstract Integer ReadInt() throws StorageException;
+	public Integer ReadInt() throws StorageException;
 	
 	// Method to Read a Long from storage
-	public abstract Long ReadLong() throws StorageException;
+	public Long ReadLong() throws StorageException;
 	
 	// Method to Read a float from storage
-	public abstract Float ReadFloat() throws StorageException;
+	public Float ReadFloat() throws StorageException;
 	
 	// Method to Read a double from storage
-	public abstract Double ReadDouble() throws StorageException;
+	public Double ReadDouble() throws StorageException;
 	
 	// Method to Read a boolean from storage
-	public abstract Boolean ReadBoolean() throws StorageException;
+	public Boolean ReadBoolean() throws StorageException;
 	
 	// Method to Read a line from storage
-	public abstract String ReadLine() throws StorageException;
+	public String ReadLine() throws StorageException;
 	
 	// Method to write a Schema to storage
 	public void Write( Schema schema ) throws StorageException;
 	
 	// Method to Read a Schema from storage
-	public abstract ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException;
+	public ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException;
 	
 	// Method to Delete storage
-	public abstract void Delete() throws StorageException;
+	public void Delete() throws StorageException;
 	
 	// Method to set a data store associated with this storage instance
 	@Setter

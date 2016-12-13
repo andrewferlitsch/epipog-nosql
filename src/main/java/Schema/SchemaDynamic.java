@@ -72,7 +72,7 @@ public class SchemaDynamic extends SchemaTable {
 		throws SchemaException
 	{
 		if ( null == keys )
-			throw new SchemaException( "Schema.ExtendS: keys is null" );
+			throw new SchemaException( "Schema.ExtendI: keys is null" );
 		if ( keys.size() == 0 )
 			throw new SchemaException( "Schema.ExtendI: keys is empty" );
 
@@ -90,17 +90,17 @@ public class SchemaDynamic extends SchemaTable {
 		for ( int i = 0; i < len; i++ ) {
 			String key = keys.get( i ).getKey();
 			if ( key == null ) { 
-				this.keys = orig; throw new SchemaException( "Schema.SetS: key name is null" ); 
+				this.keys = orig; throw new SchemaException( "Schema.ExtendI: key name is null" ); 
 			}
 			if ( key.equals( "" ) ) { 
-				this.keys = orig; throw new SchemaException( "Schema.SetS: key name is empty" ); 
+				this.keys = orig; throw new SchemaException( "Schema.ExtendI: key name is empty" ); 
 			}
 			
 			// look for duplicate in existing list
 			int elen = this.keys.size();
 			for ( int j = 0; j < elen; j++ ){
 				if ( key.equals( this.keys.get( j ).getKey() ) ) {
-					this.keys = orig; throw new SchemaException( "Schema.ExtendS: duplicate key : " + key );
+					this.keys = orig; throw new SchemaException( "Schema.ExtendI: duplicate key : " + key );
 				}
 			}
 			

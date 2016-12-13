@@ -88,12 +88,37 @@ IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 find "tom" out >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
+echo Test: Show schema without specifying collection
+java -cp .;%BUILD% epipog -L 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "No schema found" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: Show schema 
+java -cp .;%BUILD% epipog -v /tmp/epipog -c tom -S field1,field2
+java -cp .;%BUILD% epipog -L -v /tmp/epipog -c tom >out
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+find "[field1=2, field2=2]" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
 echo Test: delete collection
 java -cp .;%BUILD% epipog -c foo -x 
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
 echo Test: delete collection alternate volume
 java -cp .;%BUILD% epipog -c tom -v /tmp/epipog -x
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: Create Collection, then set schema
+java -cp .;%BUILD% epipog -c cat 
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -c cat -S field1,field2:integer
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: Collection already has schema
+java -cp .;%BUILD% epipog -c cat -S field1,field2:integer 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Collection already has a schema" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
 del err out res \tmp\*.dat \tmp\*.sch
