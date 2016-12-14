@@ -127,11 +127,12 @@ public class DataStoreBinary extends DataStore {
 				DataState d;
 				switch ( type ) {
 				case Schema.BSONString	  : d = new DataStateString();  	   d.Parse( value ); throw new DataStoreException( "not yet supported" );
-				case Schema.BSONString16  : d = new DataStateStringFixed(16);  d.Parse( value ); Write( ( String )  	d.Get(), 16 );  break;
-				case Schema.BSONString32  : d = new DataStateStringFixed(32);  d.Parse( value ); Write( ( String )  	d.Get(), 32 );  break;
-				case Schema.BSONString64  : d = new DataStateStringFixed(64);  d.Parse( value ); Write( ( String )  	d.Get(), 64 );  break;
-				case Schema.BSONString128 : d = new DataStateStringFixed(128); d.Parse( value ); Write( ( String )  	d.Get(), 128 ); break;
-				case Schema.BSONString256 : d = new DataStateStringFixed(256); d.Parse( value ); Write( ( String )  	d.Get(), 256 ); break;
+				// For fixed length strings, double the byte length to handle UNICODE encoding
+				case Schema.BSONString16  : d = new DataStateStringFixed(16);  d.Parse( value ); Write( ( String )  	d.Get(), 32  );  break;
+				case Schema.BSONString32  : d = new DataStateStringFixed(32);  d.Parse( value ); Write( ( String )  	d.Get(), 64  );  break;
+				case Schema.BSONString64  : d = new DataStateStringFixed(64);  d.Parse( value ); Write( ( String )  	d.Get(), 128 );  break;
+				case Schema.BSONString128 : d = new DataStateStringFixed(128); d.Parse( value ); Write( ( String )  	d.Get(), 256 );  break;
+				case Schema.BSONString256 : d = new DataStateStringFixed(256); d.Parse( value ); Write( ( String )  	d.Get(), 512 );  break;
 				case Schema.BSONShort 	  : d = new DataStateShort();   	   d.Parse( value ); if ( d.IsNotValid() ) 
 																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Short: " + value );
 																								 else  

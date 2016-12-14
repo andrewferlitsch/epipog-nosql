@@ -297,13 +297,8 @@ public class StorageSingleFile implements Storage {
 		catch ( IOException e ) {
 			throw new StorageException( "StorageSingleFile.Read: Cannot read from storage file" );
 		}
-		try
-		{
-			return new String( bytes, "UTF-8" );
-		}
-		catch ( UnsupportedEncodingException e ) {
-			return null;
-		}
+
+		return new String( bytes );	
 	}
 	
 	// Implementation for reading a Character from storage

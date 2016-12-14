@@ -15,6 +15,7 @@ public class _Test8 {
 		Test_Seek();
 		Test_ReadWrite();
 		Test_Schema();
+		Test_Unicode();
 		
 		System.exit( rc );
 	}	
@@ -336,6 +337,26 @@ public class _Test8 {
 		ds = new DataStoreJSON();
 		ds.Storage( s );
 		if ( s.DataStoreType().equals( "DataStoreJSON") ) Passed(""); else Failed( s.DataStoreType() );
+	}
+	
+	public static void Test_Unicode()
+	{
+		Title( "Test: Write String" );
+		Storage s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" ); 
+		try {
+			s.Open(); 
+			s.Write( "abcdőű" );
+			if ( s.Pos() == 8 ) Passed(""); else Failed("POS = " + s.Pos() );
+			s.Begin();
+			String str = s.Read( 8 );
+			if ( str.equals("abcdőű")) Passed(""); else Failed("");
+			s.Close();
+			s.Delete();
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
+		
+		Title( "Test: Write Fixed String" );
 	}
 
 	public static void Title( String title ) {
