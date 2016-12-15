@@ -39,9 +39,9 @@ public class epipog {
 		String  iOption = null;		// Insert
 		String  IOption = null;		// Insert from file
 		Boolean lOption = false;	// List collections in storage
-		Boolean LOption = false;		// List schema in collection
+		Boolean LOption = false;	// List schema in collection
 		String  SOption = null;		// Schema (specified on command line)
-		String  tOption = "csv";	// Input File Type (default: csv)
+		String  tOption = null;		// Input File Type 
 		String  TOption = "single";	// Storage type (default is single file)
 		String  vOption = "/tmp";	// Storage volume (default /tmp)
 		Boolean xOption = false;	// Delete a collection
@@ -228,11 +228,36 @@ public class epipog {
 				System.err.println("File does not exist: " + IOption );
 				System.exit( 1 );
 			}
+			
+			// Attempt to determine file type from File Suffix
+			if ( null == tOption ) {
+				switch ( IOption.substring( IOption.lastIndexOf(".") + 1 ).toLowerCase() )
+				{
+				case "csv" : tOption = "csv";  break;
+				case "psv" : tOption = "psv";  break;
+				case "tsv" : tOption = "tsv";  break;
+				case "json": tOption = "json"; break;
+				default    : System.err.println( "Unrecognized file type: " + IOption );
+							 System.err.println( usage);
+						     System.exit( 1 );
+				}
+			}
+			
+			switch ( tOption ) {
+			case "csv" :
+			case "psv" :
+			case "tsv" :
+			case "json": break;
+			default    : System.err.println( "Invalid argument for -t option: " + tOption );
+						 System.err.println( usage );
+						 System.exit( 1 );
+			}
+			
+			
 		}
 		// Insert from command line
-		else
+		else if ( null != iOption )
 		{
-			
 		}
 	
 		// Close the Data Store

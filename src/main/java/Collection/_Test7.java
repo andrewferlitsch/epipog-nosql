@@ -77,6 +77,9 @@ public class _Test7 {
 		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
 		c.Schema( s );
 		DataStore d = new DataStoreBinary();
+		Storage st = new StorageSingleFile();
+		st.Storage( "/tmp", "foobar");
+		d.Storage( st );
 		try {
 			c.Store( d );
 			Passed("");
@@ -84,6 +87,7 @@ public class _Test7 {
 		catch (CollectionException e ) { Failed("");}
 		ArrayList<String> v = new ArrayList<String>();
 		try {
+			c.Open();
 			c.Insert( v ); Passed("");
 		}
 		catch ( CollectionException e ) { Failed( e.getMessage() ); }
@@ -103,7 +107,7 @@ public class _Test7 {
 			c.Insert( v ); Passed("");
 		}
 		catch ( CollectionException e ) { Failed( e.getMessage() ); }
-		
+
 		Title( "Collection: Insert, non-empty schema, non-empty values (not equal)" );
 		v.add( "bob" );
 		try {

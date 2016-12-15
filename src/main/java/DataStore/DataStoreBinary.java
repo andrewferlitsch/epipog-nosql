@@ -78,11 +78,11 @@ public class DataStoreBinary extends DataStore {
 	{
 		if ( null == values )
 			return;
-		
+	
 		int vlen = values.size();
 		if ( collection.Schema().NCols() != vlen )
 			throw new DataStoreException( "DataStoreBinary.InsertC: incorrect number of values" );
-		
+	
 		// Seek to the end of the Storage
 		long rollback = End();
 		

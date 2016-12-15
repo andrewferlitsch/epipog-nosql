@@ -69,6 +69,30 @@ public class Collection {
 		}
 	}
 	
+	public void Open()
+		throws CollectionException
+	{
+		if ( null == store )
+			throw new CollectionException( "Collection.Insert: data store is null" );
+		if ( null == store.Storage() )
+			;
+		try {
+			store.Open();
+		}
+		catch ( StorageException e ) { throw new CollectionException( e.getMessage() ); }
+	}
+	
+	public void Close()
+		throws CollectionException
+	{
+		if ( store == null )
+			throw new CollectionException( "Collection.Insert: data store is null" );
+		try {
+			store.Close();
+		}		
+		catch ( StorageException e ) { throw new CollectionException( e.getMessage() ); }
+	}
+	
 	// Method to insert column data, where order of fields is same as in schema
 	public void Insert( ArrayList<String> values ) 
 		throws CollectionException

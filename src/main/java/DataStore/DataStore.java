@@ -37,6 +37,12 @@ public abstract class DataStore {
 			storage.DataStoreType( this );
 	}
 	
+	// Method to get storage type for this instance of the data store
+	@Getter
+	public Storage Storage() {
+		return storage;
+	}
+	
 	// Method to set the data model to use for validating input
 	@Setter
 	public void DataModel ( Data.DataModel dataModel ) {

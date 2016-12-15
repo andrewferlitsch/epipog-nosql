@@ -43,6 +43,19 @@ IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
 find "Missing argument for -S option" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
+echo Test: set file type w/o arguments - invalid
+java -cp .;%BUILD% epipog -t 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Missing argument for -t option" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: set file type with invalid argument
+echo >out
+java -cp .;%BUILD% epipog -t notvalid -I out 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Invalid argument for -t option: notvalid" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
 echo Test: set storage w/o arguments - invalid
 java -cp .;%BUILD% epipog -T 2>err
 IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
@@ -78,6 +91,7 @@ java -cp .;%BUILD% epipog -c foo 2>err
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
 echo Test: alternate volume
+rmdir \tmp\epipog \s 2>err
 mkdir \tmp\epipog
 java -cp .;%BUILD% epipog -v /tmp/epipog -c tom
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
@@ -120,5 +134,37 @@ java -cp .;%BUILD% epipog -c cat -S field1,field2:integer 2>err
 IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
 find "Collection already has a schema" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: Unrecognized file type and no -t option
+java -cp .;%BUILD% epipog -I out 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Unrecognized file type: out" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: -I with valid file type (csv)
+echo >foo.csv
+java -cp .;%BUILD% epipog -I foo.csv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+del foo.csv
+
+echo Test: -I with valid file type (psv)
+echo >foo.psv
+java -cp .;%BUILD% epipog -I foo.psv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+del foo.psv
+
+echo Test: -I with valid file type (tsv)
+echo >foo.tsv
+java -cp .;%BUILD% epipog -I foo.tsv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+del foo.tsv
+
+echo Test: -I with valid file type (json)
+echo >foo.json
+java -cp .;%BUILD% epipog -I foo.json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+del foo.json
+
+
 
 del err out res \tmp\*.dat \tmp\*.sch

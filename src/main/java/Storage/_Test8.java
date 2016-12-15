@@ -357,6 +357,19 @@ public class _Test8 {
 		catch ( StorageException e ) { Failed( e.getMessage() ); }
 		
 		Title( "Test: Write Fixed String" );
+		s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" ); 
+		try {
+			s.Open(); 
+			s.Write( "abcdőű", 8 );
+			if ( s.Pos() == 8 ) Passed(""); else Failed("POS = " + s.Pos() );
+			s.Begin();
+			String str = s.Read( 8 );
+			if ( str.equals("abcdőű")) Passed(""); else Failed("");
+			s.Close();
+			s.Delete();
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }
 	}
 
 	public static void Title( String title ) {
