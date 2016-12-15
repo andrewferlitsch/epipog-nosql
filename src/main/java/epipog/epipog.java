@@ -214,9 +214,9 @@ public class epipog {
 
 		// Open the Data Store
 		try {
-			dataStore.Open();
+			collection.Open();
 		}
-		catch ( StorageException e ) { 
+		catch ( CollectionException e ) { 
 			System.err.println( e.getMessage() ); 
 			System.exit( 1 );
 		}
@@ -258,14 +258,15 @@ public class epipog {
 		// Insert from command line
 		else if ( null != iOption )
 		{
+			;
 		}
 	
 		// Close the Data Store
 		try
 		{
-			dataStore.Close();
+			collection.Close();
 		}
-		catch ( StorageException e ) { 
+		catch ( CollectionException e ) { 
 			System.err.println( e.getMessage() ); 
 			System.exit( 1 );
 		}

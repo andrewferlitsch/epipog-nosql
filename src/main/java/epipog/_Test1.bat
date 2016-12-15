@@ -165,6 +165,4 @@ java -cp .;%BUILD% epipog -I foo.json
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 del foo.json
 
-
-
 del err out res \tmp\*.dat \tmp\*.sch
