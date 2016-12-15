@@ -68,6 +68,36 @@ public class _Test7 {
 			c.DeleteCollection(); Passed("");
 		}
 		catch ( CollectionException e ) { Failed(e.getMessage());}
+		
+		Title( "Collection.Open: no data store");
+		c = new Collection( "foobar" );
+		try {
+			c.Open(); Failed( "no exception");
+		}
+		catch ( CollectionException e ) { Passed("");}	
+		
+		Title( "Collection.Open: no storage");
+		d = new DataStoreBinary();
+		try {
+			c.Store( d );
+			c.Open(); Failed( "no exception");
+		}
+		catch ( CollectionException e ) { Passed("");}	
+		
+		Title( "Collection.Open - valid");
+		st = new StorageSingleFile();
+		st.Storage( "C:/tmp", "foo" );
+		d.Storage( st );
+		try {
+			c.Open(); Passed("");
+		}
+		catch ( CollectionException e ) { Failed( e.getMessage() );}	
+		
+		Title( "Collection.Close - valid");
+		try {
+			c.Close(); Passed("");
+		}
+		catch ( CollectionException e ) { Failed( e.getMessage() );}
 	}
 	
 	public static void Test_Insert() {

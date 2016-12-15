@@ -69,19 +69,21 @@ public class Collection {
 		}
 	}
 	
+	// Method to open the underlying storage for the collection
 	public void Open()
 		throws CollectionException
 	{
 		if ( null == store )
-			throw new CollectionException( "Collection.Insert: data store is null" );
+			throw new CollectionException( "Collection.Open: data store is null" );
 		if ( null == store.Storage() )
-			;
+			throw new CollectionException( "Collection.Open: storage is null" );
 		try {
 			store.Open();
 		}
 		catch ( StorageException e ) { throw new CollectionException( e.getMessage() ); }
 	}
 	
+	// Method to close the underlying storage for the collection
 	public void Close()
 		throws CollectionException
 	{
