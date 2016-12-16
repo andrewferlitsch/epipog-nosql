@@ -13,7 +13,7 @@ public class _Test7 {
 	// Main entry method
 	public static void main( String args[] ) {
 		Test_Basics();
-		Test_Insert();
+		Test_InsertC();
 		Test_Parse();
 
 		System.exit( rc );
@@ -100,8 +100,8 @@ public class _Test7 {
 		catch ( CollectionException e ) { Failed( e.getMessage() );}
 	}
 	
-	public static void Test_Insert() {
-		Title( "Collection: Insert, empty schema, empty values" );
+	public static void Test_InsertC() {
+		Title( "Collection: InsertC, empty schema, empty values" );
 		Collection c = new Collection( "foobar" );
 		Schema s = new SchemaTable();
 		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
@@ -118,47 +118,47 @@ public class _Test7 {
 		ArrayList<String> v = new ArrayList<String>();
 		try {
 			c.Open();
-			c.Insert( v ); Passed("");
+			c.InsertC( v ); Passed("");
 		}
 		catch ( CollectionException e ) { Failed( e.getMessage() ); }
 		
-		Title( "Collection: Insert, empty schema, non-empty values" );
+		Title( "Collection: InsertC, empty schema, non-empty values" );
 		v.add( "sam" );
 		try {
-			c.Insert( v ); Failed( "no exception" );
+			c.InsertC( v ); Failed( "no exception" );
 		}
 		catch ( CollectionException e ) { Passed(""); }
 		
-		Title( "Collection: Insert, non-empty schema, non-empty values (equal)" );
+		Title( "Collection: InsertC, non-empty schema, non-empty values (equal)" );
 		ArrayList<String> k = new ArrayList<String>();
 		k.add( "field1" );
 		try { c.Schema().Set( k ); } catch ( SchemaException e ) {}
 		try {
-			c.Insert( v ); Passed("");
+			c.InsertC( v ); Passed("");
 		}
 		catch ( CollectionException e ) { Failed( e.getMessage() ); }
 
-		Title( "Collection: Insert, non-empty schema, non-empty values (not equal)" );
+		Title( "Collection: InsertC, non-empty schema, non-empty values (not equal)" );
 		v.add( "bob" );
 		try {
-			c.Insert( v ); Failed( "no exception" );
+			c.InsertC( v ); Failed( "no exception" );
 		}
 		catch ( CollectionException e ) { Passed(""); }
 		
-		Title( "Collection: Insert, no Schema" );
+		Title( "Collection: InsertC, no Schema" );
 		c = new Collection( "foobar" );
 		v = new ArrayList<String>();
 		try {
-			c.Insert( v ); Failed("no exception");
+			c.InsertC( v ); Failed("no exception");
 		}
 		catch ( CollectionException e ) { Passed(""); }
 		
-		Title( "Collection: Insert, no data store" );
+		Title( "Collection: InsertC, no data store" );
 		s = new SchemaTable();
 		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
 		c.Schema( s );
 		try {
-			c.Insert( v ); Failed("no exception");
+			c.InsertC( v ); Failed("no exception");
 		}
 		catch ( CollectionException e ) { Passed(""); }
 	}
@@ -309,9 +309,39 @@ public class _Test7 {
 			p.Open();
 			p.Parse();
 			Passed("");
+			c.DeleteCollection();
 		}
 		catch ( ParseException e ) { Failed( e.getMessage() ); }
+		catch ( CollectionException e ) { Failed( e.getMessage() ); }
 		if ( p.NImported() == 1 ) Passed( ""); else Failed("");
+		
+		Title("Collection.Parse()");
+		c = new Collection( "goo" );
+		p = new CSVParse( "tests\\7a.txt" );
+		p.Reader( Reader.ReaderType.READERMEM );
+		c.Parser( p );
+		d = new DataStoreBinary();
+		Storage st = new StorageSingleFile();
+		st.Storage( "/tmp", "goo" );
+		d.Storage( st );
+		ikeys = new ArrayList<Pair<String,Integer>>();
+		ikeys.add( new Pair<String,Integer>( "field1", 58 ) );
+		ikeys.add( new Pair<String,Integer>( "field2", 58 ) );
+		s = new SchemaTable();
+		try {
+			s.SetI( ikeys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed(e.getMessage() ); }
+		c.Schema( s );
+		try {
+			c.Store( d );
+			c.Open();
+			c.Parse();
+			Passed("");
+			c.Close();
+			c.DeleteCollection();
+		}
+		catch ( CollectionException e ) { Failed( e.getMessage() ); }
 	}
 	
 	public static void Title( String title ) {

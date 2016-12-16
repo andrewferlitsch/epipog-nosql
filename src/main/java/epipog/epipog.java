@@ -258,7 +258,24 @@ public class epipog {
 		// Insert from command line
 		else if ( null != iOption )
 		{
-			;
+			String[] fields = iOption.split( "," );
+			ArrayList<Pair<String,String>> imports = new ArrayList<Pair<String,String>>();
+			for ( String field : fields ) {
+				String[] pair = field.split( ":" );
+				if ( pair.length != 2 ) {
+					System.err.println("Invalid field format for -i option: " + field );
+					System.exit( 1 );
+				}
+				imports.add( new Pair<String,String>( pair[ 0 ], pair[ 1 ] ) );
+			}
+			
+			try {
+				collection.Insert( imports );
+			}
+			catch ( CollectionException e ) { 
+				System.err.println( e.getMessage() );
+				System.exit( 1 );
+			}
 		}
 	
 		// Close the Data Store

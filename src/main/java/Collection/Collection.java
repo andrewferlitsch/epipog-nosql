@@ -9,8 +9,10 @@ import epipog.datastore.*;
 import epipog.storage.*;
 import epipog.annotations.*;
 import epipog.data.Data;
+import epipog.parse.*;
 
 import java.util.ArrayList;
+import javafx.util.Pair;
 
 // Implemented Layer for Collections
 public class Collection {
@@ -18,6 +20,7 @@ public class Collection {
 	private Schema 	  			schema;			// Schema associated with the collection
 	private ArrayList<Index>  	indices;		// Index(s) for collection
 	private DataStore 			store;			// Data Store for collection
+	private Parse				parse;			// Parser for parsing input from a file
 	
 	// Constructor
 	@Constructor
@@ -37,7 +40,7 @@ public class Collection {
 		return schema;
 	}
 	
-	// Set (assign) a data store for this collection
+	// Method to set (assign) a data store for this collection
 	@Setter
 	public void Store( DataStore store ) 
 		throws CollectionException
@@ -51,10 +54,24 @@ public class Collection {
 			throw new CollectionException( "Collection.Store: Data store already set" );
 	}
 	
-	// Get the data store assigned to this collection
+	// Method to get the data store assigned to this collection
 	@Getter
 	public DataStore Store() {
 		return store;
+	}
+	
+	// Method to set the parser for parsing input from a file
+	@Setter
+	public void Parser( Parse parse ) {
+		this.parse = parse;
+		parse.Collection( this );
+	}
+	
+	// Method to get the parser for parsing input from a file
+	@Getter
+	public Parse Parser()
+	{
+		return parse;
 	}
 	
 	// Delete a collection from Storage
@@ -96,21 +113,54 @@ public class Collection {
 	}
 	
 	// Method to insert column data, where order of fields is same as in schema
-	public void Insert( ArrayList<String> values ) 
+	public void InsertC( ArrayList<String> values ) 
 		throws CollectionException
 	{		
 		if ( schema == null )
-			throw new CollectionException( "Collection.Insert: schema is null" );
+			throw new CollectionException( "Collection.InsertC: schema is null" );
 		if ( store == null )
-			throw new CollectionException( "Collection.Insert: data store is null" );
+			throw new CollectionException( "Collection.InsertC: data store is null" );
 		
 		if ( values.size() != schema.NCols() )
-			throw new CollectionException( "Collection.Insert: number of values does not match columns in table" );
+			throw new CollectionException( "Collection.InsertC: number of values does not match columns in table" );
 	
 		try {
 			store.InsertC( values );
 		}
 		catch ( DataStoreException e ) { throw new CollectionException( e.getMessage() ); }
 		catch ( StorageException e   ) { throw new CollectionException( e.getMessage() ); }
+	}
+	
+	// Method for inserting into datastore with key (field) name
+	public void Insert( ArrayList<Pair<String,String>> keyVals ) 
+		throws CollectionException
+	{	
+		if ( schema == null )
+			throw new CollectionException( "Collection.Insert: schema is null" );
+		if ( store == null )
+			throw new CollectionException( "Collection.Insert: data store is null" );
+		
+//		if ( keyVals.size() != schema.NCols() )
+//			throw new CollectionException( "Collection.Insert: number of values does not match columns in table" );
+	
+		try {
+			store.Insert( keyVals );
+		}
+		catch ( DataStoreException e ) { throw new CollectionException( e.getMessage() ); }
+		catch ( StorageException e   ) { throw new CollectionException( e.getMessage() ); }
+	}
+
+	// Method to parse input (inserts) from a file
+	public void Parse()
+		throws CollectionException
+	{
+		if ( null == parse )
+			throw new CollectionException("");
+		try {
+			parse.Open();
+			parse.Parse();
+			parse.Close();
+		}
+		catch ( ParseException e ) { throw new CollectionException( e.getMessage() ); }
 	}
 }

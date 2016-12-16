@@ -25,6 +25,12 @@ IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
 find "Invalid argument for -D option: notvalid" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
+echo Test: insert w/o arguments - invalid
+java -cp .;%BUILD% epipog -i 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Missing argument for -i option" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
 echo Test: import file w/o arguments - invalid
 java -cp .;%BUILD% epipog -I 2>err
 IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
@@ -164,5 +170,26 @@ echo >foo.json
 java -cp .;%BUILD% epipog -I foo.json
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 del foo.json
+
+echo Test: insert, malformed argument
+java -cp .;%BUILD% epipog -i field1,field2 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Invalid field format for -i option: field1" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: insert into CSV store
+java -cp .;%BUILD% epipog -i field1:1,field2:2 -S field1,field2 -D csv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: insert into binary store
+java -cp .;%BUILD% epipog -i field1:1,field2:2 -S field1:short,field2:integer
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: insert into json store
+java -cp .;%BUILD% epipog -i field1:1,field2:2 -S field1,field2 -D json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
 
 del err out res \tmp\*.dat \tmp\*.sch

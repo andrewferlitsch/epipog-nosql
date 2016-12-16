@@ -79,7 +79,7 @@ public abstract class SVParse extends Parse {
 		
 		// set number of columns if preset
 		ncols = ( heading != null ) ? heading.size() : 0;
-		
+	
 		// if expect header in file, get the first line
 		if ( Header() ) {
 			// Read the header line
@@ -115,12 +115,12 @@ public abstract class SVParse extends Parse {
 		// no header and no pre-specified header
 		else if ( ncols == 0 )
 			throw new ParseException( "SVParse.Parse: no header information" );
-		
+	
 		// read the remaining lines of input
 		boolean prolog = true;	// for linked CSV
 		while ( null != ( line = reader.ReadLine() ) ) {
 			ArrayList<String> cols = Split( line, separator, rfc4180, reader );
-			
+		
 			// mismatch number of columns
 			if ( cols.size() != ncols ) {
 				// skip non-parseable lines
@@ -160,7 +160,7 @@ public abstract class SVParse extends Parse {
 		nImported++;
 		if ( null != collection ) {
 			try {
-				collection.Insert( cols );
+				collection.InsertC( cols );
 			}
 			catch ( CollectionException e ) { throw new ParseException( e.getMessage() ); }
 		}

@@ -106,7 +106,7 @@ public class DataStoreBinary extends DataStore {
 			if ( Data.DataModel.DATA == dataModel ) {
 				Data d;
 				switch ( type ) {
-				case Schema.BSONString	  : d = new DataString();  		  d.Parse( value ); throw new DataStoreException( "not yet supported" ); 
+				case Schema.BSONString	  : d = new DataString();  		  d.Parse( value ); throw new DataStoreException( "DataStoreBinary.InsertValue: variable length strings not yet supported" ); 
 				case Schema.BSONString16  : d = new DataStringFixed(16);  d.Parse( value ); Write( ( String )  	d.Get(), 16 );  break;
 				case Schema.BSONString32  : d = new DataStringFixed(32);  d.Parse( value ); Write( ( String )  	d.Get(), 32 );  break;
 				case Schema.BSONString64  : d = new DataStringFixed(64);  d.Parse( value ); Write( ( String )  	d.Get(), 64 );  break;
@@ -126,7 +126,7 @@ public class DataStoreBinary extends DataStore {
 			else if ( Data.DataModel.DATASTATE == dataModel ) {
 				DataState d;
 				switch ( type ) {
-				case Schema.BSONString	  : d = new DataStateString();  	   d.Parse( value ); throw new DataStoreException( "not yet supported" );
+				case Schema.BSONString	  : d = new DataStateString();  	   d.Parse( value ); throw new DataStoreException( "DataStoreBinary.InsertValue: variable length strings not yet supported" );
 				// For fixed length strings, double the byte length to handle UNICODE encoding
 				case Schema.BSONString16  : d = new DataStateStringFixed(16);  d.Parse( value ); Write( ( String )  	d.Get(), 32  );  break;
 				case Schema.BSONString32  : d = new DataStateStringFixed(32);  d.Parse( value ); Write( ( String )  	d.Get(), 64  );  break;
@@ -134,39 +134,39 @@ public class DataStoreBinary extends DataStore {
 				case Schema.BSONString128 : d = new DataStateStringFixed(128); d.Parse( value ); Write( ( String )  	d.Get(), 256 );  break;
 				case Schema.BSONString256 : d = new DataStateStringFixed(256); d.Parse( value ); Write( ( String )  	d.Get(), 512 );  break;
 				case Schema.BSONShort 	  : d = new DataStateShort();   	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Short: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Short: " + value );
 																								 else  
 																									Write( ( Short )   	d.Get() ); break;
 				case Schema.BSONInteger	  : d = new DataStateInteger(); 	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Integer: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Integer: " + value );
 																								  else
 																									Write( ( Integer ) 	d.Get() ); break;
 				case Schema.BSONLong	  : d = new DataStateLong();    	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Long: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Long: " + value );
 																								 else
 																									Write( ( Long )    	d.Get() ); break;
 				case Schema.BSONFloat	  : d = new DataStateFloat();   	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Float: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Float: " + value );
 																								 else
 																									Write( ( Float )   	d.Get() ); break;
 				case Schema.BSONDouble	  : d = new DataStateDouble(); 	 	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Double: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Double: " + value );
 																								 else
 																									Write( ( Double )  	d.Get() ); break;
 				case Schema.BSONBoolean	  : d = new DataStateBoolean(); 	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Boolean: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Boolean: " + value );
 																								 else
 																									Write( ( Boolean ) 	d.Get() ); break;
 				case Schema.BSONChar	  : d = new DataStateChar();    	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Char: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Char: " + value );
 																								 else
 																									Write( ( Character ) d.Get() ); break;
 				case Schema.BSONDate	  : d = new DataStateDate();    	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Date: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Date: " + value );
 																								 else
 																									Write( ( Long )    	d.Get() ); break;
 				case Schema.BSONTime	  : d = new DataStateTime();    	   d.Parse( value ); if ( d.IsNotValid() ) 
-																									throw new DataStoreException("DataStoreBinary.InsertC: invalid input for Time: " + value );
+																									throw new DataStoreException("DataStoreBinary.InsertValue: invalid input for Time: " + value );
 																								 else
 																									Write( ( Long )    	d.Get() ); break;
 				}
