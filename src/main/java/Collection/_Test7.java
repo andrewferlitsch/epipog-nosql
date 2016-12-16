@@ -315,7 +315,7 @@ public class _Test7 {
 		catch ( CollectionException e ) { Failed( e.getMessage() ); }
 		if ( p.NImported() == 1 ) Passed( ""); else Failed("");
 		
-		Title("Collection.Parse()");
+		Title("Collection.Parse() with predefined schema");
 		c = new Collection( "goo" );
 		p = new CSVParse( "tests\\7a.txt" );
 		p.Reader( Reader.ReaderType.READERMEM );
@@ -342,6 +342,27 @@ public class _Test7 {
 			c.DeleteCollection();
 		}
 		catch ( CollectionException e ) { Failed( e.getMessage() ); }
+		if ( p.NImported() == 3 ) Passed( ""); else Failed("");
+		
+		Title("Collection.Parse() w/o predefined schema");
+		c = new Collection( "goo" );
+		p = new CSVParse( "tests\\7a.txt" );
+		p.Reader( Reader.ReaderType.READERMEM );
+		c.Parser( p );
+		d = new DataStoreBinary();
+		st = new StorageSingleFile();
+		st.Storage( "/tmp", "goo" );
+		d.Storage( st );
+		try {
+			c.Store( d );
+			c.Open();
+			c.Parse();
+			Passed("");
+			c.Close();
+			c.DeleteCollection();
+		}
+		catch ( CollectionException e ) { Failed( e.getMessage() ); }
+		if ( p.NImported() == 3 ) Passed( ""); else Failed("");
 	}
 	
 	public static void Title( String title ) {

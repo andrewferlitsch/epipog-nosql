@@ -5,6 +5,7 @@ import epipog.collection.*;
 import epipog.storage.*;
 import epipog.datastore.*;
 import epipog.schema.*;
+import epipog.parse.*;
 
 import java.util.ArrayList;
 import javafx.util.Pair;
@@ -19,6 +20,7 @@ public class epipog {
 								"\t-I file\t\t# insert from file\r\n" +
 								"\t-l\t\t# list collections\r\n" +
 								"\t-L\t\t# list schema in collection\r\n" +
+								"\t-R reader\t# reader type (mem,line,mapped)\r\n" +
 								"\t-S schema\t# schema\r\n" +
 								"\t-t type\t\t# input file type\r\n" +
 								"\t-T storage\t# storage (single, multi)\r\n" +
@@ -40,6 +42,7 @@ public class epipog {
 		String  IOption = null;		// Insert from file
 		Boolean lOption = false;	// List collections in storage
 		Boolean LOption = false;	// List schema in collection
+		String  ROption = "mem";	// Reader type (default is mem)
 		String  SOption = null;		// Schema (specified on command line)
 		String  tOption = null;		// Input File Type 
 		String  TOption = "single";	// Storage type (default is single file)
@@ -47,7 +50,7 @@ public class epipog {
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLS:t:T:v:x", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLR:S:t:T:v:x", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
@@ -56,6 +59,7 @@ public class epipog {
 			case 'I': IOption = GetOpt.Arg(); break;
 			case 'l': lOption = true; 		  break;
 			case 'L': LOption = true; 		  break;
+			case 'R': ROption = GetOpt.Arg(); break;
 			case 'S': SOption = GetOpt.Arg(); break;
 			case 't': tOption = GetOpt.Arg(); break;
 			case 'T': TOption = GetOpt.Arg(); break;
@@ -243,17 +247,38 @@ public class epipog {
 				}
 			}
 			
+			// Bind a parser according to the input file format
+			Parse parser = null;
 			switch ( tOption ) {
-			case "csv" :
-			case "psv" :
-			case "tsv" :
-			case "json": break;
+			case "csv" : parser = new CSVParse( IOption );  break;
+			case "psv" : parser = new PSVParse( IOption );  break;
+			case "tsv" : parser = new TSVParse( IOption );  break;
+			case "json": parser = new JSONParse( IOption ); break;
 			default    : System.err.println( "Invalid argument for -t option: " + tOption );
 						 System.err.println( usage );
 						 System.exit( 1 );
 			}
 			
+			// Set the reader type for the parser
+			switch ( ROption ) {
+			case "mem"	 : parser.Reader( Reader.ReaderType.READERMEM );    break;
+			case "line"	 : parser.Reader( Reader.ReaderType.READERLINE );   break;
+			case "mapped": parser.Reader( Reader.ReaderType.READERMAPPED ); break;
+			default		 : System.err.println( "Invalid argument for -R option: " + ROption );
+						   System.err.println( usage );
+						   System.exit( 1 );
+			}
 			
+			
+			collection.Parser( parser );
+			
+			try {
+				collection.Parse();
+			}
+			catch ( CollectionException e ) {
+				System.err.println( e.getMessage() );
+				System.exit( 1 );
+			}
 		}
 		// Insert from command line
 		else if ( null != iOption )

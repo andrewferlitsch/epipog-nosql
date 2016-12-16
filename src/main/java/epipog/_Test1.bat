@@ -1,5 +1,6 @@
 set BUILD=..\..\..\..\build
 echo off
+del \tmp\*.dat \tmp\*.sch
 
 echo Test: No Arguments
 java -cp .;%BUILD% epipog 2>err
@@ -41,6 +42,18 @@ echo Test: import file, nonexist file
 java -cp .;%BUILD% epipog -I nonexist 2>err
 IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
 find "File does not exist: nonexist" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: set reader w/o arguments - invalid
+java -cp .;%BUILD% epipog -R -I tests\1.csv 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Missing argument for -R option" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: set reader with invalid argument
+java -cp .;%BUILD% epipog -R notvalid -I tests\1.csv 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Invalid argument for -R option: notvalid" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
 echo Test: set schema w/o arguments - invalid
@@ -147,29 +160,6 @@ IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
 find "Unrecognized file type: out" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
-echo Test: -I with valid file type (csv)
-echo >foo.csv
-java -cp .;%BUILD% epipog -I foo.csv
-IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
-del foo.csv
-
-echo Test: -I with valid file type (psv)
-echo >foo.psv
-java -cp .;%BUILD% epipog -I foo.psv
-IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
-del foo.psv
-
-echo Test: -I with valid file type (tsv)
-echo >foo.tsv
-java -cp .;%BUILD% epipog -I foo.tsv
-IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
-del foo.tsv
-
-echo Test: -I with valid file type (json)
-echo >foo.json
-java -cp .;%BUILD% epipog -I foo.json
-IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
-del foo.json
 
 echo Test: insert, malformed argument
 java -cp .;%BUILD% epipog -i field1,field2 2>err
@@ -192,4 +182,28 @@ java -cp .;%BUILD% epipog -i field1:1,field2:2 -S field1,field2 -D json
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 java -cp .;%BUILD% epipog -x tmp
 
+echo Test: import w/o schema
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+REM -R tests
+
+echo Test: -I with valid file type (psv)
+echo >foo.psv
+java -cp .;%BUILD% epipog -I foo.psv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+del foo.psv
+
+echo Test: -I with valid file type (tsv)
+echo >foo.tsv
+java -cp .;%BUILD% epipog -I foo.tsv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+del foo.tsv
+
+echo Test: -I with valid file type (json)
+echo >foo.json
+java -cp .;%BUILD% epipog -I foo.json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+del foo.json
 del err out res \tmp\*.dat \tmp\*.sch
