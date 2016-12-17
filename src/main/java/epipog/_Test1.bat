@@ -187,23 +187,40 @@ java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D json
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 java -cp .;%BUILD% epipog -x tmp
 
-REM -R tests
+echo Test: import w/o schema with reader = mem
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D json -R mem
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: import w/o schema with reader = line
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D json -R line
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: import w/o schema with reader = mapped
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D json -R mapped
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
 
 echo Test: -I with valid file type (psv)
 echo >foo.psv
 java -cp .;%BUILD% epipog -I foo.psv
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
 del foo.psv
 
 echo Test: -I with valid file type (tsv)
 echo >foo.tsv
 java -cp .;%BUILD% epipog -I foo.tsv
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
 del foo.tsv
 
 echo Test: -I with valid file type (json)
 echo >foo.json
 java -cp .;%BUILD% epipog -I foo.json
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
 del foo.json
+
 del err out res \tmp\*.dat \tmp\*.sch
