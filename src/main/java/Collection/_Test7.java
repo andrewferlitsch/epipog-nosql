@@ -187,7 +187,7 @@ public class _Test7 {
 		catch ( CollectionException e ) { Failed( e.getMessage() ); }
 		
 		Title( "Collection: Insert, empty schema, non-empty values" );
-		v.add( new Pair<String,String>("field1,sam") );
+		v.add( new Pair<String,String>("field1","sam") );
 		try {
 			c.Insert( v ); Failed( "no exception" );
 		}
@@ -196,16 +196,16 @@ public class _Test7 {
 		Title( "Collection: Insert, non-empty schema, non-empty values (equal)" );
 		ArrayList<Pair<String,Integer>> k = new ArrayList<Pair<String,Integer>>();
 		k.add( new Pair<String,Integer>("field1",Schema.BSONString16 ) );
-		try { c.Schema().Set( k ); } catch ( SchemaException e ) {}
+		try { c.Schema().SetI( k ); } catch ( SchemaException e ) {}
 		try {
 			c.Insert( v ); Passed("");
 		}
 		catch ( CollectionException e ) { Failed( e.getMessage() ); }
 
 		Title( "Collection: Insert, non-empty schema, non-empty values (not equal)" );
-		v.add( new Pair<String,String>("field2,sam") );
+		v.add( new Pair<String,String>("field2","bob") );
 		try {
-			c.InsertC( v ); Failed( "no exception" );
+			c.Insert( v ); Failed( "no exception" );
 		}
 		catch ( CollectionException e ) { Passed(""); }
 		
