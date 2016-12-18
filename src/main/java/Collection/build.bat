@@ -11,6 +11,7 @@ type out | find "FAILED"
 type out | find "Test:" /c >res
 set /p t7= <res
 echo %t7%
+echo TC %t7%
 	
 del out res
 

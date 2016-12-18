@@ -14,6 +14,7 @@ public class _Test7 {
 	public static void main( String args[] ) {
 		Test_Basics();
 		Test_InsertC();
+		Test_Insert();
 		Test_Parse();
 
 		System.exit( rc );
@@ -159,6 +160,69 @@ public class _Test7 {
 		c.Schema( s );
 		try {
 			c.InsertC( v ); Failed("no exception");
+		}
+		catch ( CollectionException e ) { Passed(""); }
+	}
+	
+	public static void Test_Insert() {
+		Title( "Collection: Insert, empty schema, empty values" );
+		Collection c = new Collection( "foobar" );
+		Schema s = new SchemaTable();
+		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
+		c.Schema( s );
+		DataStore d = new DataStoreBinary();
+		Storage st = new StorageSingleFile();
+		st.Storage( "/tmp", "foobar");
+		d.Storage( st );
+		try {
+			c.Store( d );
+			Passed("");
+		}
+		catch (CollectionException e ) { Failed("");}
+		ArrayList<Pair<String,String>> v = new ArrayList<Pair<String,String>>();
+		try {
+			c.Open();
+			c.Insert( v ); Passed("");
+		}
+		catch ( CollectionException e ) { Failed( e.getMessage() ); }
+		
+		Title( "Collection: Insert, empty schema, non-empty values" );
+		v.add( new Pair<String,String>("field1,sam") );
+		try {
+			c.Insert( v ); Failed( "no exception" );
+		}
+		catch ( CollectionException e ) { Passed(""); }
+		
+		Title( "Collection: Insert, non-empty schema, non-empty values (equal)" );
+		ArrayList<Pair<String,Integer>> k = new ArrayList<Pair<String,Integer>>();
+		k.add( new Pair<String,Integer>("field1",Schema.BSONString16 ) );
+		try { c.Schema().Set( k ); } catch ( SchemaException e ) {}
+		try {
+			c.Insert( v ); Passed("");
+		}
+		catch ( CollectionException e ) { Failed( e.getMessage() ); }
+
+		Title( "Collection: Insert, non-empty schema, non-empty values (not equal)" );
+		v.add( new Pair<String,String>("field2,sam") );
+		try {
+			c.InsertC( v ); Failed( "no exception" );
+		}
+		catch ( CollectionException e ) { Passed(""); }
+		
+		Title( "Collection: Insert, no Schema" );
+		c = new Collection( "foobar" );
+		v = new ArrayList<Pair<String,String>>();
+		try {
+			c.Insert( v ); Failed("no exception");
+		}
+		catch ( CollectionException e ) { Passed(""); }
+		
+		Title( "Collection: Insert, no data store" );
+		s = new SchemaTable();
+		try { s.FixedString( 16 ); } catch ( SchemaException e ) { Failed( e.getMessage() );}
+		c.Schema( s );
+		try {
+			c.Insert( v ); Failed("no exception");
 		}
 		catch ( CollectionException e ) { Passed(""); }
 	}

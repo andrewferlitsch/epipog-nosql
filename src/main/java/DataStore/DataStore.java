@@ -72,12 +72,13 @@ public abstract class DataStore {
 					if ( null == collection.Schema() ) {
 						SchemaDynamic sc = new SchemaDynamic();
 						collection.Schema( sc );
-					}
 					
-					// Add the read in schema to the collection
-					try {
-						collection.Schema().SetI( keys );
-					} catch ( SchemaException e ) { throw new StorageException( e.getMessage() ); }
+						// Add the read in schema to the collection
+						try {
+							collection.Schema().SetI( keys );
+						} catch ( SchemaException e ) { throw new StorageException( e.getMessage() ); }
+
+					}				
 				}
 			}
 		}

@@ -155,12 +155,29 @@ public class Collection {
 		throws CollectionException
 	{
 		if ( null == parse )
-			throw new CollectionException("");
+			throw new CollectionException( "Collection.Parse: parse is null" );
 		try {
 			parse.Open();
 			parse.Parse();
 			parse.Close();
 		}
 		catch ( ParseException e ) { throw new CollectionException( e.getMessage() ); }
+	}
+	
+	// Methods for selecting rows of fields from the data store
+	// TODO: pass in where clause and finish documenting
+	public ArrayList<Data[]>  Select( ArrayList<String> fields ) 
+		throws CollectionException
+	{
+		ArrayList<Where> where = new ArrayList<Where>();
+		
+		if ( store == null )
+			throw new CollectionException( "Collection.Insert: data store is null" );
+
+		try {
+			return store.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { throw new CollectionException( e.getMessage() ); }
+		catch ( StorageException e   ) { throw new CollectionException( e.getMessage() ); }
 	}
 }

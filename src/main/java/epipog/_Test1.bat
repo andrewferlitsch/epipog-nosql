@@ -1,6 +1,6 @@
 set BUILD=..\..\..\..\build
 echo off
-del \tmp\*.dat \tmp\*.sch
+del \tmp\*.dat \tmp\*.sch 2>err
 
 echo Test: No Arguments
 java -cp .;%BUILD% epipog 2>err
@@ -54,6 +54,12 @@ echo Test: set reader with invalid argument
 java -cp .;%BUILD% epipog -R notvalid -I tests\1.csv 2>err
 IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
 find "Invalid argument for -R option: notvalid" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: set schema w/o arguments - invalid
+java -cp .;%BUILD% epipog -s 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Missing argument for -s option" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
 echo Test: set schema w/o arguments - invalid
@@ -222,5 +228,11 @@ java -cp .;%BUILD% epipog -I foo.json
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 java -cp .;%BUILD% epipog -x tmp
 del foo.json
+
+echo Test: select, in progress
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D binary
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp
+java -cp .;%BUILD% epipog -x tmp
 
 del err out res \tmp\*.dat \tmp\*.sch

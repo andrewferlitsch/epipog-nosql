@@ -6,6 +6,7 @@ import epipog.storage.*;
 import epipog.datastore.*;
 import epipog.schema.*;
 import epipog.parse.*;
+import epipog.data.*;
 
 import java.util.ArrayList;
 import javafx.util.Pair;
@@ -21,6 +22,7 @@ public class epipog {
 								"\t-l\t\t# list collections\r\n" +
 								"\t-L\t\t# list schema in collection\r\n" +
 								"\t-R reader\t# reader type (mem,line,mapped)\r\n" +
+								"\t-s select\t# select fields from collection\r\n" +
 								"\t-S schema\t# schema\r\n" +
 								"\t-t type\t\t# input file type\r\n" +
 								"\t-T storage\t# storage (single, multi)\r\n" +
@@ -43,6 +45,7 @@ public class epipog {
 		Boolean lOption = false;	// List collections in storage
 		Boolean LOption = false;	// List schema in collection
 		String  ROption = "mem";	// Reader type (default is mem)
+		String  sOption = null;		// Select fields from collection
 		String  SOption = null;		// Schema (specified on command line)
 		String  tOption = null;		// Input File Type 
 		String  TOption = "single";	// Storage type (default is single file)
@@ -50,7 +53,7 @@ public class epipog {
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLR:S:t:T:v:x", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLR:s:S:t:T:v:x", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
@@ -60,6 +63,7 @@ public class epipog {
 			case 'l': lOption = true; 		  break;
 			case 'L': LOption = true; 		  break;
 			case 'R': ROption = GetOpt.Arg(); break;
+			case 's': sOption = GetOpt.Arg(); break;
 			case 'S': SOption = GetOpt.Arg(); break;
 			case 't': tOption = GetOpt.Arg(); break;
 			case 'T': TOption = GetOpt.Arg(); break;
@@ -115,6 +119,7 @@ public class epipog {
 					System.err.println( e.getMessage() );
 					System.exit( 1 );
 				}
+
 				collection.Schema( schema );
 			}
 		}
@@ -122,7 +127,7 @@ public class epipog {
 			System.err.println( e.getMessage() );
 			System.exit( 1 );
 		}
-		
+	
 		// Check if collection has an existing schema
 		if ( null != collection.Schema() && !eOption ) {
 			if ( SOption != null ) {
@@ -165,7 +170,7 @@ public class epipog {
 			System.out.println( collection.Schema().Keys() );
 			System.exit( 0 );
 		}
-		
+	
 		// Get the datastore type from the schema (if any)
 		String dataStoreType = storage.DataStoreType();
 		if ( dataStoreType.equals( "undefined") ) {
@@ -191,7 +196,7 @@ public class epipog {
 		case "DataStorePSV"	  : dataStore = new DataStorePSV(); 	break;
 		case "DataStoreTSV"	  : dataStore = new DataStoreTSV(); 	break;
 		}
-		
+			
 		// Attach the data store to the storage
 		dataStore.Storage( storage );
 		
@@ -224,7 +229,7 @@ public class epipog {
 			System.err.println( e.getMessage() ); 
 			System.exit( 1 );
 		}
-	
+
 		// Import a file
 		if ( null != IOption ) {
 			File f = new File( IOption );
@@ -269,7 +274,6 @@ public class epipog {
 						   System.exit( 1 );
 			}
 			
-			
 			collection.Parser( parser );
 			
 			try {
@@ -298,6 +302,22 @@ public class epipog {
 				collection.Insert( imports );
 			}
 			catch ( CollectionException e ) { 
+				System.err.println( e.getMessage() );
+				System.exit( 1 );
+			}
+		}
+		// Select from collection
+		else if ( null != sOption ) {
+			String[] fields = sOption.split(",");
+			ArrayList<String> select = new ArrayList<String>();
+			for ( String field: fields ) {
+				select.add( field );
+			}
+			
+			try {
+				ArrayList<Data[]> result = collection.Select( select );		
+			}
+			catch ( CollectionException e ) {
 				System.err.println( e.getMessage() );
 				System.exit( 1 );
 			}
