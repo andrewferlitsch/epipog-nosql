@@ -229,10 +229,106 @@ IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 java -cp .;%BUILD% epipog -x tmp
 del foo.json
 
-echo Test: select, in progress
+echo Test: select all (strings) from binary store
 java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D binary
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
-java -cp .;%BUILD% epipog -s "*" -c tmp
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "one,two" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (strings) from csv store
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D csv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "one,two" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: select fields from csv store
+java -cp .;%BUILD% epipog -s "field2,field1" -c tmp >out
+find "two,one" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (strings) from psv store
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D psv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "one,two" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: select fields from psv store
+java -cp .;%BUILD% epipog -s "field2,field1" -c tmp >out
+find "two,one" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (strings) from tsv store
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D tsv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "one,two" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: select fields from tsv store
+java -cp .;%BUILD% epipog -s "field2,field1" -c tmp >out
+find "two,one" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (strings) from json store
+java -cp .;%BUILD% epipog -I tests/1.csv -c tmp -D json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "one,two" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: select fields from json store
+java -cp .;%BUILD% epipog -s "field2,field1" -c tmp >out
+find "two,one" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (int,short,long) from binary store
+java -cp .;%BUILD% epipog -I tests/1a.csv -c tmp -Sfield1:short,field2:integer,field3:long
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "1,2,3" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (float,double) from binary store
+java -cp .;%BUILD% epipog -I tests/1b.csv -c tmp -Sfield1:float,field2:double
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "1.0,2.0" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (char,boolean) from binary store
+java -cp .;%BUILD% epipog -I tests/1c.csv -c tmp -Sfield1:char,field2:boolean
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "x,true" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (fixed string) from binary store
+java -cp .;%BUILD% epipog -I tests/1d.csv -c tmp -Sfield1:string16,field2:string32,field3:string64,field4:string128,field5:string256
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "one,two,three,four,five" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select all (date,time) from binary store
+java -cp .;%BUILD% epipog -I tests/1e.csv -c tmp -Sfield1:date,field2:time
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "2016-04-02,10:23:16" out >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -x tmp
+
+REM unicode chars, other boolean
 
 del err out res \tmp\*.dat \tmp\*.sch

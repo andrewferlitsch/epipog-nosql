@@ -57,7 +57,7 @@ public abstract class DataStoreSV extends DataStore {
 		long rollback = End();	
 				
 		// Set dirty flag to clean
-		Write( "1,");		
+		Write( "1" + (char) separator );		
 		
 		// Insert the values
 		int nVals = keyVals.size();
@@ -112,7 +112,7 @@ public abstract class DataStoreSV extends DataStore {
 		long rollback = End();
 		
 		// Set dirty flag to clean
-		Write( "1,");
+		Write( "1" + (char) separator );
 		
 		// Write each key value to storage
 		for ( int i = 0; i < vlen; i++ ) {
@@ -187,7 +187,7 @@ public abstract class DataStoreSV extends DataStore {
 				continue;
 			
 			// extract the fields from the row
-			ArrayList<String> values = SVParse.Split( line, ',', true, null );
+			ArrayList<String> values = SVParse.Split( line, (char) separator, true, null );
 			
 			// Allocate a result buffer for this row
 			Data[] result = new Data[ flen ];

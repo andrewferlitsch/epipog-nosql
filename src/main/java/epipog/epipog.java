@@ -316,8 +316,15 @@ public class epipog {
 			
 			try {
 				ArrayList<Data[]> result = collection.Select( select );		
+				
+				for ( Data[] row : result ) {
+					for ( Data column : row )
+						System.out.print( column.AsString() + "," );
+					System.out.println("");
+				}
 			}
 			catch ( CollectionException e ) {
+				
 				System.err.println( e.getMessage() );
 				System.exit( 1 );
 			}
