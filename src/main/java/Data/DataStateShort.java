@@ -52,6 +52,10 @@ public class DataStateShort extends DataState {
 				if ( s.length() == 0 ) {
 					Undefined(); value = 0;
 				}
+				// Octal Value
+				else if ( s.length() > 1 && s.charAt( 0 ) == '0' &&
+					!( s.charAt( 1 ) == 'X' || s.charAt( 1 ) == 'x' ) )
+					value = Short.parseShort( s.substring( 1 ), 8 );
 				// Hex Value
 				else if ( s.length() > 2 && s.charAt( 0 ) == '0' &&
 					 ( s.charAt( 1 ) == 'X' || s.charAt( 1 ) == 'x' ) )

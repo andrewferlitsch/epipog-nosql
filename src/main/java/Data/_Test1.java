@@ -505,7 +505,12 @@ public class _Test1 {
 		Title( "DataStateShort Parse Hex 0X" );
 		try { v.Parse( "0XFF" ); Passed(""); }
 		catch ( NumberFormatException e ) { Failed( "exception" ); }
-		if ( v.Get() == 255 ) Passed(""); else Failed("");		
+		if ( v.Get() == 255 ) Passed(""); else Failed("");	
+		
+		Title( "DataStateShort Parse Octal 0" );
+		try { v.Parse( "040" ); Passed(""); }
+		catch ( NumberFormatException e ) { Failed( "exception" ); }
+		if ( v.Get() == 32 ) Passed(""); else Failed( v.Get().toString() );	
 		
 		Title( "DataStateShort Parse MAX" );
 		v.Parse( "32767" );
@@ -860,7 +865,12 @@ public class _Test1 {
 		Title( "DataStateInteger Parse Hex 0X" );
 		try { v.Parse( "0XFF" ); Passed(""); }
 		catch ( NumberFormatException e ) { Failed( "exception" ); }
-		if ( v.Get() == 255 ) Passed(""); else Failed("");		
+		if ( v.Get() == 255 ) Passed(""); else Failed("");	
+		
+		Title( "DataStateInteger Parse Octal 0" );
+		try { v.Parse( "040" ); Passed(""); }
+		catch ( NumberFormatException e ) { Failed( "exception" ); }
+		if ( v.Get() == 32 ) Passed(""); else Failed("");		
 		
 		Title( "DataStateInteger Parse MAX" );
 		v.Parse( "2147483647" );
@@ -1185,6 +1195,11 @@ public class _Test1 {
 		try { v.Parse( "0XFF" ); Passed(""); }
 		catch ( NumberFormatException e ) { Failed( "exception" ); }
 		if ( v.Get() == 255L ) Passed(""); else Failed("");	
+		
+		Title( "DataStateLong Parse Octal 0" );
+		try { v.Parse( "040" ); Passed(""); }
+		catch ( NumberFormatException e ) { Failed( "exception" ); }
+		if ( v.Get() == 32L ) Passed(""); else Failed( v.Get().toString() );	
 		
 		Title( "DataStateLong Parse MAX" );
 		v.Parse( "9223372036854775807" );

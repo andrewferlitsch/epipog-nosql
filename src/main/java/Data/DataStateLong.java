@@ -52,6 +52,10 @@ public class DataStateLong extends DataState {
 				if ( s.length() == 0 ) {
 					Undefined(); value = 0L;
 				}
+				// Octal Value
+				else if ( s.length() > 1 && s.charAt( 0 ) == '0' &&
+					!( s.charAt( 1 ) == 'X' || s.charAt( 1 ) == 'x' ) )
+					value = Long.parseLong( s.substring( 1 ), 8 );
 				// Hex Value
 				else if ( s.length() > 2 && s.charAt( 0 ) == '0' &&
 					 ( s.charAt( 1 ) == 'X' || s.charAt( 1 ) == 'x' ) )
