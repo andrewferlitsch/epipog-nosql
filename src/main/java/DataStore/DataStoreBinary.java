@@ -251,8 +251,8 @@ public class DataStoreBinary extends DataStore {
 							case Schema.BSONDouble		: d = new DataDouble();		  	  d.Set( ReadDouble() );    break;
 							case Schema.BSONBoolean		: d = new DataBoolean();		  d.Set( ReadBoolean() );   break;
 							case Schema.BSONChar		: d = new DataChar();		  	  d.Set( ReadChar() );      break;
-							case Schema.BSONDate		: d = new DataLong();		  	  d.Set( ReadLong() );      break;
-							case Schema.BSONTime		: d = new DataLong();		  	  d.Set( ReadLong() );      break;
+							case Schema.BSONDate		: d = new DataDate();		  	  d.Set( ReadLong() );      break;
+							case Schema.BSONTime		: d = new DataTime();		  	  d.Set( ReadLong() );      break;
 							default						: throw new DataStoreException( "DataStoreBinary.Select: unknown data type" ); 
 							}
 							

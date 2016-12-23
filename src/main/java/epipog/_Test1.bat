@@ -329,6 +329,67 @@ find "2016-04-02,10:23:16" out >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 java -cp .;%BUILD% epipog -x tmp
 
-REM unicode chars, other boolean
+echo Test: select datamodel=state for boolean values with Binary Store
+java -cp .;%BUILD% epipog -I tests/1f.csv -c tmp -Sfield1:boolean,field2:boolean,field3:boolean,field4:boolean,field5:boolean,field6:boolean -V
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "true,true,false,false,true,false" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select datamodel=state for boolean values with CSV Store
+java -cp .;%BUILD% epipog -I tests/1f.csv -c tmp -Sfield1:boolean,field2:boolean,field3:boolean,field4:boolean,field5:boolean,field6:boolean -V -D csv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "true,true,false,false,true,false" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select datamodel=state for boolean values with JSON Store
+java -cp .;%BUILD% epipog -I tests/1f.csv -c tmp -Sfield1:boolean,field2:boolean,field3:boolean,field4:boolean,field5:boolean,field6:boolean -V -D json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "true,true,false,false,true,false" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select datamodel=state for integer values with Binary Store
+java -cp .;%BUILD% epipog -I tests/1g.csv -c tmp -Sfield1:short,field2:integer,field3:long -V
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "1,10,2000" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select datamodel=state for integer values with CSV Store
+java -cp .;%BUILD% epipog -I tests/1g.csv -c tmp -Sfield1:short,field2:integer,field3:long -V -D csv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "1,10,2000" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select datamodel=state for integer values with JSON Store
+java -cp .;%BUILD% epipog -I tests/1g.csv -c tmp -Sfield1:short,field2:integer,field3:long -V -D json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "1,10,2000" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select datamodel=state for char values with Binary Store
+java -cp .;%BUILD% epipog -I tests/1h.csv -c tmp -Sfield1:char -V
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "1,6" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select datamodel=state for char values with CSV Store
+java -cp .;%BUILD% epipog -I tests/1h.csv -c tmp -Sfield1:char -V -D csv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "1,6" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: select datamodel=state for char values with JSON Store
+java -cp .;%BUILD% epipog -I tests/1h.csv -c tmp -Sfield1:char -V -D json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "1,6" out >res
+java -cp .;%BUILD% epipog -x tmp
 
 del err out res \tmp\*.dat \tmp\*.sch

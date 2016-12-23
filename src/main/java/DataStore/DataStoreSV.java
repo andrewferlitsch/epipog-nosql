@@ -33,7 +33,7 @@ public abstract class DataStoreSV extends DataStore {
 	{
 		if ( null == keyVals || 0 == keyVals.size() )
 			return;
-		
+	
 		// Get the field names in the schema
 		ArrayList<Pair<String,Integer>> keyTypes = collection.Schema().Keys();
 		if ( null == keyTypes )
@@ -73,14 +73,14 @@ public abstract class DataStoreSV extends DataStore {
 			// Validate the input date according to it's data type
 			if ( validate ) {
 				int type = keyType.getValue();
-				
+
 				try {
 					value = DataCheck( dataModel, type, value );
 				}
-				catch ( DataStoreException e ) { throw new DataStoreException( e.getMessage() ); }
-				finally {
+				catch ( DataStoreException e ) { 
 					// rollback any partial writes
 					Move( rollback );
+					throw new DataStoreException( e.getMessage() ); 
 				}
 			}
 			
@@ -121,14 +121,14 @@ public abstract class DataStoreSV extends DataStore {
 			// Validate the input date according to it's data type
 			if ( validate ) {
 				Integer type = collection.Schema().GetType( i );
-				
+			
 				try {
 					value = DataCheck( dataModel, type, value );
 				}
-				catch ( DataStoreException e ) { throw new DataStoreException( e.getMessage() ); }
-				finally {
+				catch ( DataStoreException e ) { 
 					// rollback any partial writes
 					Move( rollback );
+					throw new DataStoreException( e.getMessage() ); 
 				}
 			}
 			
@@ -139,7 +139,7 @@ public abstract class DataStoreSV extends DataStore {
 	
 			Write( (byte) separator );
 		}
-		
+	
 		Move( Pos() - 1 );	// remove trailing pipe symbol
 		Write( "\r\n" );
 	}

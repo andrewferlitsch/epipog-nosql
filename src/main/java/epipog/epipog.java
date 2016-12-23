@@ -27,7 +27,8 @@ public class epipog {
 								"\t-t type\t\t# input file type\r\n" +
 								"\t-T storage\t# storage (single, multi)\r\n" +
 								"\t-x\t\t# delete a collection\r\n" +
-								"\t-v volume\t# storage volume\r\n";
+								"\t-v volume\t# storage volume\r\n" +
+								"\t-V\t\t# validate\r\n";
 								
 	// Main entry method
 	public static void main( String args[] ) {
@@ -50,10 +51,11 @@ public class epipog {
 		String  tOption = null;		// Input File Type 
 		String  TOption = "single";	// Storage type (default is single file)
 		String  vOption = "/tmp";	// Storage volume (default /tmp)
+		Boolean VOption = false;	// Validate data before inserting
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLR:s:S:t:T:v:x", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLR:s:S:t:T:v:Vx", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
@@ -68,6 +70,7 @@ public class epipog {
 			case 't': tOption = GetOpt.Arg(); break;
 			case 'T': TOption = GetOpt.Arg(); break;
 			case 'v': vOption = GetOpt.Arg(); break;
+			case 'V': VOption = true;		  break;
 			case 'x': xOption = true; 		  break;
 			}
 		}
@@ -195,6 +198,12 @@ public class epipog {
 		case "DataStoreCSV"	  : dataStore = new DataStoreCSV(); 	break;
 		case "DataStorePSV"	  : dataStore = new DataStorePSV(); 	break;
 		case "DataStoreTSV"	  : dataStore = new DataStoreTSV(); 	break;
+		}
+		
+		// Validate (verify) the input
+		if ( VOption ) {
+			dataStore.Validate( true );
+			dataStore.DataModel( Data.DataModel.DATASTATE );
 		}
 			
 		// Attach the data store to the storage
