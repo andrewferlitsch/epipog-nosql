@@ -434,4 +434,27 @@ java -cp .;%BUILD% epipog -s "*" -c tmp >out
 find "1000,2000000,3000000000" out >res
 java -cp .;%BUILD% epipog -x tmp
 
+echo Test: insert/select - no header CSV in binary store
+java -cp .;%BUILD% epipog -I tests/1k.csv -c tmp -Sfield1:short,field2:integer,field3:long -n
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "10,20,30" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: insert/select - no header CSV in CSV store
+java -cp .;%BUILD% epipog -I tests/1k.csv -c tmp -Sfield1:short,field2:integer,field3:long -n -D csv
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "10,20,30" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+echo Test: insert/select - no header CSV in json store
+java -cp .;%BUILD% epipog -I tests/1k.csv -c tmp -Sfield1:short,field2:integer,field3:long -n -D json
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+java -cp .;%BUILD% epipog -s "*" -c tmp >out
+find "10,20,30" out >res
+java -cp .;%BUILD% epipog -x tmp
+
+REM null fields
+
 del err out res \tmp\*.dat \tmp\*.sch

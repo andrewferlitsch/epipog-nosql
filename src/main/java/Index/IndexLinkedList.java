@@ -16,18 +16,18 @@ public class IndexLinkedList implements Index {
 	// Return:
 	//	-1 : new entry (not found)
 	//	not -1 : position of found entry
-	public long Add( long hash, long pos ) 
+	public long Add( long hash, long pos, long data /* second hash */ ) 
 	{	
 		long result = -1;
 		
 		// check if hash already exists in list
-		long found = Remove( hash );	
+		long found = Remove( hash, data );	
 		if ( -1 != found ) {
 			result = found;
 		}
 
-		long[] pair = { hash, pos };
-		index.add( pair );
+		long[] triplet = { hash, pos, data };
+		index.add( triplet );
 		return result;
 	}
 	
@@ -35,10 +35,10 @@ public class IndexLinkedList implements Index {
 	// Return
 	//	-1 : not found
 	//	not -1 : found, return position in datastore
-	public long Find( long hash ) {
+	public long Find( long hash, long data ) {
 		for ( long[] entry : index ) {
 			// found the entry
-			if ( entry[ 0 ] == hash ) {
+			if ( entry[ 0 ] == hash && entry[ 2 ] == data ) {
 				return entry [ 1 ];
 			}
 		}
@@ -49,13 +49,13 @@ public class IndexLinkedList implements Index {
 	// Return
 	//	-1 : not found
 	//	not -1 : found and removed, return position in datastore
-	public long Remove( long hash ) {
-		int len =index.size();
+	public long Remove( long hash, long data ) {
+		int len = index.size();
 		for ( int i = 0; i < len; i++ ) {
 			// found the entry
-			if ( index.get( i )[ 0 ] == hash ) {
+			if ( index.get( i )[ 0 ] == hash && index.get( i )[ 2 ] == data ) {
 				// remove the entry (mark as dirty)
-				index.get( i )[ 0 ] = -1;
+				index.get( i )[ 0 ] = 0xFFFFFFFFFFFFFFFFL;
 				return index.get( i )[ 1 ];
 			}
 		}

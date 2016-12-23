@@ -44,13 +44,14 @@ public class DataStateShort extends DataState {
 	{
 		try {
 			// empty
-			if ( null == s ) {
-				Undefined(); value = 0;
+			Short zero = 0;
+			if ( null == s ) {;
+				Undefined(); value = zero;
 			}
 			else {
 				int len = s.length();
 				if ( s.length() == 0 ) {
-					Undefined(); value = 0;
+					Undefined(); value = zero;
 				}
 				// Octal Value
 				else if ( s.length() > 1 && s.charAt( 0 ) == '0' &&

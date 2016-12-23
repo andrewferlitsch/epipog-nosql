@@ -21,6 +21,7 @@ public class epipog {
 								"\t-I file\t\t# insert from file\r\n" +
 								"\t-l\t\t# list collections\r\n" +
 								"\t-L\t\t# list schema in collection\r\n" +
+								"\t-n\t\t# no header (csv)\r\n" +
 								"\t-R reader\t# reader type (mem,line,mapped)\r\n" +
 								"\t-s select\t# select fields from collection\r\n" +
 								"\t-S schema\t# schema\r\n" +
@@ -45,6 +46,7 @@ public class epipog {
 		String  IOption = null;		// Insert from file
 		Boolean lOption = false;	// List collections in storage
 		Boolean LOption = false;	// List schema in collection
+		Boolean nOption = false;	// no header (csv)
 		String  ROption = "mem";	// Reader type (default is mem)
 		String  sOption = null;		// Select fields from collection
 		String  SOption = null;		// Schema (specified on command line)
@@ -55,7 +57,7 @@ public class epipog {
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLR:s:S:t:T:v:Vx", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLnR:s:S:t:T:v:Vx", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
@@ -64,6 +66,7 @@ public class epipog {
 			case 'I': IOption = GetOpt.Arg(); break;
 			case 'l': lOption = true; 		  break;
 			case 'L': LOption = true; 		  break;
+			case 'n': nOption = true; 		  break;
 			case 'R': ROption = GetOpt.Arg(); break;
 			case 's': sOption = GetOpt.Arg(); break;
 			case 'S': SOption = GetOpt.Arg(); break;
@@ -282,6 +285,10 @@ public class epipog {
 						   System.err.println( usage );
 						   System.exit( 1 );
 			}
+			
+			// No header in input
+			if ( nOption )
+				parser.Header( false );
 			
 			collection.Parser( parser );
 			
