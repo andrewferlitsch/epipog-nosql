@@ -7,6 +7,8 @@ import epipog.annotations.*;
 import epipog.data.Data;
 import epipog.schema.Schema;
 
+import java.util.ArrayList;
+
 // Interface Definition for Index
 //
 public interface Index {
@@ -56,20 +58,18 @@ public interface Index {
 	// Method for adding a hashed entry to the index
 	// Return:
 	//	-1 : new entry (not found)
-	//	not -1 : position of found entry
+	//	not -1 : position in data store of found entry
 	public long Add( long hash, long pos, long data );
 	
 	// Method for finding a hashed entry from index
 	// Return
-	//	-1 : not found
-	//	not -1 : found, return position in datastore
-	public long Find( long hash, long data );
+	//	non-null: return of positions in data store of found entries
+	public ArrayList<Long> Find( long hash, long data );
 	
 	// Method for removing a hash entry from the index
 	// Return
-	//	-1 : not found
-	//	not -1 : found and removed
-	public long Remove( long hash, long data );
+	//	non-null : returns array of positions in data store of removed items
+	public ArrayList<Long> Remove( long hash, long data );
 	
 	// Method to return the position in storage of the nth record (row/document)
 	// Return

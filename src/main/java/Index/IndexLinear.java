@@ -4,6 +4,7 @@
 package epipog.index;
 
 import epipog.annotations.*;
+
 import javafx.util.Pair;
 import java.util.ArrayList;
 
@@ -24,16 +25,16 @@ public class IndexLinear implements Index {
 	// Method for adding a hashed entry to the index
 	// Return:
 	//	-1 : new entry (not found)
-	//	not -1 : position of found entry
+	//	not -1 : position in data store of found entry
 	public long Add( long hash, long pos, long data /* second hash */ ) 
 	{	
 		long result = -1;
 		
 		// check if hash already exists in list
 		if ( unique ) {
-			long found = Remove( hash, data );	
-			if ( -1 != found ) {
-				result = found;
+			ArrayList<Long> found = Remove( hash, data );	
+			if ( found.size() != 0 ) {
+				result = ( long ) found.get( 0 );
 			}
 		}
 		
@@ -44,34 +45,38 @@ public class IndexLinear implements Index {
 	
 	// Method for finding a hashed entry from the index
 	// Return
-	//	-1 : not found
-	//	not -1 : found, return position in datastore
-	public long Find( long hash, long data ) {
+	//	non-null: return of positions in data store of found entries
+	public ArrayList<Long> Find( long hash, long data ) {
+		ArrayList<Long> found = new ArrayList<Long>();
 		for ( long[] entry : index ) {
 			// found the entry
 			if ( entry[ 0 ] == hash && entry[ 2 ] == data ) {
-				return entry [ 1 ];
+				found.add( entry [ 1 ] );
+				if ( unique )
+					return found;
 			}
 		}
-		return -1;	// not found
+		return found;
 	}
 	
 	// Method for removing a hash entry from the index
 	// Return
-	//	-1 : not found
-	//	not -1 : found and removed, return position in datastore
-	public long Remove( long hash, long data ) {
+	//	non-null : returns array of positions in data store of removed items
+	public ArrayList<Long> Remove( long hash, long data ) {
+		ArrayList<Long> remove = new ArrayList<Long>();
 		int len = index.size();
 		for ( int i = 0; i < len; i++ ) {
 			// found the entry
 			if ( index.get( i )[ 0 ] == hash && index.get( i )[ 2 ] == data ) {
 				// remove the entry (mark as dirty)
 				index.get( i )[ 0 ] = 0xFFFFFFFFFFFFFFFFL;
-				return index.get( i )[ 1 ];
+				remove.add( index.get( i )[ 1 ] );
+				if ( unique )
+					return remove;
 			}
 		}
 		
-		return -1;	// not found
+		return remove;
 	}
 	
 	// Implementation to return the position in storage of the nth record (row/document)

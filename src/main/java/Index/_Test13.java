@@ -1,6 +1,8 @@
 import epipog.index.*;
 import epipog.data.*;
 
+import java.util.ArrayList;
+
 public class _Test13 {
 	static int rc = 0;
 	
@@ -149,20 +151,32 @@ public class _Test13 {
 		index.Add( 0L, 0L,  0L ); 
 		index.Add( 1L, 10L, 100L );  
 		index.Add( 2L, 30L, 300L );
-		long result = index.Find( 0L, 0L );
-		if ( result == 0 ) Passed( "" ); else Failed( String.valueOf( result ) );
+		ArrayList<Long> result = index.Find( 0L, 0L );
+		if ( result.size() == 1 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
+		if ( result.get( 0 ) == 0 ) Passed( "" ); else Failed( String.valueOf( result.get( 0 ) ) );
 		
 		Title( "IndexLinear: Find() at second location" );
 		result = index.Find( 1L, 100L );
-		if ( result == 10L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		if ( result.size() == 1 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
+		if ( result.get( 0 ) == 10L ) Passed( "" ); else Failed( String.valueOf( result.get( 0 ) ) );
 		
 		Title( "IndexLinear: Find() not match hash" );
 		result = index.Find( 4L, 100L );
-		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		if ( result.size() == 0 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
 		
 		Title( "IndexLinear: Find() not match data" );
 		result = index.Find( 1L, 300L );
-		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		if ( result.size() == 0 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
+	
+		Title( "IndexLinear: Find() multiple entries" );
+		index.Unique( false );
+		index.Add( 0L, 40L,  0L ); 
+		index.Add( 1L, 50L, 100L );  
+		index.Add( 2L, 60L, 300L );
+		result = index.Find( 1L, 100L );
+		if ( result.size() == 2 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
+		if ( result.get( 0 ) == 10L ) Passed( "" ); else Failed( String.valueOf( result.get( 0 ) ) );
+		if ( result.get( 1 ) == 50L ) Passed( "" ); else Failed( String.valueOf( result.get( 1 ) ) );
 	}
 	
 	public static void Test_Remove() {
@@ -172,20 +186,33 @@ public class _Test13 {
 		index.Add( 0L, 0L,  0L ); 
 		index.Add( 1L, 10L, 100L );  
 		index.Add( 2L, 30L, 300L);
-		long result = index.Remove( 0L, 0L );
-		if ( result == 0L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		ArrayList<Long> result = index.Remove( 0L, 0L );
+		if ( result.size() == 1 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
+		if ( result.get( 0 ) == 0L ) Passed( "" ); else Failed( String.valueOf( result.get( 0 ) ) );
 		
 		Title( "IndexLinear: Remove() at second location" );
 		result = index.Remove( 1L, 100L );
-		if ( result == 10L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		if ( result.size() == 1 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
+		if ( result.get( 0 ) == 10L ) Passed( "" ); else Failed( String.valueOf( result.get( 0 ) ) );
 		
 		Title( "IndexLinear: Remove() already removed" );
 		result = index.Remove( 1L, 100L );
-		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		if ( result.size() == 0 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
 		
 		Title( "IndexLinear: Remove() never exist" );
 		result = index.Remove( 2L, 100L );
-		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		if ( result.size() == 0 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
+		
+		Title( "IndexLinear: Remove() multiple entries" );
+		index.Unique( false );
+		index.Add( 1L, 10L, 100L );
+		index.Add( 0L, 40L,  0L ); 
+		index.Add( 1L, 50L, 100L );  
+		index.Add( 2L, 60L, 300L );
+		result = index.Remove( 1L, 100L );
+		if ( result.size() == 2 ) Passed( "" ); else Failed( String.valueOf( result.size() ) );
+		if ( result.get( 0 ) == 10L ) Passed( "" ); else Failed( String.valueOf( result.get( 0 ) ) );
+		if ( result.get( 1 ) == 50L ) Passed( "" ); else Failed( String.valueOf( result.get( 1 ) ) );
 	}
 	
 	public static void Test_Pos() {
