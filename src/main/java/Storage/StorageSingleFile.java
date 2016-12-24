@@ -557,13 +557,13 @@ public class StorageSingleFile implements Storage {
 		catch ( IOException e ) {
 			throw new StorageException( "SingleFileStorage.Write: Cannot write to index file" );
 		}
-/* TODO		
+	
 		// Write index in CSV format
-		ArrayList<long[]> triplets = index.Keys();
-		if ( keys != null ) {
-			for ( Pair<String,Integer> key : keys ) {
+		ArrayList<long[]> entries = index.Entries();
+		if ( entries != null ) {
+			for ( long[] entry : entries ) {
 				try {
-					value = key.getKey() + "," + key.getValue() + "\r\n";
+					value = entry[ 0 ] + "," + entry[ 1 ] + "," + entry[ 2 ] + "\r\n";
 					bytes = value.getBytes();
 					sc.write( bytes, 0, bytes.length );	
 				}
@@ -572,7 +572,6 @@ public class StorageSingleFile implements Storage {
 				}
 			}
 		}
-*/
 		
 		// Close the index file
 		try {

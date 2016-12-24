@@ -17,6 +17,12 @@ public class IndexLinear implements Index {
 	private boolean unique = false;		// required to be unique
 	private String  name   = null;		// Index name (i.e., column(s) names )
 	
+	// Method to get list of entries
+	@Getter
+	public ArrayList<long[]> Entries() {
+		return index;
+	}
+	
 	// Method to set if index must be unique
 	@Setter
 	public void Unique( boolean unique ) {

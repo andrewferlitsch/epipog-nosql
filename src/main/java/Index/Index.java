@@ -51,6 +51,10 @@ public interface Index {
 		return hash;
 	}
 	
+	// Method to get list of entries
+	@Getter
+	public ArrayList<long[]> Entries();
+	
 	// Method to set if index is unique (no duplicates)
 	@Setter
 	public void Unique( boolean unique );

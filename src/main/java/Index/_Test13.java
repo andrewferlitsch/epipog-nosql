@@ -249,6 +249,11 @@ public class _Test13 {
 		Title( "IndexLinear: Name()" );
 		index.Name( "Sammy");
 		if ( index.Name().equals("Sammy") ) Passed(""); else Failed("");
+		
+		Title( "IndexLinear: Entries()" );
+		index.Add( 1L, 10L, 100L );
+		ArrayList<long[]> entries = index.Entries();
+		if ( entries.size() == 1 ) Passed(""); else Failed("");
 	}
 	
 	public static void Title( String title ) {
