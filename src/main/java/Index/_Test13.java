@@ -17,8 +17,8 @@ public class _Test13 {
 	public static void Test_Hash() {
 		Index index = null;
 		
-		Title( "IndexLinkedList: constructor" );
-		index = new IndexLinkedList();
+		Title( "IndexLinear: constructor" );
+		index = new IndexLinear();
 		Passed( "" );
 		
 		Title( "Hash: string" );
@@ -113,96 +113,96 @@ public class _Test13 {
 	}
 	
 	public static void Test_Add() {
-		Index index = new IndexLinkedList();
+		Index index = new IndexLinear();
 		
-		Title( "IndexLinkedList: Add(), hash 0" );
+		Title( "IndexLinear: Add(), hash 0" );
 		index.Unique( true );
 		long result = index.Add( 0L, 0L, 0L ); 
 		if ( result == -1 ) Passed( "" ); else Failed( "" );
 		
-		Title( "IndexLinkedList: Add() positive" );
+		Title( "IndexLinear: Add() positive" );
 		result = index.Add( 2L, 0L, 0L );  
 		if ( result == -1 ) Passed( "" ); else Failed( "" );
 		
-		Title( "IndexLinkedList: Add() negative" );
+		Title( "IndexLinear: Add() negative" );
 		result = index.Add( -2L, 0L, 0L );  
 		if ( result == -1 ) Passed( "" ); else Failed( "" );
 		
-		Title( "IndexLinkedList: Add() again, hash 0, same data" );
+		Title( "IndexLinear: Add() again, hash 0, same data" );
 		result = index.Add( 0L, 0L, 0L );    
 		if ( result != -1 ) Passed( "" ); else Failed( "" );
 		
-		Title( "IndexLinkedList: Add() again, hash 0, different data" );
+		Title( "IndexLinear: Add() again, hash 0, different data" );
 		result = index.Add( 0L, 0L, 1L );    
 		if ( result == -1 ) Passed( "" ); else Failed( "" );
 		
-		Title( "IndexLinkedList: Add() again, hash 0, same data, unique turned off" );
+		Title( "IndexLinear: Add() again, hash 0, same data, unique turned off" );
 		index.Unique( false );
 		result = index.Add( 0L, 0L, 0L );    
 		if ( result == -1 ) Passed( "" ); else Failed( "" );
 	}
 	
 	public static void Test_Find() {
-		Index index = new IndexLinkedList();
+		Index index = new IndexLinear();
 		
-		Title( "IndexLinkedList: Find() at first location" );
+		Title( "IndexLinear: Find() at first location" );
 		index.Add( 0L, 0L,  0L ); 
 		index.Add( 1L, 10L, 100L );  
 		index.Add( 2L, 30L, 300L );
 		long result = index.Find( 0L, 0L );
 		if ( result == 0 ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
-		Title( "IndexLinkedList: Find() at second location" );
+		Title( "IndexLinear: Find() at second location" );
 		result = index.Find( 1L, 100L );
 		if ( result == 10L ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
-		Title( "IndexLinkedList: Find() not match hash" );
+		Title( "IndexLinear: Find() not match hash" );
 		result = index.Find( 4L, 100L );
 		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
-		Title( "IndexLinkedList: Find() not match data" );
+		Title( "IndexLinear: Find() not match data" );
 		result = index.Find( 1L, 300L );
 		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
 	}
 	
 	public static void Test_Remove() {
-		Index index = new IndexLinkedList();
+		Index index = new IndexLinear();
 		
-		Title( "IndexLinkedList: Remove() at first location" );
+		Title( "IndexLinear: Remove() at first location" );
 		index.Add( 0L, 0L,  0L ); 
 		index.Add( 1L, 10L, 100L );  
 		index.Add( 2L, 30L, 300L);
 		long result = index.Remove( 0L, 0L );
 		if ( result == 0L ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
-		Title( "IndexLinkedList: Remove() at second location" );
+		Title( "IndexLinear: Remove() at second location" );
 		result = index.Remove( 1L, 100L );
 		if ( result == 10L ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
-		Title( "IndexLinkedList: Remove() already removed" );
+		Title( "IndexLinear: Remove() already removed" );
 		result = index.Remove( 1L, 100L );
 		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
-		Title( "IndexLinkedList: Remove() never exist" );
+		Title( "IndexLinear: Remove() never exist" );
 		result = index.Remove( 2L, 100L );
 		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
 	}
 	
 	public static void Test_Pos() {
-		Index index = new IndexLinkedList();
+		Index index = new IndexLinear();
 		
-		Title( "IndexLinkedList: Pos() at first location" );
+		Title( "IndexLinear: Pos() at first location" );
 		index.Add( 0L, 0L,  0L ); 
 		index.Add( 1L, 10L, 100L );  
 		index.Add( 2L, 30L, 300L );
 		long result = index.Pos( 0 );
 		if ( result == 0L ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
-		Title( "IndexLinkedList: Pos() at second location" );
+		Title( "IndexLinear: Pos() at second location" );
 		result = index.Pos( 1 );
 		if ( result == 10L ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
-		Title( "IndexLinkedList: Pos() nonexistent" );
+		Title( "IndexLinear: Pos() nonexistent" );
 		result = index.Pos( 4 );
 		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
 	}
