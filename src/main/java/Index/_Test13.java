@@ -10,6 +10,7 @@ public class _Test13 {
 		Test_Add();
 		Test_Find();
 		Test_Remove();
+		Test_Pos();
 		System.exit( rc );
 	}
 	
@@ -115,6 +116,7 @@ public class _Test13 {
 		Index index = new IndexLinkedList();
 		
 		Title( "IndexLinkedList: Add(), hash 0" );
+		index.Unique( true );
 		long result = index.Add( 0L, 0L, 0L ); 
 		if ( result == -1 ) Passed( "" ); else Failed( "" );
 		
@@ -132,6 +134,11 @@ public class _Test13 {
 		
 		Title( "IndexLinkedList: Add() again, hash 0, different data" );
 		result = index.Add( 0L, 0L, 1L );    
+		if ( result == -1 ) Passed( "" ); else Failed( "" );
+		
+		Title( "IndexLinkedList: Add() again, hash 0, same data, unique turned off" );
+		index.Unique( false );
+		result = index.Add( 0L, 0L, 0L );    
 		if ( result == -1 ) Passed( "" ); else Failed( "" );
 	}
 	
@@ -164,7 +171,7 @@ public class _Test13 {
 		Title( "IndexLinkedList: Remove() at first location" );
 		index.Add( 0L, 0L,  0L ); 
 		index.Add( 1L, 10L, 100L );  
-		index.Add( 2L, 30L, 300L );
+		index.Add( 2L, 30L, 300L);
 		long result = index.Remove( 0L, 0L );
 		if ( result == 0L ) Passed( "" ); else Failed( String.valueOf( result ) );
 		
@@ -178,6 +185,25 @@ public class _Test13 {
 		
 		Title( "IndexLinkedList: Remove() never exist" );
 		result = index.Remove( 2L, 100L );
+		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
+	}
+	
+	public static void Test_Pos() {
+		Index index = new IndexLinkedList();
+		
+		Title( "IndexLinkedList: Pos() at first location" );
+		index.Add( 0L, 0L,  0L ); 
+		index.Add( 1L, 10L, 100L );  
+		index.Add( 2L, 30L, 300L );
+		long result = index.Pos( 0 );
+		if ( result == 0L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		
+		Title( "IndexLinkedList: Pos() at second location" );
+		result = index.Pos( 1 );
+		if ( result == 10L ) Passed( "" ); else Failed( String.valueOf( result ) );
+		
+		Title( "IndexLinkedList: Pos() nonexistent" );
+		result = index.Pos( 4 );
 		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
 	}
 	

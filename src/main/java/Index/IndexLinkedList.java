@@ -3,6 +3,7 @@
  */
 package epipog.index;
 
+import epipog.annotations.*;
 import javafx.util.Pair;
 import java.util.ArrayList;
 
@@ -11,6 +12,14 @@ public class IndexLinkedList implements Index {
 	
 	// in-memory storage
 	private ArrayList<long[]> index = new ArrayList<long[]>();
+	
+	// required to be unique
+	private boolean unique = false;
+	
+	// Method to indicate if index must be unique
+	public void Unique( boolean unique ) {
+		this.unique = unique;
+	}
 	
 	// Method for adding a hashed entry to the index
 	// Return:
@@ -21,11 +30,13 @@ public class IndexLinkedList implements Index {
 		long result = -1;
 		
 		// check if hash already exists in list
-		long found = Remove( hash, data );	
-		if ( -1 != found ) {
-			result = found;
+		if ( unique ) {
+			long found = Remove( hash, data );	
+			if ( -1 != found ) {
+				result = found;
+			}
 		}
-
+		
 		long[] triplet = { hash, pos, data };
 		index.add( triplet );
 		return result;

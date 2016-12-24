@@ -21,6 +21,7 @@ public class epipog {
 								"\t-I file\t\t# insert from file\r\n" +
 								"\t-l\t\t# list collections\r\n" +
 								"\t-L\t\t# list schema in collection\r\n" +
+								"\t-k link[:u]\t# Index (link)\r\n" +
 								"\t-n\t\t# no header (csv)\r\n" +
 								"\t-R reader\t# reader type (mem,line,mapped)\r\n" +
 								"\t-s select\t# select fields from collection\r\n" +
@@ -44,6 +45,7 @@ public class epipog {
 		Boolean eOption = false;	// Extend schema
 		String  iOption = null;		// Insert
 		String  IOption = null;		// Insert from file
+		String	kOption = null;		// Index(s) (default: link)
 		Boolean lOption = false;	// List collections in storage
 		Boolean LOption = false;	// List schema in collection
 		Boolean nOption = false;	// no header (csv)
@@ -57,13 +59,14 @@ public class epipog {
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:lLnR:s:S:t:T:v:Vx", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:k:lLnR:s:S:t:T:v:Vx", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
 			case 'e': eOption = true;		  break;
 			case 'i': iOption = GetOpt.Arg(); break;
 			case 'I': IOption = GetOpt.Arg(); break;
+			case 'k': kOption = GetOpt.Arg(); break;
 			case 'l': lOption = true; 		  break;
 			case 'L': LOption = true; 		  break;
 			case 'n': nOption = true; 		  break;

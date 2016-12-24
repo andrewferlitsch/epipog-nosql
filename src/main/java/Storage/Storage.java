@@ -110,6 +110,12 @@ public interface Storage {
 	// Method to Read a Schema from storage
 	public ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException;
 	
+	// Method to write an Index to storage
+	public void Write( Index index ) throws StorageException;
+	
+	// Method to Read an Index from storage
+	public ArrayList<long[]> ReadIndex() throws StorageException;
+	
 	// Method to Delete storage
 	public void Delete() throws StorageException;
 	

@@ -3,6 +3,7 @@
  */
 package epipog.index;
 
+import epipog.annotations.*;
 import epipog.data.Data;
 import epipog.schema.Schema;
 
@@ -47,6 +48,10 @@ public interface Index {
 		}
 		return hash;
 	}
+	
+	// Method to indicate if index is unique (no duplicates)
+	@Setter
+	public void Unique( boolean unique );
 	
 	// Method for adding a hashed entry to the index
 	// Return:

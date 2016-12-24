@@ -116,6 +116,12 @@ public class StorageMultiFile implements Storage {
 	
 	// Implementation to Read in schema from storage
 	public ArrayList<Pair<String,Integer>> ReadSchema() throws StorageException { throw new StorageException("unsupported"); }
+		
+	// Method to write an Index to storage
+	public void Write( Index index ) throws StorageException { throw new StorageException("unsupported"); }
+	
+	// Method to Read an Index from storage
+	public ArrayList<long[]> ReadIndex() throws StorageException { throw new StorageException("unsupported"); }
 	
 	// Implementation for Deleting storage
 	public void Delete() throws StorageException { throw new StorageException("unsupported"); }

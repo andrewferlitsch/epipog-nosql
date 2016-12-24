@@ -523,6 +523,38 @@ public class StorageSingleFile implements Storage {
 		return keys;
 	}
 		
+	private RandomAccessFile ix  = null;		// file pointer for index storage file
+			
+	// Implementation to write an Index to storage
+	public void Write( Index index ) 
+		throws StorageException 
+	{ 
+		if ( null == index )
+			return;
+		
+		String indexFile = volume + "/" + path + ".idx";
+		
+		File f = new File( indexFile );
+		if( f.exists() ) 
+			f.delete();
+		
+		// Open the index file
+		try
+		{
+			ix = new RandomAccessFile( indexFile, "rw" );
+		}
+		catch ( FileNotFoundException e ) {
+			throw new StorageException( "SingleFileStorage.Write: Index File not Found: " + indexFile );
+		}
+	}
+	
+	// Method to Read an Index from storage
+	public ArrayList<long[]> ReadIndex() 
+		throws StorageException 
+	{
+		return null;
+	}
+
 	private String dataStoreType = "undefined";	// data store type associated with this storage
 	
 	// Method to set a data store associated with this storage instance
