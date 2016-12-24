@@ -14,12 +14,31 @@ public class IndexLinear implements Index {
 	// in-memory storage
 	private ArrayList<long[]> index = new ArrayList<long[]>();
 	
-	// required to be unique
-	private boolean unique = false;
+	private boolean unique = false;		// required to be unique
+	private String  name   = null;		// Index name (i.e., column(s) names )
 	
-	// Method to indicate if index must be unique
+	// Method to set if index must be unique
+	@Setter
 	public void Unique( boolean unique ) {
 		this.unique = unique;
+	}
+	
+	// Method to get if index is unique (no duplicates)
+	@Getter
+	public boolean Unique() {
+		return unique;
+	}
+	
+	// Method to set the name of the index
+	@Setter
+	public void Name( String name ) {
+		this.name = name;
+	}
+	
+	// Method to get the name of the index
+	@Getter
+	public String Name() {
+		return name;
 	}
 	
 	// Method for adding a hashed entry to the index

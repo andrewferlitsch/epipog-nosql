@@ -51,9 +51,21 @@ public interface Index {
 		return hash;
 	}
 	
-	// Method to indicate if index is unique (no duplicates)
+	// Method to set if index is unique (no duplicates)
 	@Setter
 	public void Unique( boolean unique );
+	
+	// Method to get if index is unique (no duplicates)
+	@Getter
+	public boolean Unique();
+	
+	// Method to set the name of the index
+	@Setter
+	public void Name( String name );
+	
+	// Method to get the name of the index
+	@Getter
+	public String Name();
 	
 	// Method for adding a hashed entry to the index
 	// Return:

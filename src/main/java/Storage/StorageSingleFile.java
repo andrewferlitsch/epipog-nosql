@@ -547,12 +547,89 @@ public class StorageSingleFile implements Storage {
 		catch ( FileNotFoundException e ) {
 			throw new StorageException( "SingleFileStorage.Write: Index File not Found: " + indexFile );
 		}
+		
+		// First entry is the index name and flags
+		String value = index.Name() + ":" + index.Unique() + "\r\n";
+		byte[] bytes = value.getBytes();
+		try {
+			ix.write( bytes, 0, bytes.length );	
+		}
+		catch ( IOException e ) {
+			throw new StorageException( "SingleFileStorage.Write: Cannot write to index file" );
+		}
+/* TODO		
+		// Write index in CSV format
+		ArrayList<long[]> triplets = index.Keys();
+		if ( keys != null ) {
+			for ( Pair<String,Integer> key : keys ) {
+				try {
+					value = key.getKey() + "," + key.getValue() + "\r\n";
+					bytes = value.getBytes();
+					sc.write( bytes, 0, bytes.length );	
+				}
+				catch ( IOException e ) {
+					throw new StorageException( "SingleFileStorage.Write: Cannot write to schema file" );
+				}
+			}
+		}
+*/
+		
+		// Close the index file
+		try {
+			ix.close();
+		}
+		catch ( IOException e )
+		{
+			throw new StorageException( "SingleFileStorage.Write: Cannot close index file" );
+		}
 	}
 	
 	// Method to Read an Index from storage
 	public ArrayList<long[]> ReadIndex() 
 		throws StorageException 
-	{
+	{	
+		String indexFile = volume + "/" + path + ".idx";
+		
+		// check if index exists yet
+		File f = new File( indexFile );
+		if( !f.exists() ) 
+			return null;
+	
+		try
+		{
+			ix = new RandomAccessFile( indexFile, "r" );
+		}
+		catch ( FileNotFoundException e ) {
+			throw new StorageException( "SingleFileStorage.Read: Cannot open index file: " + indexFile );
+		}
+		
+				
+		// Read in the triplets of hash/pos/data
+		try
+		{
+			// Read the data store type
+			String line = ix.readLine();
+			String[] pair;
+			if ( null != line ) {
+				pair = line.split( ":" );
+				// TODO
+			}
+
+			// TODO
+		}
+		catch ( IOException e ) {
+			throw new StorageException( "Cannot read from index file: " + indexFile );
+		}
+
+		// Close the index file
+		try {
+			ix.close();
+		}
+		catch ( IOException e )
+		{
+			throw new StorageException( "SingleFileStorage.Write: Cannot close index file" );
+		}
+		
 		return null;
 	}
 
@@ -580,7 +657,8 @@ public class StorageSingleFile implements Storage {
 			throw new StorageException( "StorageSingleFile.Delete: no path set" );
 		
 		String dataFile   = volume + "/" + path + ".dat";	
-		String schemaFile = volume + "/" + path + ".sch";
+		String schemaFile = volume + "/" + path + ".sch";	
+		String indexFile  = volume + "/" + path + ".idx";
 		
 		// Check if the data file exists
 		File df = new File( dataFile );
@@ -588,11 +666,13 @@ public class StorageSingleFile implements Storage {
 			return;
 		
 		File sf = new File( schemaFile );
+		File xf = new File( indexFile );
 		
-		// Delete the data and schema files
+		// Delete the data, schema and index files
 		try {
 			df.delete();
 			sf.delete();
+			xf.delete();
 		}
 		catch ( SecurityException e ) { throw new StorageException( "StorageSingleFile.Delete: " + e.getMessage() ); }
 	}

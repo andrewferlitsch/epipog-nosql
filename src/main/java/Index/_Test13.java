@@ -13,6 +13,7 @@ public class _Test13 {
 		Test_Find();
 		Test_Remove();
 		Test_Pos();
+		Test_SetGet();
 		System.exit( rc );
 	}
 	
@@ -232,6 +233,22 @@ public class _Test13 {
 		Title( "IndexLinear: Pos() nonexistent" );
 		result = index.Pos( 4 );
 		if ( result == -1L ) Passed( "" ); else Failed( String.valueOf( result ) );
+	}
+	
+	public static void Test_SetGet() {
+		Index index = new IndexLinear();
+		
+		Title( "IndexLinear: Unique() true" );
+		index.Unique( true );
+		if ( index.Unique() == true ) Passed(""); else Failed("");
+		
+		Title( "IndexLinear: Unique() false" );
+		index.Unique( false );
+		if ( index.Unique() == false ) Passed(""); else Failed("");
+		
+		Title( "IndexLinear: Name()" );
+		index.Name( "Sammy");
+		if ( index.Name().equals("Sammy") ) Passed(""); else Failed("");
 	}
 	
 	public static void Title( String title ) {
