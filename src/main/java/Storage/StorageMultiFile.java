@@ -6,6 +6,7 @@ package epipog.storage;
 import epipog.annotations.*;
 import epipog.schema.Schema;
 import epipog.datastore.DataStore;
+import epipog.index.Index;
 
 import javafx.util.Pair;
 import java.util.ArrayList;

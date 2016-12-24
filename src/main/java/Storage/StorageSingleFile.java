@@ -6,6 +6,7 @@ package epipog.storage;
 import epipog.annotations.*;
 import epipog.schema.Schema;
 import epipog.datastore.*;
+import epipog.index.Index;
 
 import java.io.RandomAccessFile;
 import java.io.FileNotFoundException;
