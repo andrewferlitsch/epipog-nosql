@@ -549,7 +549,7 @@ public class StorageSingleFile implements Storage {
 		}
 		
 		int nEntries;
-		ArrayList<long[]> entries = index.Entries();
+		ArrayList<int[]> entries = index.Entries();
 		if ( entries == null )
 			nEntries = 0;
 		else
@@ -567,7 +567,7 @@ public class StorageSingleFile implements Storage {
 	
 		// Write index 
 		if ( entries != null ) {
-			for ( long[] entry : entries ) {
+			for ( int[] entry : entries ) {
 				try {
 					ix.writeLong( entry[ 0 ] );
 					ix.writeLong( entry[ 1 ] );

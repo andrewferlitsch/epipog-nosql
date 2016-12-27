@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public interface Index {
 	
 	// Method to generate a hash code for a value
-	public default long[] Hash( Data value ) {
-		long v1 = 0L, v2 = 0L;
+	public default int[] Hash( Data value ) {
+		int v1 = 0, v2 = 0;
 		
 		switch ( value.BType() ) {
 		case Schema.BSONString	 : 
@@ -23,25 +23,26 @@ public interface Index {
 		case Schema.BSONString32 : 
 		case Schema.BSONString64 : 
 		case Schema.BSONString128: 
-		case Schema.BSONString256: v1 = value.AsString().hashCode();			v2 = StringHash( value.AsString() ); break; 
-		case Schema.BSONShort    : v1 = (long) ( ( Short ) value.Get() ); 		v2 = v1; break;
-		case Schema.BSONInteger  : v1 = (long) ( ( Integer ) value.Get() );		v2 = v1; break; 
-		case Schema.BSONFloat	 : v1 = Math.round( ( Float ) value.Get() );	v2 = v1; break;
-		case Schema.BSONDouble	 : v1 = Math.round( ( Double ) value.Get() ); 	v2 = v1; break;
+		case Schema.BSONString256: v1 = value.AsString().hashCode();				v2 = StringHash( value.AsString() ); break; 
+		case Schema.BSONShort    : v1 = (int) ( ( Short ) value.Get() ); 			v2 = v1; break;
+		case Schema.BSONInteger  : v1 = (int) ( ( Integer ) value.Get() );			v2 = v1; break; 
+		case Schema.BSONFloat	 : v1 = (int) Math.round( ( Float ) value.Get() );	v2 = v1; break;
+		case Schema.BSONDouble	 : v1 = (int) Math.round( ( Double ) value.Get() ); v2 = v1; break;
 		case Schema.BSONLong     :
 		case Schema.BSONDate	 : 
-		case Schema.BSONTime	 : v1 = (long) value.Get();						v2 = v1; break;
-		case Schema.BSONChar	 : v1 = (long) ( ( Character ) value.Get() );	v2 = v1; break;
-		case Schema.BSONBoolean	 : v1 = ( ( Boolean ) value.Get() ) ? 1 : 0;	v2 = v1; break;
+		case Schema.BSONTime	 : long x = (long) ( ( Long ) value.Get() );  
+								   v1 = ((int) x & 0xFFFFFFFF); v2 = ((int)(x >> 32) & 0xFFFFFFFF); break;
+		case Schema.BSONChar	 : v1 = (int) ( ( Character ) value.Get() );		v2 = v1; break;
+		case Schema.BSONBoolean	 : v1 = ( ( Boolean ) value.Get() ) ? 1 : 0;		v2 = v1; break;
 		}
 		
-		return new long[]{ v1, v2 };
+		return new int[]{ v1, v2 };
 	}
 	
 	/*
 	 * Internal Hash
 	 */
-	public default long StringHash( String string ) {
+	public default int StringHash( String string ) {
 		int hash = 0;
 		int len = string.length();
 		for ( int i = 0; i < len; i++ ) {
@@ -53,7 +54,7 @@ public interface Index {
 	
 	// Method to get list of entries
 	@Getter
-	public ArrayList<long[]> Entries();
+	public ArrayList<int[]> Entries();
 	
 	// Method to set if index is unique (no duplicates)
 	@Setter
@@ -75,21 +76,21 @@ public interface Index {
 	// Return:
 	//	-1 : new entry (not found)
 	//	not -1 : position in data store of found entry
-	public long Add( long hash, long pos, long data );
+	public int Add( int hash, int pos, int data );
 	
 	// Method for finding a hashed entry from index
 	// Return
 	//	non-null: return of positions in data store of found entries
-	public ArrayList<Long> Find( long hash, long data );
+	public ArrayList<Integer> Find( int hash, int data );
 	
 	// Method for removing a hash entry from the index
 	// Return
 	//	non-null : returns array of positions in data store of removed items
-	public ArrayList<Long> Remove( long hash, long data );
+	public ArrayList<Integer> Remove( int hash, int data );
 	
 	// Method to return the position in storage of the nth record (row/document)
 	// Return
 	//	-1 : no such element
 	//  >0 : storage position
-	public long Pos( int nth );
+	public int Pos( int nth );
 }

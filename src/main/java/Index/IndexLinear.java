@@ -12,14 +12,14 @@ import java.util.ArrayList;
 public class IndexLinear implements Index {
 	
 	// in-memory storage
-	private ArrayList<long[]> index = new ArrayList<long[]>();
+	private ArrayList<int[]> index = new ArrayList<int[]>();
 	
 	private boolean unique = false;		// required to be unique
 	private String  name   = null;		// Index name (i.e., column(s) names )
 	
 	// Method to get list of entries
 	@Getter
-	public ArrayList<long[]> Entries() {
+	public ArrayList<int[]> Entries() {
 		return index;
 	}
 	
@@ -51,19 +51,19 @@ public class IndexLinear implements Index {
 	// Return:
 	//	-1 : new entry (not found)
 	//	not -1 : position in data store of found entry
-	public long Add( long hash, long pos, long data /* second hash */ ) 
+	public int Add( int hash, int pos, int data /* second hash */ ) 
 	{	
-		long result = -1;
+		int result = -1;
 		
 		// check if hash already exists in list
 		if ( unique ) {
-			ArrayList<Long> found = Remove( hash, data );	
+			ArrayList<Integer> found = Remove( hash, data );	
 			if ( found.size() != 0 ) {
-				result = ( long ) found.get( 0 );
+				result = ( int ) found.get( 0 );
 			}
 		}
 		
-		long[] triplet = { hash, pos, data };
+		int[] triplet = { hash, pos, data };
 		index.add( triplet );
 		return result;
 	}
@@ -71,9 +71,9 @@ public class IndexLinear implements Index {
 	// Method for finding a hashed entry from the index
 	// Return
 	//	non-null: return of positions in data store of found entries
-	public ArrayList<Long> Find( long hash, long data ) {
-		ArrayList<Long> found = new ArrayList<Long>();
-		for ( long[] entry : index ) {
+	public ArrayList<Integer> Find( int hash, int data ) {
+		ArrayList<Integer> found = new ArrayList<Integer>();
+		for ( int[] entry : index ) {
 			// found the entry
 			if ( entry[ 0 ] == hash && entry[ 2 ] == data ) {
 				found.add( entry [ 1 ] );
@@ -87,14 +87,14 @@ public class IndexLinear implements Index {
 	// Method for removing a hash entry from the index
 	// Return
 	//	non-null : returns array of positions in data store of removed items
-	public ArrayList<Long> Remove( long hash, long data ) {
-		ArrayList<Long> remove = new ArrayList<Long>();
+	public ArrayList<Integer> Remove( int hash, int data ) {
+		ArrayList<Integer> remove = new ArrayList<Integer>();
 		int len = index.size();
 		for ( int i = 0; i < len; i++ ) {
 			// found the entry
 			if ( index.get( i )[ 0 ] == hash && index.get( i )[ 2 ] == data ) {
 				// remove the entry (mark as dirty)
-				index.get( i )[ 0 ] = 0xFFFFFFFFFFFFFFFFL;
+				index.get( i )[ 0 ] = 0xFFFFFFFF;
 				remove.add( index.get( i )[ 1 ] );
 				if ( unique )
 					return remove;
@@ -108,14 +108,14 @@ public class IndexLinear implements Index {
 	// Return
 	//	-1 : no such element
 	//  >0 : storage position
-	public long Pos( int nth ) {
+	public int Pos( int nth ) {
 		// beyond end of index
 		if ( nth >= index.size() )
 			return -1;
 		// get the index info for this element
-		long[] pair = index.get( nth );
+		int[] triplet = index.get( nth );
 		
 		// return the storage position
-		return pair[ 1 ];
+		return triplet[ 1 ];
 	}
 }

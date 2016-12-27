@@ -7,6 +7,7 @@ import epipog.annotations.*;
 import epipog.storage.*;
 import epipog.data.*;
 import epipog.schema.*;
+import epipog.index.*;
 import epipog.collection.Collection;
 
 import javafx.util.Pair;
@@ -80,6 +81,9 @@ public abstract class DataStore {
 
 					}				
 				}
+				
+				// Read in the Indexes
+				ArrayList<Object> index = storage.ReadIndex();
 			}
 		}
 	}
@@ -94,6 +98,7 @@ public abstract class DataStore {
 			
 			if ( null != collection ) {
 				storage.Write( collection.Schema() );
+				// TODO storage.Write( collection.Index() );
 			}
 		}
 	}

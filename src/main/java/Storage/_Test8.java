@@ -382,9 +382,9 @@ public class _Test8 {
 		ix = new IndexLinear();
 		ix.Name("field1");
 		ix.Unique( true );
-		ix.Add( 0L, 1L, 2L );
-		ix.Add( 3L, 4L, 5L );
-		ix.Add( 6L, 7L, 8L );
+		ix.Add( 0, 1, 2 );
+		ix.Add( 3, 4, 5 );
+		ix.Add( 6, 7, 8 );
 		try {
 			s.Open(); 
 			s.Write( ix ); Passed("");
