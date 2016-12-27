@@ -21,7 +21,8 @@ public abstract class DataStore {
 	protected	Collection 		collection = null;					// assigned collection
 	protected	Data.DataModel  dataModel  = Data.DataModel.DATA;	// data model to use
 	protected 	boolean 		validate = false;					// validate the input according to the data type
-
+	protected 	int 			auto_incr_key = 1;					// (Internal )Auto Increment Key
+	
 	// Method to set collection assigned to this instance of a data store
 	@Setter
 	public void Collection( Collection collection ) {

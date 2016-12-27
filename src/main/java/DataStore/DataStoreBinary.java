@@ -50,6 +50,9 @@ public class DataStoreBinary extends DataStore {
 		
 		// Set dirty flag to clean
 		Write( (byte) 0x01 );	
+		
+		// Write auto increment key
+		Write( auto_incr_key++ );
 	
 		// Insert the values
 		int nVals = keyVals.size();
@@ -87,7 +90,10 @@ public class DataStoreBinary extends DataStore {
 		long rollback = End();
 		
 		// Set dirty flag to clean
-		Write( (byte) 0x01 );
+		Write( (byte) 0x01 );	
+		
+		// Write auto increment key
+		Write( auto_incr_key++ );
 		
 		for ( int i = 0; i < vlen; i++ ) {
 			Integer type = collection.Schema().GetType( i );	
@@ -225,6 +231,9 @@ public class DataStoreBinary extends DataStore {
 				continue;
 			}
 			
+			// Read Auto Increment Key
+			int id = ReadInt();
+			
 			// Allocate a result buffer for this row
 			Data[] result = new Data[ flen ];
 				
@@ -309,7 +318,7 @@ public class DataStoreBinary extends DataStore {
 		throws DataStoreException
 	{
 		// Sum up the sizes of the fields in the record
-		recordSize = 0;
+		recordSize = 4;	// auto increment key
 		for ( Pair<String,Integer> keyType : keyTypes ) {
 			switch ( keyType.getValue() ) {
 			case Schema.BSONString16	:	recordSize += 16;  break;

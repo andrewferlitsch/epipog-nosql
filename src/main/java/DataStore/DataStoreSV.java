@@ -57,7 +57,10 @@ public abstract class DataStoreSV extends DataStore {
 		long rollback = End();	
 				
 		// Set dirty flag to clean
-		Write( "1" + (char) separator );		
+		Write( "1" + (char) separator );
+
+		// Write auto increment key
+		Write( String.valueOf( auto_incr_key++ ) + (char) separator );
 		
 		// Insert the values
 		int nVals = keyVals.size();
@@ -113,6 +116,9 @@ public abstract class DataStoreSV extends DataStore {
 		
 		// Set dirty flag to clean
 		Write( "1" + (char) separator );
+
+		// Write auto increment key
+		Write( String.valueOf( auto_incr_key++ ) + (char) separator );
 		
 		// Write each key value to storage
 		for ( int i = 0; i < vlen; i++ ) {
@@ -192,19 +198,19 @@ public abstract class DataStoreSV extends DataStore {
 			// Allocate a result buffer for this row
 			Data[] result = new Data[ flen ];
 			
-			// extract the selected fields (1-based, position 0 is the clean/dirty flag)
+			// extract the selected fields (2-based, position 0 is the clean/dirty flag, position 1 is auto increment )
 			for ( int i = 0; i < flen; i++ ) {
 				String value;
 				Integer type;
 				
 				// select all values
 				if ( null == fieldOrder ) {
-					value = values.get( i + 1 );
+					value = values.get( i + 2 );
 					type  = schema.GetType( i );
 				}
 				else {
 					// find the location in the result row to place the value
-					value = values.get( fieldOrder[ i ] );
+					value = values.get( fieldOrder[ i ] + 1 );
 					type  = schema.GetType( fieldOrder[ i ] - 1 );
 				}
 				

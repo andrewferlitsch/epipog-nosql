@@ -49,7 +49,8 @@ public class DataStoreJSON extends DataStore {
 		// Seek to the end of the Storage
 		long rollback = End();	
 		
-		Write( "{\"clx\":1," );		
+		// Clean and Auto Increment Key
+		Write( "{\"clx\":1,\"idx\": " + String.valueOf( auto_incr_key++ ) + "," );		
 		
 		// Insert the values
 		int nVals = keyVals.size();
@@ -110,7 +111,7 @@ public class DataStoreJSON extends DataStore {
 		ArrayList<String> columns = collection.Schema().Columns();
 		
 		// Write each key value to storage
-		Write( "{\"clx\":1," );
+		Write( "{\"clx\":1,\"idx\": " + String.valueOf( auto_incr_key++ ) + "," );
 		for ( int i = 0; i < vlen; i++ ) {
 			String value = values.get( i );
 	
@@ -200,13 +201,13 @@ public class DataStoreJSON extends DataStore {
 				
 				// select all values
 				if ( null == fieldOrder ) {
-					field = values.get( i + 1 );
+					field = values.get( i + 2 );
 					type  = schema.GetType( i );
 					name  = schema.GetName( i );
 				}
 				else {
 					// find the location in the result row to place the value
-					field = values.get( fieldOrder[ i ] );
+					field = values.get( fieldOrder[ i ] + 1 );
 					type  = schema.GetType( fieldOrder[ i ] - 1 );
 					name  = schema.GetName( fieldOrder[ i ] - 1 );
 				}
