@@ -548,8 +548,15 @@ public class StorageSingleFile implements Storage {
 			throw new StorageException( "SingleFileStorage.Write: Index File not Found: " + indexFile );
 		}
 		
+		int nEntries;
+		ArrayList<long[]> entries = index.Entries();
+		if ( entries == null )
+			nEntries = 0;
+		else
+			nEntries = entries.size();
+	
 		// First entry is the index name and flags
-		String value = index.Name() + ":" + index.Unique() + "\r\n";
+		String value = index.Name() + "," + index.Unique() + "," + nEntries + "\r\n";
 		byte[] bytes = value.getBytes();
 		try {
 			ix.write( bytes, 0, bytes.length );	
@@ -558,14 +565,13 @@ public class StorageSingleFile implements Storage {
 			throw new StorageException( "SingleFileStorage.Write: Cannot write to index file" );
 		}
 	
-		// Write index in CSV format
-		ArrayList<long[]> entries = index.Entries();
+		// Write index 
 		if ( entries != null ) {
 			for ( long[] entry : entries ) {
 				try {
-					value = entry[ 0 ] + "," + entry[ 1 ] + "," + entry[ 2 ] + "\r\n";
-					bytes = value.getBytes();
-					sc.write( bytes, 0, bytes.length );	
+					ix.writeLong( entry[ 0 ] );
+					ix.writeLong( entry[ 1 ] );
+					ix.writeLong( entry[ 2 ] );
 				}
 				catch ( IOException e ) {
 					throw new StorageException( "SingleFileStorage.Write: Cannot write to schema file" );
@@ -584,7 +590,7 @@ public class StorageSingleFile implements Storage {
 	}
 	
 	// Method to Read an Index from storage
-	public ArrayList<long[]> ReadIndex() 
+	public ArrayList<Object> ReadIndex() 
 		throws StorageException 
 	{	
 		String indexFile = volume + "/" + path + ".idx";
@@ -601,20 +607,32 @@ public class StorageSingleFile implements Storage {
 		catch ( FileNotFoundException e ) {
 			throw new StorageException( "SingleFileStorage.Read: Cannot open index file: " + indexFile );
 		}
-		
-				
-		// Read in the triplets of hash/pos/data
+			
+		// Read in the index information
+		String name = null;
+		Boolean unique = false;
+		ArrayList<long[]> entries = new ArrayList<long[]>();
 		try
 		{
-			// Read the data store type
+			// Read the index name, flags and number of entries
 			String line = ix.readLine();
-			String[] pair;
+			String[] triplet;
+			int size = 0;
 			if ( null != line ) {
-				pair = line.split( ":" );
-				// TODO
+				triplet = line.split( "," );
+				if ( triplet.length != 3 )
+					throw new StorageException( "StorageSingleFile.ReadIndex(): invalid header: " + line );
+				name = triplet[ 0 ];
+				unique = false;
+				if ( triplet[ 1 ].equals( "true" ) )
+					unique = true;
+				size = Integer.parseInt( triplet[ 2 ] );
 			}
 
-			// TODO
+			// Read in the index entries (hash,pos,data)
+			for ( int i = 0; i < size; i++ ) {
+				entries.add( new long[]{ ix.readLong(), ix.readLong(), ix.readLong() } );
+			}
 		}
 		catch ( IOException e ) {
 			throw new StorageException( "Cannot read from index file: " + indexFile );
@@ -629,7 +647,13 @@ public class StorageSingleFile implements Storage {
 			throw new StorageException( "SingleFileStorage.Write: Cannot close index file" );
 		}
 		
-		return null;
+		// Return index information
+		ArrayList<Object> ret = new ArrayList<Object>();
+		ret.add( name );
+		ret.add( unique );
+		ret.add( entries );
+		
+		return ret;
 	}
 
 	private String dataStoreType = "undefined";	// data store type associated with this storage

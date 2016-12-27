@@ -115,7 +115,7 @@ public interface Storage {
 	public void Write( Index index ) throws StorageException;
 	
 	// Method to Read an Index from storage
-	public ArrayList<long[]> ReadIndex() throws StorageException;
+	public ArrayList<Object> ReadIndex() throws StorageException;
 	
 	// Method to Delete storage
 	public void Delete() throws StorageException;

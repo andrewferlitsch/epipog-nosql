@@ -122,7 +122,7 @@ public class StorageMultiFile implements Storage {
 	public void Write( Index index ) throws StorageException { throw new StorageException("unsupported"); }
 	
 	// Method to Read an Index from storage
-	public ArrayList<long[]> ReadIndex() throws StorageException { throw new StorageException("unsupported"); }
+	public ArrayList<Object> ReadIndex() throws StorageException { throw new StorageException("unsupported"); }
 	
 	// Implementation for Deleting storage
 	public void Delete() throws StorageException { throw new StorageException("unsupported"); }

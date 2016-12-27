@@ -1,5 +1,6 @@
 import epipog.storage.*;
 import epipog.schema.*;
+import epipog.index.*;
 import epipog.datastore.*;
 
 import javafx.util.Pair;
@@ -15,6 +16,7 @@ public class _Test8 {
 		Test_Seek();
 		Test_ReadWrite();
 		Test_Schema();
+		Test_Index();
 		Test_Unicode();
 		
 		System.exit( rc );
@@ -339,9 +341,78 @@ public class _Test8 {
 		if ( s.DataStoreType().equals( "DataStoreJSON") ) Passed(""); else Failed( s.DataStoreType() );
 	}
 	
+	public static void Test_Index()
+	{
+		Title( "StorageSingleFile: Write null Index" );
+		Storage s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" ); 
+		Index ix = null;
+		try {
+			s.Open(); 
+			s.Write( ix ); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		
+		Title( "StorageSingleFile: Write empty Index" );
+		s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" ); 
+		ix = new IndexLinear();
+		ix.Name("field1");
+		try {
+			s.Open(); 
+			s.Write( ix ); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		
+		Title( "StorageSingleFile: Read empty Index" );
+		ArrayList<Object> index = null;
+		try {
+			index = s.ReadIndex(); Passed("");
+			s.Close();
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		if ( index.size() == 3 ) Passed(""); else Failed("");	
+		if ( ((String)index.get(0)).equals( "field1") ) Passed(""); else Failed( ((String)index.get(0)) );	
+		if ( ((Boolean)index.get(1))== false ) Passed(""); else Failed("");
+		if ( ((ArrayList<long[]>)index.get(2)).size() == 0 ) Passed(""); else Failed("");
+		
+		Title( "StorageSingleFile: Write non-empty Index" );
+		s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "foo" ); 
+		ix = new IndexLinear();
+		ix.Name("field1");
+		ix.Unique( true );
+		ix.Add( 0L, 1L, 2L );
+		ix.Add( 3L, 4L, 5L );
+		ix.Add( 6L, 7L, 8L );
+		try {
+			s.Open(); 
+			s.Write( ix ); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }		
+		
+		Title( "StorageSingleFile: Read non-empty Index" );
+		try {
+			index = s.ReadIndex(); Passed("");
+			s.Close();
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+		if ( index.size() == 3 ) Passed(""); else Failed("");	
+		if ( ((String)index.get(0)).equals( "field1") ) Passed(""); else Failed( ((String)index.get(0)) );	
+		if ( ((Boolean)index.get(1))== true ) Passed(""); else Failed("");
+		if ( ((ArrayList<long[]>)index.get(2)).size() == 3 ) Passed(""); else Failed("");
+
+		Title( "StorageSingleFile: Delete index storage" );
+		try
+		{
+			s.Delete(); Passed("");
+		}
+		catch ( StorageException e ) { Failed( e.getMessage() ); }	
+	}
+	
 	public static void Test_Unicode()
 	{
-		Title( "Test: Write String" );
+		Title( "Test: Write Unicode String" );
 		Storage s = new StorageSingleFile();
 		s.Storage( "C:/tmp", "foo" ); 
 		try {
@@ -356,7 +427,7 @@ public class _Test8 {
 		}
 		catch ( StorageException e ) { Failed( e.getMessage() ); }
 		
-		Title( "Test: Write Fixed String" );
+		Title( "Test: Write Unicode Fixed String" );
 		s = new StorageSingleFile();
 		s.Storage( "C:/tmp", "foo" ); 
 		try {
