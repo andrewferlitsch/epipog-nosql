@@ -21,6 +21,7 @@ public class Collection {
 	private ArrayList<Index>  	indices;		// Index(s) for collection
 	private DataStore 			store;			// Data Store for collection
 	private Parse				parse;			// Parser for parsing input from a file
+	private Index				indexAuto;		// internal id - automatic increment
 	
 	// Constructor
 	@Constructor
@@ -69,9 +70,20 @@ public class Collection {
 	
 	// Method to get the parser for parsing input from a file
 	@Getter
-	public Parse Parser()
-	{
+	public Parse Parser() {
 		return parse;
+	}
+	
+	// Method to set the index for the internal id - automatic increment
+	@Setter
+	public void IndexAuto( Index indexAuto ) {
+		this.indexAuto = indexAuto;
+	}
+	
+	// Method to get the index for the internal id - automatic increment
+	@Getter
+	public Index IndexAuto() {
+		return indexAuto;
 	}
 	
 	// Delete a collection from Storage

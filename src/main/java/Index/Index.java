@@ -11,10 +11,14 @@ import java.util.ArrayList;
 
 // Interface Definition for Index
 //
-public interface Index {
+public abstract class Index {	
+
+	protected boolean unique    = false;	// required to be unique
+	protected boolean autoIncr  = false;	// automatic increment
+	protected String  name      = null;		// Index name (i.e., column(s) names )
 	
 	// Method to generate a hash code for a value
-	public default int[] Hash( Data value ) {
+	public int[] Hash( Data value ) {
 		int v1 = 0, v2 = 0;
 		
 		switch ( value.BType() ) {
@@ -42,7 +46,7 @@ public interface Index {
 	/*
 	 * Internal Hash
 	 */
-	public default int StringHash( String string ) {
+	private int StringHash( String string ) {
 		int hash = 0;
 		int len = string.length();
 		for ( int i = 0; i < len; i++ ) {
@@ -54,43 +58,63 @@ public interface Index {
 	
 	// Method to get list of entries
 	@Getter
-	public ArrayList<int[]> Entries();
+	public abstract ArrayList<int[]> Entries();
 	
-	// Method to set if index is unique (no duplicates)
+	// Method to set if index must be unique
 	@Setter
-	public void Unique( boolean unique );
+	public void Unique( boolean unique ) {
+		this.unique = unique;
+	}
 	
 	// Method to get if index is unique (no duplicates)
 	@Getter
-	public boolean Unique();
+	public boolean Unique() {
+		return unique;
+	}
 	
 	// Method to set the name of the index
 	@Setter
-	public void Name( String name );
+	public void Name( String name ) {
+		this.name = name;
+	}
 	
 	// Method to get the name of the index
 	@Getter
-	public String Name();
+	public String Name() {
+		return name;
+	}
+	
+	// Method to set whether the index is auto incremented
+	@Setter
+	public void AutoIncr( boolean autoIncr ) {
+		this.autoIncr = autoIncr;
+	}
+	
+	// Method to get whether the index is auto incremented
+	@Getter
+	public boolean AutoIncr() {
+		return autoIncr;
+	}
 	
 	// Method for adding a hashed entry to the index
 	// Return:
 	//	-1 : new entry (not found)
 	//	not -1 : position in data store of found entry
-	public int Add( int hash, int pos, int data );
+	public abstract int Add( int hash, int pos, int data );
 	
 	// Method for finding a hashed entry from index
 	// Return
 	//	non-null: return of positions in data store of found entries
-	public ArrayList<Integer> Find( int hash, int data );
+	public abstract ArrayList<Integer> Find( int hash, int data );
 	
 	// Method for removing a hash entry from the index
 	// Return
 	//	non-null : returns array of positions in data store of removed items
-	public ArrayList<Integer> Remove( int hash, int data );
+	public abstract ArrayList<Integer> Remove( int hash, int data );
 	
 	// Method to return the position in storage of the nth record (row/document)
 	// Return
 	//	-1 : no such element
 	//  >0 : storage position
-	public int Pos( int nth );
+	public abstract int Pos( int nth );
 }

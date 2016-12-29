@@ -250,6 +250,13 @@ public class _Test13 {
 		index.Name( "Sammy");
 		if ( index.Name().equals("Sammy") ) Passed(""); else Failed("");
 		
+		Title( "IndexLinear: AutoIncr() false" );
+		if ( index.AutoIncr() == false ) Passed(""); else Failed("");
+		
+		Title( "IndexLinear: AutoIncr() false" );
+		index.AutoIncr( true );
+		if ( index.AutoIncr() == true ) Passed(""); else Failed("");
+		
 		Title( "IndexLinear: Entries()" );
 		index.Add( 1, 10, 100 );
 		ArrayList<int[]> entries = index.Entries();

@@ -8,14 +8,12 @@ import epipog.annotations.*;
 import javafx.util.Pair;
 import java.util.ArrayList;
 
-// Interface Implementation for a Hash Index using a Linear List for Collisions
-public class IndexLinear implements Index {
+// Class Implementation for a Hash Index using a Linear List for Collisions
+public class IndexLinear extends Index {
 	
 	// in-memory storage
 	private ArrayList<int[]> index = new ArrayList<int[]>();
-	
-	private boolean unique = false;		// required to be unique
-	private String  name   = null;		// Index name (i.e., column(s) names )
+
 	
 	// Method to get list of entries
 	@Getter
@@ -45,6 +43,11 @@ public class IndexLinear implements Index {
 	@Getter
 	public String Name() {
 		return name;
+	}
+	
+	@Setter
+	public void AutoIncr( boolean autoIncr ) {
+		this.autoIncr = autoIncr;
 	}
 	
 	// Method for adding a hashed entry to the index
