@@ -12,5 +12,8 @@ goto end
 	_Test1 | find "FAILED"
 	type _Test1.bat | find "Test:" /c
 	
+	_Test2 | find "FAILED"
+	type _Test2.bat | find "Test:" /c
+	
 :end
 echo done
