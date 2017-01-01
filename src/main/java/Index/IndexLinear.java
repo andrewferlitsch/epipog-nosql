@@ -14,40 +14,10 @@ public class IndexLinear extends Index {
 	// in-memory storage
 	private ArrayList<int[]> index = new ArrayList<int[]>();
 
-	
 	// Method to get list of entries
 	@Getter
 	public ArrayList<int[]> Entries() {
 		return index;
-	}
-	
-	// Method to set if index must be unique
-	@Setter
-	public void Unique( boolean unique ) {
-		this.unique = unique;
-	}
-	
-	// Method to get if index is unique (no duplicates)
-	@Getter
-	public boolean Unique() {
-		return unique;
-	}
-	
-	// Method to set the name of the index
-	@Setter
-	public void Name( String name ) {
-		this.name = name;
-	}
-	
-	// Method to get the name of the index
-	@Getter
-	public String Name() {
-		return name;
-	}
-	
-	@Setter
-	public void AutoIncr( boolean autoIncr ) {
-		this.autoIncr = autoIncr;
 	}
 	
 	// Method for adding a hashed entry to the index

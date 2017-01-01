@@ -28,9 +28,10 @@ public class epipog {
 								"\t-S schema\t# schema\r\n" +
 								"\t-t type\t\t# input file type\r\n" +
 								"\t-T storage\t# storage (single, multi)\r\n" +
-								"\t-x\t\t# delete a collection\r\n" +
 								"\t-v volume\t# storage volume\r\n" +
-								"\t-V\t\t# validate\r\n";
+								"\t-V\t\t# validate\r\n" +
+								"\t-w where(s)\t# where clause\r\n" +
+								"\t-x\t\t# delete a collection\r\n";
 								
 	// Main entry method
 	public static void main( String args[] ) {
@@ -54,12 +55,13 @@ public class epipog {
 		String  SOption = null;		// Schema (specified on command line)
 		String  tOption = null;		// Input File Type 
 		String  TOption = "single";	// Storage type (default is single file)
+		String	wOption = null;		// Where clause
 		String  vOption = "/tmp";	// Storage volume (default /tmp)
 		Boolean VOption = false;	// Validate data before inserting
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:k:lLnR:s:S:t:T:v:Vx", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:k:lLnR:s:S:t:T:v:Vw:x", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
@@ -77,6 +79,7 @@ public class epipog {
 			case 'T': TOption = GetOpt.Arg(); break;
 			case 'v': vOption = GetOpt.Arg(); break;
 			case 'V': VOption = true;		  break;
+			case 'w': wOption = GetOpt.Arg(); break;
 			case 'x': xOption = true; 		  break;
 			}
 		}
@@ -331,6 +334,50 @@ public class epipog {
 			ArrayList<String> select = new ArrayList<String>();
 			for ( String field: fields ) {
 				select.add( field );
+			}
+						
+			// filter (where)
+			Where where = null;
+			ArrayList<Where> whereList = new ArrayList<Where>();
+			if ( null != wOption ) {
+				String[] filters = wOption.split( "," );
+			
+				// Check the syntax of the filter arguments
+				for ( String filter : filters ) {
+					where = new Where();	// allocate a filter object
+					
+					// Parse the where operatorS
+					String[] pair = null;
+					if ( filter.contains( "<=" ) ) {
+						pair = filter.split( "<=" );
+						where.op = Where.WhereOp.LE; 
+					}
+					else if ( filter.contains( ">=" ) ) {
+						pair = filter.split( ">=" );
+						where.op = Where.WhereOp.GE; 
+					}
+					else if ( filter.contains( "!=" ) ) {
+						pair = filter.split( "!=" );
+						where.op = Where.WhereOp.NE; 
+					}
+					else if ( filter.contains( "<" ) ) {
+						pair = filter.split( "<" );
+						where.op = Where.WhereOp.LT; 
+					}
+					else if ( filter.contains( ">" ) ) {
+						pair = filter.split( ">" );
+						where.op = Where.WhereOp.GT; 
+					}
+					else if ( filter.contains( "=" ) ) {
+						pair = filter.split( "=" );
+						where.op = Where.WhereOp.EQ; 
+					}
+					if ( null == pair || pair.length != 2 ) {
+						System.err.println( "Invalid argument for -w option : " + filter );
+						System.err.println( usage );
+						System.exit( 1 );
+					}
+				}
 			}
 			
 			try {

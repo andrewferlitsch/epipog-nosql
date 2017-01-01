@@ -76,7 +76,12 @@ public class Collection {
 	
 	// Method to set the index for the internal id - automatic increment
 	@Setter
-	public void IndexAuto( Index indexAuto ) {
+	public void IndexAuto( Index indexAuto ) 
+		throws CollectionException
+	{
+		if ( null == indexAuto)
+			throw new CollectionException( "Collection.IndexAuto: null pointer" );
+		indexAuto.AutoIncr( true );
 		this.indexAuto = indexAuto;
 	}
 	

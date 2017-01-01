@@ -7,9 +7,9 @@ import epipog.data.Data;
 
 // Class for Where Clause
 public class Where {
-	String  key;				// key to check
-	Data    value;				// value to compare to
-	WhereOp op;					// comparison operation
+	public String  key;			// key to check
+	public Data    value;		// value to compare to
+	public WhereOp op;			// comparison operation
 
 	public enum WhereOp {
 		EQ,

@@ -15,6 +15,7 @@ public class _Test11 {
 		Test_InsertC();
 		Test_Insert();
 		Test_Select();
+		Test_Where();
 		
 		System.exit( rc );
 	}	
@@ -1270,7 +1271,7 @@ public class _Test11 {
 		if ( (Float) res.get(0)[ 0 ].Get() == 10.6F ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Double)res.get(0)[ 1 ].Get() == 22.7 ) Passed(""); else Failed( String.valueOf( res.get(0)[ 1 ].Get() ) );
 	
-		Title( "DataStoreBinary: Select - boolean, char" );
+		Title( "DataStoreCSV: Select - boolean, char" );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", Schema.BSONBoolean ) ); 
 		keys.add( new Pair<String,Integer>( "field2", Schema.BSONChar ) );
@@ -1299,7 +1300,7 @@ public class _Test11 {
 		if ( (Boolean) res.get(0)[ 0 ].Get() == true ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Character)res.get(0)[ 1 ].Get() == 'c' ) Passed(""); else Failed( String.valueOf( res.get(0)[ 1 ].Get() ) );
 	
-		Title( "DataStoreBinary: Select - date,time" );
+		Title( "DataStoreCSV: Select - date,time" );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", Schema.BSONDate ) ); 
 		keys.add( new Pair<String,Integer>( "field2", Schema.BSONTime ) );
@@ -1328,7 +1329,7 @@ public class _Test11 {
 		if ( (Long)res.get(0)[ 0 ].Get() == 1455436800000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Long)res.get(0)[ 1 ].Get() == 65522000 )      Passed(""); else Failed( String.valueOf( res.get(0)[ 1 ].Get() ) );
 	
-		Title( "DataStoreBinary: Select - multiple lines" );
+		Title( "DataStoreCSV: Select - multiple lines" );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", Schema.BSONBoolean ) ); 
 		keys.add( new Pair<String,Integer>( "field2", Schema.BSONChar ) ); 
@@ -1365,7 +1366,7 @@ public class _Test11 {
 		if ( (Character)res.get(1)[ 1 ].Get() == 'd' ) Passed(""); else Failed( String.valueOf( res.get(1)[ 1 ].Get() ) );
 		if ( (Integer)res.get(1)[ 2 ].Get() == 21 ) Passed(""); else Failed( String.valueOf( res.get(1)[ 2 ].Get() ) );
 
-		Title( "DataStoreBinary: Select - skip fields" );
+		Title( "DataStoreCSV: Select - skip fields" );
 		keys = new ArrayList<Pair<String,Integer>>();
 		keys.add( new Pair<String,Integer>( "field1", Schema.BSONString16 ) ); 
 		keys.add( new Pair<String,Integer>( "field2", Schema.BSONString32 ) ); 
@@ -1421,7 +1422,7 @@ public class _Test11 {
 		if ( (Long)res.get(0)[ 3 ].Get() == 65522000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 3 ].Get() ) );
 
 		// field order
-		Title( "DataStoreBinary: Select - field order" );
+		Title( "DataStoreCSV: Select - field order" );
 		fields = new ArrayList<String>();
 		fields.add( "field8" );
 		fields.add( "field5" );
@@ -1437,6 +1438,731 @@ public class _Test11 {
 		if ( (Long)res.get(0)[ 0 ].Get() == 70000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Character)res.get(0)[ 3 ].Get() == 'a' ) Passed(""); else Failed( String.valueOf( res.get(0)[ 3 ].Get() ) );
 		if ( (Long)res.get(0)[ 2 ].Get() == 65522000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 2 ].Get() ) );
+	}
+		
+	public static void Test_Where() {
+		Title( "DataStoreCSV: Where - short empty where" );
+		DataStore ds = new DataStoreCSV();
+		Storage s = new StorageSingleFile();
+		s.Storage( "C:/tmp", "goo" );
+		ds.Storage( s );
+		Collection c = new Collection( "goo" );
+		Schema sc = new SchemaTable();
+		c.Schema( sc );
+		ds.Collection( c );
+		
+		ArrayList<Pair<String,Integer>> keys = new ArrayList<Pair<String,Integer>>();
+		keys.add( new Pair<String,Integer>( "field1", Schema.BSONShort ) ); 
+		keys.add( new Pair<String,Integer>( "field2", Schema.BSONInteger ) ); 
+		keys.add( new Pair<String,Integer>( "field3", Schema.BSONLong ) ); 
+		keys.add( new Pair<String,Integer>( "field4", Schema.BSONFloat ) ); 
+		keys.add( new Pair<String,Integer>( "field5", Schema.BSONDouble ) );
+		keys.add( new Pair<String,Integer>( "field6", Schema.BSONBoolean ) );
+		keys.add( new Pair<String,Integer>( "field7", Schema.BSONChar ) );
+		keys.add( new Pair<String,Integer>( "field8", Schema.BSONDate ) );
+		keys.add( new Pair<String,Integer>( "field9", Schema.BSONTime ) );
+		keys.add( new Pair<String,Integer>( "field10", Schema.BSONString16 ) );
+		try {
+			sc.SetI( keys ); Passed("");
+		}
+		catch ( SchemaException e ) { Failed( e.getMessage() ); }
+		ArrayList<Pair<String,String>> values = new ArrayList<Pair<String,String>>();
+		values.add( new Pair<String,String>( "field1", "1" ) );
+		values.add( new Pair<String,String>( "field2", "2" ) );
+		values.add( new Pair<String,String>( "field3", "3" ) );
+		values.add( new Pair<String,String>( "field4", "1.0" ) );
+		values.add( new Pair<String,String>( "field5", "2.0" ) );
+		values.add( new Pair<String,String>( "field6", "false" ) );
+		values.add( new Pair<String,String>( "field7", "a" ) );
+		values.add( new Pair<String,String>( "field8", "2016-12-10" ) );
+		values.add( new Pair<String,String>( "field9", "12:10" ) );
+		values.add( new Pair<String,String>( "field10", "ab" ) );
+		ArrayList<Pair<String,String>> values2 = new ArrayList<Pair<String,String>>();
+		values2.add( new Pair<String,String>( "field1", "4" ) );
+		values2.add( new Pair<String,String>( "field2", "5" ) );
+		values2.add( new Pair<String,String>( "field3", "6" ) );
+		values2.add( new Pair<String,String>( "field4", "4.0" ) );
+		values2.add( new Pair<String,String>( "field5", "5.0" ) );
+		values2.add( new Pair<String,String>( "field6", "true" ) );
+		values2.add( new Pair<String,String>( "field7", "c" ) );
+		values2.add( new Pair<String,String>( "field8", "2016-12-12" ) );
+		values2.add( new Pair<String,String>( "field9", "12:12" ) );
+		values2.add( new Pair<String,String>( "field10", "cd" ) );
+		try
+		{	s.Delete();
+			ds.Open();
+			ds.Insert( values ); 
+			ds.Insert( values2 ); Passed("");
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }		
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add( "*" );
+		ArrayList<Data[]> res = null;
+		ArrayList<Where> where = new ArrayList<Where>();
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - short where EQ" );
+		Data d = new DataShort(); 
+		try { d.Parse( "1"); } catch ( DataException e ) { }
+		Where w = new Where(); w.key = "field1"; w.op = Where.WhereOp.EQ; w.value = d;
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 1 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 2 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 3L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - short where NE" );
+		w.op = Where.WhereOp.NE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 4 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 5 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 6L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - short where LT" );
+		try { d.Parse( "4"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 1 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 2 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 3L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - short where LE" );
+		w.op = Where.WhereOp.LE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - short where GT" );
+		try { d.Parse( "1"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 4 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 5 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 6L ) Passed(""); else Failed( "" );	
+		
+		Title( "DataStoreCSV: Where - short where GE" );
+		w.op = Where.WhereOp.GE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - int where EQ" );
+		d = new DataInteger(); 
+		try { d.Parse( "2"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field2"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 1 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 2 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 3L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - int where NE" );
+		d = new DataInteger(); 
+		try { d.Parse( "2"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.NE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 4 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 5 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 6L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - int where LT" );
+		try { d.Parse( "5"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 1 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 2 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 3L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - int where LE" );
+		w.op = Where.WhereOp.LE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - int where GT" );
+		try { d.Parse( "2"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 4 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 5 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 6L ) Passed(""); else Failed( "" );	
+		
+		Title( "DataStoreCSV: Where - int where GE" );
+		w.op = Where.WhereOp.GE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - long where EQ" );
+		d = new DataLong(); 
+		try { d.Parse( "3"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field3"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 1 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 2 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 3L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - long where NE" );
+		try { d.Parse( "3"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.NE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 4 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 5 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 6L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - long where LT" );
+		try { d.Parse( "6"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 1 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 2 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 3L ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - long where LE" );
+		w.op = Where.WhereOp.LE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - long where GT" );
+		try { d.Parse( "3"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( (short)res.get(0)[ 0 ].Get() == (short) 4 ) Passed(""); else Failed( "" );
+		if ( (int)res.get(0)[ 1 ].Get() == 5 ) Passed(""); else Failed( "" );
+		if ( (long)res.get(0)[ 2 ].Get() == 6L ) Passed(""); else Failed( "" );	
+		
+		Title( "DataStoreCSV: Where - long where GE" );
+		w.op = Where.WhereOp.GE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - float where EQ" );
+		d = new DataFloat(); 
+		try { d.Parse( "1.0"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field4"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (float)res.get(0)[ 3 ].Get() == 1.0F ) Passed(""); else Failed( "" );
+		if ( (double)res.get(0)[ 4 ].Get() == 2.0 ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - float where NE" );
+		w.op = Where.WhereOp.NE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (float)res.get(0)[ 3 ].Get() == 4.0F ) Passed(""); else Failed( "" );
+		if ( (double)res.get(0)[ 4 ].Get() == 5.0 ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - float where LT" );
+		try { d.Parse( "4.0"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (float)res.get(0)[ 3 ].Get() == 1.0F ) Passed(""); else Failed( "" );
+		if ( (double)res.get(0)[ 4 ].Get() == 2.0 ) Passed(""); else Failed( "" );
+	
+		Title( "DataStoreCSV: Where - float where LE" );
+		w.op = Where.WhereOp.LE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - float where GT" );
+		try { d.Parse( "1.0"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( (float)res.get(0)[ 3 ].Get() == 4.0F ) Passed(""); else Failed( "" );
+		if ( (double)res.get(0)[ 4 ].Get() == 5.0 ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - float where GE" );
+		w.op = Where.WhereOp.GE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - double where EQ" );
+		d = new DataDouble(); 
+		try { d.Parse( "2.0"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field5"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (float)res.get(0)[ 3 ].Get() == 1.0F ) Passed(""); else Failed( "" );
+		if ( (double)res.get(0)[ 4 ].Get() == 2.0 ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - double where NE" );
+		w.op = Where.WhereOp.NE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (float)res.get(0)[ 3 ].Get() == 4.0F ) Passed(""); else Failed( "" );
+		if ( (double)res.get(0)[ 4 ].Get() == 5.0 ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - double where LT" );
+		try { d.Parse( "5.0"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (float)res.get(0)[ 3 ].Get() == 1.0F ) Passed(""); else Failed( "" );
+		if ( (double)res.get(0)[ 4 ].Get() == 2.0 ) Passed(""); else Failed( "" );
+	
+		Title( "DataStoreCSV: Where - double where LE" );
+		w.op = Where.WhereOp.LE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - double where GT" );
+		try { d.Parse( "2.0"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( (float)res.get(0)[ 3 ].Get() == 4.0F ) Passed(""); else Failed( "" );
+		if ( (double)res.get(0)[ 4 ].Get() == 5.0 ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - double where GE" );
+		w.op = Where.WhereOp.GE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - boolean where EQ" );
+		d = new DataBoolean(); 
+		try { d.Parse( "false"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field6"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (boolean)res.get(0)[ 5 ].Get() == false ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - boolean where NE" );
+		w.op = Where.WhereOp.NE; 
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (boolean)res.get(0)[ 5 ].Get() == true ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - char where EQ" );
+		d = new DataChar(); 
+		try { d.Parse( "a"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field7"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (char)res.get(0)[ 6 ].Get() == 'a' ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - char where NE" );
+		w.op = Where.WhereOp.NE; 
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (char)res.get(0)[ 6 ].Get() == 'c' ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - char where LT" );
+		try { d.Parse( "b"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (char)res.get(0)[ 6 ].Get() == 'a' ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - char where LE" );
+		try { d.Parse( "c"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LE; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - char where GT" );
+		try { d.Parse( "a"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( (char)res.get(0)[ 6 ].Get() == 'c' ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - char where GE" );
+		w.op = Where.WhereOp.GE; 
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - date where EQ" );
+		d = new DataDate(); 
+		try { d.Parse( "2016-12-10"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field8"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 7 ].AsString().equals( "2016-12-10" ) ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - date where NE" );
+		w.op = Where.WhereOp.NE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 7 ].AsString().equals( "2016-12-12" ) ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - date where LT" );
+		try { d.Parse( "2016-12-12"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 7 ].AsString().equals( "2016-12-10" ) ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - date where LE" );
+		w.op = Where.WhereOp.LE; 
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - date where GT" );
+		try { d.Parse( "2016-12-10"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 7 ].AsString().equals( "2016-12-12" ) ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - date where GE" );
+		w.op = Where.WhereOp.GE; 
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - time where EQ" );
+		d = new DataTime(); 
+		try { d.Parse( "12:10"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field9"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 8 ].AsString().equals( "12:10:00" ) ) Passed(""); else Failed( res.get(0)[ 8 ].AsString() );
+		
+		Title( "DataStoreCSV: Where - time where NE" );
+		w.op = Where.WhereOp.NE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 8 ].AsString().equals( "12:12:00" ) ) Passed(""); else Failed( res.get(0)[ 8 ].AsString() );
+		
+		Title( "DataStoreCSV: Where - time where LT" );
+		try { d.Parse( "12:12"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 8 ].AsString().equals( "12:10:00" ) ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - time where LE" );
+		w.op = Where.WhereOp.LE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");	
+		
+		Title( "DataStoreCSV: Where - time where GT" );
+		try { d.Parse( "12:10"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 8 ].AsString().equals( "12:12:00" ) ) Passed(""); else Failed( "" );
+		
+		Title( "DataStoreCSV: Where - time where GE" );
+		w.op = Where.WhereOp.GE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: Where - string where EQ" );
+		d = new DataString(); 
+		try { d.Parse( "ab"); } catch ( DataException e ) { }
+		w = new Where(); w.key = "field10"; w.op = Where.WhereOp.EQ; w.value = d;
+		where = new ArrayList<Where>();
+		where.add( w );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 9 ].AsString().equals( "ab" ) ) Passed(""); else Failed( res.get(0)[ 8 ].AsString() );
+		
+		Title( "DataStoreCSV: Where - string where NE" );
+		w.op = Where.WhereOp.NE;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 9 ].AsString().equals( "cd" ) ) Passed(""); else Failed( res.get(0)[ 8 ].AsString() );
+
+		Title( "DataStoreCSV: Where - string where LT" );
+		d = new DataString(); 
+		try { d.Parse( "cd"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.LT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 9 ].AsString().equals( "ab" ) ) Passed(""); else Failed( res.get(0)[ 8 ].AsString() );
+		
+		Title( "DataStoreCSV: Where - string where LE" );
+		d = new DataString(); 
+		w.op = Where.WhereOp.LE; 
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+
+		Title( "DataStoreCSV: Where - string where GT" );
+		d = new DataString(); 
+		try { d.Parse( "ab"); } catch ( DataException e ) { }
+		w.op = Where.WhereOp.GT; w.value = d;
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 9 ].AsString().equals( "cd" ) ) Passed(""); else Failed( res.get(0)[ 8 ].AsString() );
+		
+		Title( "DataStoreCSV: Where - string where GE" );
+		d = new DataString(); 
+		w.op = Where.WhereOp.GE; 
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 2 ) Passed(""); else Failed("");
+		
+		Title( "DataStoreCSV: multiple where GE/EQ match" );
+		d = new DataShort(); 
+		try { d.Parse( "1"); } catch ( DataException e ) { }
+		Where w2 = new Where(); w2.key = "field1"; w2.op = Where.WhereOp.EQ; w2.value = d;
+		where.add( w2 );
+		try {
+			res = ds.Select( fields, where );
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 1 ) Passed(""); else Failed("");
+		if ( res.get(0)[ 9 ].AsString().equals( "ab" ) ) Passed(""); else Failed( res.get(0)[ 8 ].AsString() );
+				
+		Title( "DataStoreCSV: multiple where GE/EQ no match" );
+		try { d.Parse( "2"); } catch ( DataException e ) { }
+		w2.value = d;try {
+			res = ds.Select( fields, where );
+			ds.Delete();
+		}
+		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		if ( res.size() == 0 ) Passed(""); else Failed("");
 	}
 
 	public static void Title( String title ) {

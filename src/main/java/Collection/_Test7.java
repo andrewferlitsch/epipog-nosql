@@ -3,6 +3,7 @@ import epipog.parse.*;
 import epipog.schema.*;
 import epipog.datastore.*;
 import epipog.storage.*;
+import epipog.index.*;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
@@ -99,6 +100,19 @@ public class _Test7 {
 			c.Close(); Passed("");
 		}
 		catch ( CollectionException e ) { Failed( e.getMessage() );}
+		
+		Title( "Collection: Set Index Auto: null");
+		try {
+			c.IndexAuto( null ); Failed("");
+		}
+		catch ( CollectionException e ) { Passed("");}
+		
+		Title( "Collection: Set Index Auto: valid");
+		try {
+			Index ix = new IndexLinear();
+			c.IndexAuto(ix); Passed("");
+		}
+		catch ( CollectionException e ) { Failed("");}
 	}
 	
 	public static void Test_InsertC() {

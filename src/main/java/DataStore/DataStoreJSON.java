@@ -48,6 +48,10 @@ public class DataStoreJSON extends DataStore {
 		
 		// Seek to the end of the Storage
 		long rollback = End();	
+
+		// Add location of this record to the automatic incremented internal id index
+		if ( collection.IndexAuto() != null )
+			collection.IndexAuto().Add( auto_incr_key, (int) Pos(), 0 );
 		
 		// Clean and Auto Increment Key
 		Write( "{\"clx\":1,\"idx\": " + String.valueOf( auto_incr_key++ ) + "," );		
@@ -106,9 +110,14 @@ public class DataStoreJSON extends DataStore {
 		if ( collection.Schema().NCols() != vlen )
 			throw new DataStoreException( "DataStoreJSON.InsertC: incorrect number of values" );
 
-		// Seek to the end of the Storage
-		long rollback = End();			
 		ArrayList<String> columns = collection.Schema().Columns();
+		
+		// Seek to the end of the Storage
+		long rollback = End();		
+		
+		// Add location of this record to the automatic incremented internal id index
+		if ( collection.IndexAuto() != null )
+			collection.IndexAuto().Add( auto_incr_key, (int) Pos(), 0 );
 		
 		// Write each key value to storage
 		Write( "{\"clx\":1,\"idx\": " + String.valueOf( auto_incr_key++ ) + "," );
@@ -148,7 +157,7 @@ public class DataStoreJSON extends DataStore {
 	}
 	
 	// Implementation for selection fields from data store
-	public ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> where ) 
+	public ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> whereClause ) 
 		throws DataStoreException, StorageException
 	{
 		ArrayList<Data[]> ret = new ArrayList<Data[]>();
@@ -179,7 +188,6 @@ public class DataStoreJSON extends DataStore {
 		
 		// Read each pipe-separated line from storage
 		String line;
-//int nth = 0;
 		while ( null != ( line = ReadLine() ) ) {	// Split the line into columns
 			ArrayList<String> values = SVParse.Split( line, ',', true, null );
 			
@@ -195,6 +203,7 @@ public class DataStoreJSON extends DataStore {
 			Data[] result = new Data[ flen ];
 			
 			// extract the selected fields (1-based, position 0 is the clean/dirty flag)
+			boolean skip = false;
 			for ( int i = 0; i < flen; i++ ) {
 				String field, name;
 				Integer type;
@@ -241,10 +250,65 @@ public class DataStoreJSON extends DataStore {
 					}
 				}
 				catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
+								
+				// Check where 
+				if ( null != whereClause ) {
+					// Check each where condition (AND)
+					for ( Where where : whereClause ) {
+						// matched key
+						if ( name.equals( where.key ) ) {
+							switch ( where.op ) {
+							case EQ: 
+								if ( !d.EQ( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case NE: 
+								if ( !d.NE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case LT: 
+								if ( !d.LT( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case GT: 
+								if ( !d.GT( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case LE: 
+								if ( !d.LE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case GE: 
+								if ( !d.GE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							// TODO: IN
+							}
+						}
+					}
+				}
+				
+				if ( skip == true )
+					break;
 				
 				// place value in result row according to selection order
 				result[ i ] = d;
 			}	
+			
+			if ( skip == true )
+				continue;
 			
 			// Add the selected fields to the result
 			ret.add( result );

@@ -55,6 +55,10 @@ public abstract class DataStoreSV extends DataStore {
 		
 		// Seek to the end of the Storage
 		long rollback = End();	
+
+		// Add location of this record to the automatic incremented internal id index
+		if ( collection.IndexAuto() != null )
+			collection.IndexAuto().Add( auto_incr_key, (int) Pos(), 0 );
 				
 		// Set dirty flag to clean
 		Write( "1" + (char) separator );
@@ -114,6 +118,10 @@ public abstract class DataStoreSV extends DataStore {
 		// Seek to the end of the Storage
 		long rollback = End();
 		
+		// Add location of this record to the automatic incremented internal id index
+		if ( collection.IndexAuto() != null )
+			collection.IndexAuto().Add( auto_incr_key, (int) Pos(), 0 );
+		
 		// Set dirty flag to clean
 		Write( "1" + (char) separator );
 
@@ -151,7 +159,7 @@ public abstract class DataStoreSV extends DataStore {
 	}
 	
 	// Implementation for selection fields from data store
-	public ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> where )  
+	public ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> whereClause )  
 		throws DataStoreException, StorageException
 	{
 		ArrayList<Data[]> ret = new ArrayList<Data[]>();
@@ -199,19 +207,23 @@ public abstract class DataStoreSV extends DataStore {
 			Data[] result = new Data[ flen ];
 			
 			// extract the selected fields (2-based, position 0 is the clean/dirty flag, position 1 is auto increment )
+			boolean skip = false;
 			for ( int i = 0; i < flen; i++ ) {
-				String value;
+				String  value;
 				Integer type;
+				String  key;
 				
 				// select all values
 				if ( null == fieldOrder ) {
 					value = values.get( i + 2 );
 					type  = schema.GetType( i );
+					key   = schema.GetName( i );
 				}
 				else {
 					// find the location in the result row to place the value
 					value = values.get( fieldOrder[ i ] + 1 );
 					type  = schema.GetType( fieldOrder[ i ] - 1 );
+					key   = schema.GetName( fieldOrder[ i ] - 1 );
 				}
 				
 				Data d = null;
@@ -238,9 +250,64 @@ public abstract class DataStoreSV extends DataStore {
 				}
 				catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
 				
+				// Check where 
+				if ( null != whereClause ) {
+					// Check each where condition (AND)
+					for ( Where where : whereClause ) {
+						// matched key
+						if ( key.equals( where.key ) ) {
+							switch ( where.op ) {
+							case EQ: 
+								if ( !d.EQ( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case NE: 
+								if ( !d.NE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case LT: 
+								if ( !d.LT( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case GT: 
+								if ( !d.GT( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case LE: 
+								if ( !d.LE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case GE: 
+								if ( !d.GE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							// TODO: IN
+							}
+						}
+					}
+				}
+				
+				if ( skip == true )
+					break;
+				
 				// place value in result row according to selection order
 				result[ i ] = d;
-			}	
+			}
+
+			if ( skip == true )
+				continue;
 			
 			// Add the selected fields to the result
 			ret.add( result );

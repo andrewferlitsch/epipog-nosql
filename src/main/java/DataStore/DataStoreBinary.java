@@ -48,6 +48,10 @@ public class DataStoreBinary extends DataStore {
 				throw new DataStoreException( "DataStoreBinary.Insert: field is not in schema: " +  keyVal.getKey() );
 		}	
 		
+		// Add location of this record to the automatic incremented internal id index
+		if ( collection.IndexAuto() != null )
+			collection.IndexAuto().Add( auto_incr_key, (int) Pos(), 0 );
+				
 		// Set dirty flag to clean
 		Write( (byte) 0x01 );	
 		
@@ -87,7 +91,11 @@ public class DataStoreBinary extends DataStore {
 			throw new DataStoreException( "DataStoreBinary.InsertC: incorrect number of values" );
 	
 		// Seek to the end of the Storage
-		long rollback = End();
+		long rollback = End();	
+		
+		// Add location of this record to the automatic incremented internal id index
+		if ( collection.IndexAuto() != null )
+			collection.IndexAuto().Add( auto_incr_key, (int) Pos(), 0 );
 		
 		// Set dirty flag to clean
 		Write( (byte) 0x01 );	
@@ -182,7 +190,7 @@ public class DataStoreBinary extends DataStore {
 	}
 	
 	// Implementation for selecting fields from data store
-	public ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> where )
+	public ArrayList<Data[]> Select( ArrayList<String> fields, ArrayList<Where> whereClause )
 		throws DataStoreException, StorageException
 	{
 		ArrayList<Data[]> ret = new ArrayList<Data[]>();
@@ -227,9 +235,12 @@ public class DataStoreBinary extends DataStore {
 			// Check if this is a dirty entry
 			byte clean = ReadByte();
 			if ( 0x0 == clean ) {
-				Move( recordSize );
+				Move( Pos() + recordSize );
 				continue;
 			}
+			
+			// maintain start of record (after clean bit)
+			long rollback = Pos();
 			
 			// Read Auto Increment Key
 			int id = ReadInt();
@@ -238,14 +249,15 @@ public class DataStoreBinary extends DataStore {
 			Data[] result = new Data[ flen ];
 				
 			// Get a row at a time
+			boolean skip = false;
 			for ( int k = 0; k < klen; k++ ) {
 
 				String key = keyTypes.get( k ).getKey();
+				Data d = null;
 				int i = 0;
 				for (/**/; i < flen; i++ ) {
 					if ( key.equals( fields.get( i ) ) ) {
 						try {
-							Data d;
 							switch ( keyTypes.get( k ).getValue() ) {
 							case Schema.BSONString		: throw new DataStoreException( "DataStoreBinary.Select: String unsupported"); 
 							case Schema.BSONString16	: d = new DataStringFixed( 16 );  d.Set( StringNoNull( Read( 16 ) ) );  break;
@@ -282,6 +294,59 @@ public class DataStoreBinary extends DataStore {
 						catch ( DataException e ) { throw new DataStoreException( e.getMessage() ); }
 					}
 				}
+
+				// Check where 
+				if ( null != whereClause ) {
+					// Check each where condition (AND)
+					for ( Where where : whereClause ) {
+						// matched key
+						if ( key.equals( where.key ) ) {
+							switch ( where.op ) {
+							case EQ: 
+								if ( !d.EQ( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case NE: 
+								if ( !d.NE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case LT: 
+								if ( !d.LT( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case GT: 
+								if ( !d.GT( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case LE: 
+								if ( !d.LE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							case GE: 
+								if ( !d.GE( where.value ) ) {
+									skip = true; // value not matched
+									break;
+								}
+								break;
+							// TODO: IN
+							}
+						}
+					}
+				}
+	
+				// skip this record
+				if ( skip == true )
+					break;
 				
 				// not a selected field, skip past it
 				if ( i == flen ) {
@@ -302,6 +367,11 @@ public class DataStoreBinary extends DataStore {
 					case Schema.BSONTime		:	Move( Pos() + 8 );   break;
 					}
 				}
+			}
+			
+			if ( skip == true ) {
+				Move( rollback + recordSize );
+				continue;
 			}
 			
 			// Add the selected fields to the result

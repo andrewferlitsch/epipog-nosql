@@ -111,6 +111,12 @@ IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
 find "Storage Volume does not exist: /nonexist" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
+echo Test: set where clause w/o arguments - invalid
+java -cp .;%BUILD% epipog -w 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Missing argument for -w option" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
 echo Test: set volume, not a directory
 java -cp .;%BUILD% epipog -v /Windows/write.exe 2>err
 IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
