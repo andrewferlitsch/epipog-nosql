@@ -119,9 +119,10 @@ public class epipog {
 		}
 	
 		// Read the schema from Storage
+		ArrayList<Pair<String,Integer>> keys = null;
 		try
 		{
-			ArrayList<Pair<String,Integer>> keys = storage.ReadSchema();
+			keys = storage.ReadSchema();
 			if ( null != keys ) {
 				SchemaDynamic schema = new SchemaDynamic();
 				try {
@@ -151,7 +152,7 @@ public class epipog {
 		else if ( SOption != null ) {
 			SchemaDynamic schema = new SchemaDynamic();
 			try {
-				ArrayList<Pair<String,Integer>> keys = Schema.SchemaFromString( SOption );
+				keys = Schema.SchemaFromString( SOption );
 				if ( eOption ) {
 					schema.ExtendI( keys );
 				}
@@ -372,11 +373,68 @@ public class epipog {
 						pair = filter.split( "=" );
 						where.op = Where.WhereOp.EQ; 
 					}
-					if ( null == pair || pair.length != 2 ) {
-						System.err.println( "Invalid argument for -w option : " + filter );
+					else {
+						System.err.println( "Missing operand for -w option: " + filter );
 						System.err.println( usage );
 						System.exit( 1 );
 					}
+					if ( null == pair || pair.length != 2 ) {
+						System.err.println( "Missing value for -w option: " + filter );
+						System.err.println( usage );
+						System.exit( 1 );
+					}
+					
+					if ( null == keys ) {
+						System.err.println( "Schema required -w option: " + filter );
+						System.exit( 1 );
+					}
+					
+					boolean found = false;
+					int type = 0;
+					for ( Pair<String,Integer> key : keys ) {
+						if ( pair[ 0 ].equals( key ) ) {
+							found = true;
+							type = key.getValue();
+							break;
+						}
+					}
+					
+					if ( found == false ) {
+						System.err.println( "Invalid field for -w option: " + pair[ 0 ] );
+						System.err.println( usage );
+						System.exit( 1 );
+					}
+				
+					where.key = pair[ 0 ]; 
+					
+					Data d = null;
+					switch ( type ) {
+					case Schema.BSONShort	: where.value = new DataShort();   break;
+					case Schema.BSONInteger	: where.value = new DataInteger(); break;
+					case Schema.BSONLong 	: where.value = new DataLong();    break;
+					case Schema.BSONFloat 	: where.value = new DataFloat();   break;
+					case Schema.BSONDouble 	: where.value = new DataDouble();  break;
+					case Schema.BSONBoolean : where.value = new DataBoolean(); break;
+					case Schema.BSONChar 	: where.value = new DataChar();    break;
+					case Schema.BSONTime 	: where.value = new DataTime();    break;
+					case Schema.BSONDate 	: where.value = new DataDate();    break;
+					case Schema.BSONString16: 
+					case Schema.BSONString32: 
+					case Schema.BSONString64: 
+					case Schema.BSONString128:
+					case Schema.BSONString256:  
+					case Schema.BSONString 	: where.value = new DataString();  break;
+					}
+					
+					try {
+						d.Parse( pair[ 1 ] ); 
+					}
+					catch ( DataException e ) {
+						System.err.println( e.getMessage() );
+						System.exit( 1 );
+					}
+					
+					whereList.add( where );
 				}
 			}
 			
