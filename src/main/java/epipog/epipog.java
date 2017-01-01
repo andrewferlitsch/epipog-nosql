@@ -385,14 +385,14 @@ public class epipog {
 					}
 					
 					if ( null == keys ) {
-						System.err.println( "Schema required -w option: " + filter );
+						System.err.println( "Schema required for -w option: " + filter );
 						System.exit( 1 );
 					}
 					
 					boolean found = false;
 					int type = 0;
 					for ( Pair<String,Integer> key : keys ) {
-						if ( pair[ 0 ].equals( key ) ) {
+						if ( pair[ 0 ].equals( key.getKey() ) ) {
 							found = true;
 							type = key.getValue();
 							break;
@@ -407,7 +407,6 @@ public class epipog {
 				
 					where.key = pair[ 0 ]; 
 					
-					Data d = null;
 					switch ( type ) {
 					case Schema.BSONShort	: where.value = new DataShort();   break;
 					case Schema.BSONInteger	: where.value = new DataInteger(); break;
@@ -427,7 +426,7 @@ public class epipog {
 					}
 					
 					try {
-						d.Parse( pair[ 1 ] ); 
+						where.value.Parse( pair[ 1 ] ); 
 					}
 					catch ( DataException e ) {
 						System.err.println( e.getMessage() );
@@ -439,7 +438,7 @@ public class epipog {
 			}
 			
 			try {
-				ArrayList<Data[]> result = collection.Select( select );		
+				ArrayList<Data[]> result = collection.Select( select, whereList );		
 				
 				for ( Data[] row : result ) {
 					for ( Data column : row )
