@@ -11,38 +11,34 @@ import java.util.ArrayList;
 public class InsertionSort extends Sort {
 	// Method to sort an result list
 	//	keys : columns to sort
-	public ArrayList<Data[]> Sort( ArrayList<Data[]> result, String[] keys ) 
+	public ArrayList<Data[]> Sort( ArrayList<Data[]> data, String[] keys, String[] sort ) 
 		throws IllegalArgumentException
 	{
-		// Sort for each key
-		for ( String key : keys ) {
+		CheckArgs( data, keys, sort );
+		
+		// Single row already sorted
+		if ( data.size() == 1 )
+			return data;
+		
+		// Sort for each key to sort
+		for ( String item : sort ) {
 			Data[] temp;	// holds the interchanged element row
 			
-			// Use first row (header) in result to get order of keys in result
-			int ncol = -1;
-			for ( int i = 0; i < result.get( 0 ).length; i++ ) {
-				if ( ((String)result.get( 0 )[ i ].Get()).compareTo( key ) == 0 ) {
-					ncol = i;
-					break;
-				}
-			}
-			
-			// Check if key is in the result
-			if ( -1 == ncol )
-				throw new IllegalArgumentException( "Sort key not in result: " + key );
-			
-			int length = result.size();
+			// Determine the column for sorting
+			int ncol = SortColumn( item, keys );
+
+			int length = data.size();
 			for (int i = 2; i < length; i++) {	// start at row 2 (1 is the heading)
 				for(int j = i ; j > 1 ; j--){
-					if ( result.get( j )[ ncol ].LT( result.get( j - 1 )[ ncol ] ) ) {
-						temp = result.get( j );
-						result.set( j, result.get( j - 1 ) );
-						result.set( j - 1, temp );
+					if ( data.get( j )[ ncol ].LT( data.get( j - 1 )[ ncol ] ) ) {
+						temp = data.get( j );
+						data.set( j, data.get( j - 1 ) );
+						data.set( j - 1, temp );
 					}
 				}
 			}
 		}
 		
-		return result;
+		return data;
 	}
 }
