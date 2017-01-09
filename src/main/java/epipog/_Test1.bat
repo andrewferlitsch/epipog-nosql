@@ -50,6 +50,18 @@ IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
 find "Missing argument for -k option" err >res
 IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
 
+echo Test: set order by w/o arguments - invalid
+java -cp .;%BUILD% epipog -o 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Missing argument for -o option" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
+echo Test: set sort type w/o arguments - invalid
+java -cp .;%BUILD% epipog -O 2>err
+IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )
+find "Missing argument for -O option" err >res
+IF %ERRORLEVEL% NEQ 0 ( echo FAILED ) ELSE ( echo PASSED )
+
 echo Test: set reader w/o arguments - invalid
 java -cp .;%BUILD% epipog -R -I tests\1.csv 2>err
 IF %ERRORLEVEL% NEQ 1 ( echo FAILED ) ELSE ( echo PASSED )

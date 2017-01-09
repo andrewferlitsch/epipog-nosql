@@ -7,6 +7,7 @@ import epipog.datastore.*;
 import epipog.schema.*;
 import epipog.parse.*;
 import epipog.data.*;
+import epipog.sort.*;
 
 import java.util.ArrayList;
 import javafx.util.Pair;
@@ -23,6 +24,8 @@ public class epipog {
 								"\t-L\t\t# list schema in collection\r\n" +
 								"\t-k link[:u]\t# Index (link)\r\n" +
 								"\t-n\t\t# no header (csv)\r\n" +
+								"\t-o orderby\t# order by (sort)\r\n" +
+								"\t-O sort type\t# sort type (quick,insertion)\r\n" +
 								"\t-R reader\t# reader type (mem,line,mapped)\r\n" +
 								"\t-s select\t# select fields from collection\r\n" +
 								"\t-S schema\t# schema\r\n" +
@@ -50,6 +53,8 @@ public class epipog {
 		Boolean lOption = false;	// List collections in storage
 		Boolean LOption = false;	// List schema in collection
 		Boolean nOption = false;	// no header (csv)
+		String  oOption = null;		// order by (sort)
+		String  OOption = "insertion";	// sort type (default is insertion)
 		String  ROption = "mem";	// Reader type (default is mem)
 		String  sOption = null;		// Select fields from collection
 		String  SOption = null;		// Schema (specified on command line)
@@ -61,7 +66,7 @@ public class epipog {
 		Boolean xOption = false;	// Delete a collection
 		
 		char opt;
-		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:k:lLnR:s:S:t:T:v:Vw:x", usage ) ) != (char)-1 ) {
+		while ( ( opt = GetOpt.Parse( args, "c:D:ei:I:k:lLno:O:R:s:S:t:T:v:Vw:x", usage ) ) != (char)-1 ) {
 			switch ( opt ) {
 			case 'c': cOption = GetOpt.Arg(); break;
 			case 'D': DOption = GetOpt.Arg(); break;
@@ -72,6 +77,8 @@ public class epipog {
 			case 'l': lOption = true; 		  break;
 			case 'L': LOption = true; 		  break;
 			case 'n': nOption = true; 		  break;
+			case 'o': oOption = GetOpt.Arg(); break;
+			case 'O': OOption = GetOpt.Arg(); break;
 			case 'R': ROption = GetOpt.Arg(); break;
 			case 's': sOption = GetOpt.Arg(); break;
 			case 'S': SOption = GetOpt.Arg(); break;
@@ -438,7 +445,36 @@ public class epipog {
 			}
 			
 			try {
-				ArrayList<Data[]> result = collection.Select( select, whereList );		
+				ArrayList<Data[]> result = collection.Select( select, whereList );	
+ 
+				// Order By
+				if ( oOption != null ) {
+					String[] orderby = oOption.split( "," );
+					
+					Sort sort = null;
+					boolean ascending = true;
+					if ( OOption.charAt( 0 ) == '@' ) {	// @ means descending order
+						OOption = OOption.substring( 1 );
+						ascending = false;
+					}
+					
+					switch ( OOption ) {
+					case "insertion": sort = new InsertionSort();
+					case "quick"	: sort = new QuickSort();
+					default			: System.err.println( "Invalid argument for -O option: " + OOption );
+									  System.err.println( usage );
+									  System.exit( 1 );
+					}
+					
+					// All Fields
+					if ( fields.equals( "*" ) ) {
+						orderby = new String[ keys.size() ];
+						for ( int i = 0; i < keys.size(); i++ )
+							orderby[ i ] = keys.get( i ).getKey();
+					}
+					
+					result = sort.Sort( result, fields, orderby, ascending );
+				}
 				
 				for ( Data[] row : result ) {
 					for ( Data column : row )

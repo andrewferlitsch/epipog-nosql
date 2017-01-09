@@ -51,5 +51,11 @@ public abstract class Sort {
 	//  data  : rows of data to sort
 	//  fields: keys (columns) for data rows
 	//	sort  : keys (columns in schema) to sort
-	public abstract ArrayList<Data[]> Sort( ArrayList<Data[]> data, String[] keys, String[] sort ) throws IllegalArgumentException;
+	//	ascending: ascending or descending order
+	public abstract ArrayList<Data[]> Sort( ArrayList<Data[]> data, String[] keys, String[] sort, boolean ascending ) 
+		throws IllegalArgumentException;
+		
+	// Method to sort an result list in ascending order
+	public abstract ArrayList<Data[]> Sort( ArrayList<Data[]> data, String[] keys, String[] sort ) 
+		throws IllegalArgumentException;
 }

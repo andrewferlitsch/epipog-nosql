@@ -10,8 +10,11 @@ import java.util.ArrayList;
 // Implementation for Sorting Results using Insertion Sort algorithm
 public class InsertionSort extends Sort {
 	// Method to sort an result list
-	//	keys : columns to sort
-	public ArrayList<Data[]> Sort( ArrayList<Data[]> data, String[] keys, String[] sort ) 
+	//  data  : rows of data to sort
+	//  fields: keys (columns) for data rows
+	//	sort  : keys (columns in schema) to sort
+	//	ascending: ascending or descending order
+	public ArrayList<Data[]> Sort( ArrayList<Data[]> data, String[] keys, String[] sort, boolean ascending ) 
 		throws IllegalArgumentException
 	{
 		CheckArgs( data, keys, sort );
@@ -28,9 +31,18 @@ public class InsertionSort extends Sort {
 			int ncol = SortColumn( item, keys );
 
 			int length = data.size();
-			for (int i = 2; i < length; i++) {	// start at row 2 (1 is the heading)
-				for(int j = i ; j > 1 ; j--){
-					if ( data.get( j )[ ncol ].LT( data.get( j - 1 )[ ncol ] ) ) {
+			for (int i = 1; i < length; i++) {	
+				for(int j = i ; j > 0 ; j--){
+					boolean swap = false;
+					if ( ascending ) {
+						if ( data.get( j )[ ncol ].LT( data.get( j - 1 )[ ncol ] ) )
+							swap = true;
+					}
+					else {
+						if ( data.get( j )[ ncol ].GT( data.get( j - 1 )[ ncol ] ) )
+							swap = true;
+					}
+					if ( swap ) {
 						temp = data.get( j );
 						data.set( j, data.get( j - 1 ) );
 						data.set( j - 1, temp );
@@ -40,5 +52,12 @@ public class InsertionSort extends Sort {
 		}
 		
 		return data;
+	}
+	
+	// Method to sort in ascending order
+	public ArrayList<Data[]> Sort( ArrayList<Data[]> data, String[] keys, String[] sort ) 
+		throws IllegalArgumentException
+	{
+		return Sort( data, keys, sort, true );
 	}
 }
