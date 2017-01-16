@@ -459,21 +459,27 @@ public class epipog {
 					}
 					
 					switch ( OOption ) {
-					case "insertion": sort = new InsertionSort();
-					case "quick"	: sort = new QuickSort();
+					case "insertion": sort = new InsertionSort(); break;
+					case "quick"	: sort = new QuickSort(); break;
 					default			: System.err.println( "Invalid argument for -O option: " + OOption );
 									  System.err.println( usage );
 									  System.exit( 1 );
 					}
 					
 					// All Fields
-					if ( fields.equals( "*" ) ) {
-						orderby = new String[ keys.size() ];
+					if ( fields[0].equals( "*" ) ) {
+						fields = new String[ keys.size() ];
 						for ( int i = 0; i < keys.size(); i++ )
-							orderby[ i ] = keys.get( i ).getKey();
+							fields[ i ] = keys.get( 0 ).getKey();
 					}
 					
-					result = sort.Sort( result, fields, orderby, ascending );
+					try {
+						result = sort.Sort( result, fields, orderby, ascending );
+					}
+					catch ( IllegalArgumentException e ) {
+						System.err.println( e.getMessage() );
+						System.exit( 1 );
+					}
 				}
 				
 				for ( Data[] row : result ) {
