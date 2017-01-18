@@ -446,7 +446,7 @@ public class epipog {
 			
 			try {
 				ArrayList<Data[]> result = collection.Select( select, whereList );	
- 
+
 				// Order By
 				if ( oOption != null ) {
 					String[] orderby = oOption.split( "," );
@@ -481,11 +481,13 @@ public class epipog {
 						System.exit( 1 );
 					}
 				}
-				
-				for ( Data[] row : result ) {
-					for ( Data column : row )
-						System.out.print( column.AsString() + "," );
-					System.out.println("");
+	
+				if ( result != null ) {
+					for ( Data[] row : result ) {
+						for ( Data column : row )
+							System.out.print( column.AsString() + "," );
+						System.out.println("");
+					}
 				}
 			}
 			catch ( CollectionException e ) {

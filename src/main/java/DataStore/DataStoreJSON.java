@@ -179,8 +179,11 @@ public class DataStoreJSON extends DataStore {
 		else {
 			// set the order of the results
 			fieldOrder = new int[ flen ];
-			for ( int i = 0; i < flen; i++ )
+			for ( int i = 0; i < flen; i++ ) {
 				fieldOrder[ i ] = schema.ColumnPos( fields.get( i ) );
+				if ( fieldOrder[ i ] == 0 )
+					throw new DataStoreException( "DataStoreSV.Select: field not in schema" + fields.get( i ) );
+			}
 		}
 		
 		// Go to the beginning of the storage

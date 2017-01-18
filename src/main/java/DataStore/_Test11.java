@@ -1430,14 +1430,24 @@ public class _Test11 {
 		fields.add( "field10" );
 		try {
 			res = ds.Select( fields, null );
-			ds.Close();
 		}
 		catch ( DataStoreException e ) { Failed( e.getMessage() ); }
 		catch ( StorageException e   ) { Failed( e.getMessage() ); }
 		if ( res.get(0)[ 1 ].Get().equals( "mark"   ) ) Passed(""); else Failed( (String)res.get(0)[ 1 ].Get() );
 		if ( (Long)res.get(0)[ 0 ].Get() == 70000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 0 ].Get() ) );
 		if ( (Character)res.get(0)[ 3 ].Get() == 'a' ) Passed(""); else Failed( String.valueOf( res.get(0)[ 3 ].Get() ) );
-		if ( (Long)res.get(0)[ 2 ].Get() == 65522000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 2 ].Get() ) );
+		if ( (Long)res.get(0)[ 2 ].Get() == 65522000L ) Passed(""); else Failed( String.valueOf( res.get(0)[ 2 ].Get() ) );	
+		
+		Title( "DataStoreCSV: Select - non-existent key" );
+		fields = new ArrayList<String>();
+		fields.add( "foo" );
+		try {
+			res = ds.Select( fields, null );
+			Failed("");
+		}
+		catch ( DataStoreException e ) { Passed(""); }
+		catch ( StorageException e   ) { Failed( e.getMessage() ); }
+		try { ds.Close(); } catch ( StorageException e   ) { Failed( e.getMessage() ); }
 	}
 		
 	public static void Test_Where() {
