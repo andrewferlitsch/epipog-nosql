@@ -21,12 +21,14 @@ databases and extract transform load processes (ETL).
 
 Epipog is developed following **Agile/Scrum** methodologies using **Test-Driven Development (TDD)**.
 
+See our weekly to track our development and planning across sprints.
+
 [Sprints] (https://github.com/andrewferlitsch/epipog/wiki)
 
 # Design
 
-This release is designed using an OOD (Object Oriented Design) using a Factory Design model. The pipeline is partitioned into
-components which are dynamically instantiated and inject from an abstract or interface definition (the "factory"). Each
+This release is designed using an OOD (Object Oriented Design) using an Abstract Factory Design model. The pipeline is partitioned into
+components which are dynamically instantiated and injected from an abstract or interface definition (the "factory"). Each
 component is additionally supported with a micro-service interface.
 
 [ e2e Design](https://github.com/andrewferlitsch/epipog/blob/master/specs/stages/Data%20Pipeline.pptx)
