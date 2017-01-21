@@ -1,16 +1,25 @@
-"# epipog v1.1" 
+"# epipog v1.2" 
 
 EpiPog is an “open source” program for developing design models for NoSQL databases. It’s target audience includes both academic 
 researchers/students as well as those looking to deploy a NoSQL database for commercial uses.
 
 # This Release
 
-This release is a demonstration of the second phase of creating IP (1st stage), turning IP into Technology (2nd stage), and
-Technology into Product (3rd stage).
+This release (v1.2) is a demonstration of the second phase of creating IP (1st stage), turning IP into Technology (2nd stage), and
+Technology into Product (3rd stage). In this phase, we have developed a complete NoSQL data pipeline that supports an RDBMS, Document (JSON) and
+columnar (CSV) data stores.
+
+The database is designed using OOP principles with each stage in the pipeline uses an abstract factory design pattern. Using this pattern, any
+stage in the pipeline can be replaced with another algorithm or process injection at run-time, allowing the pipeline to reconfigure and adapt to
+changing conditions and input, while running in memory.
+
+The database in this release has a complete command line interface. There is a partial micro-services interface. This **first release**, combined
+with our blogs and tutorials to be an effective resource in learning and expanding your understanding, skills and development of data pipelines,
+databases and extract transform load processes (ETL).
 
 [Process Methodology](https://github.com/andrewferlitsch/epipog/blob/master/sprints/Methodology.pptx)
 
-Epipog is development following Agile methodologies using test-driven development.
+Epipog is developed following **Agile/Scrum** methodologies using **Test-Driven Development (TDD)**.
 
 [Sprints] (https://github.com/andrewferlitsch/epipog/wiki)
 
