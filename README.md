@@ -219,3 +219,49 @@ import statement:
 [Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Schema.docx)
 
 [Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
+
+
+### Collection
+
+The Collection package handles representing related data as a collection. This package can be imported as a Java library with the following
+import statement:
+
+	import epipog.collection.*;
+	
+[Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Collection.docx)
+
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
+
+
+### Index
+
+The Index package handles indexing data fields within a collection. This package can be imported as a Java library with the following
+import statement:
+
+	import epipog.index.*;
+	
+[Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Index.docx)
+
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
+
+### Data Store
+
+The Data Store package handles the data store representation of a collection. This package can be imported as a Java library with the following
+import statement:
+
+	import epipog.datastore.*;
+	
+[Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Data Store.docx)
+
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
+
+### Storage
+
+The Storage package handles physically store and I/O of a collection. This package can be imported as a Java library with the following
+import statement:
+
+	import epipog.storage.*;
+	
+[Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Storage.docx)
+
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
