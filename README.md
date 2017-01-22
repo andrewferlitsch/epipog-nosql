@@ -33,6 +33,18 @@ component is additionally supported with a micro-service interface.
 
 [ e2e Design](https://github.com/andrewferlitsch/epipog/blob/master/specs/stages/Data%20Pipeline.pptx)
 
+Each module (package/library) has a detailed specification.
+
+[Collection](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Collection.docx)
+[Data](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Data.docx)
+[Data Store](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/DataStore.docx)
+[Ejector](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Ejector.docx)
+[Index](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Index.docx)
+[Parse](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Parse.docx)
+[Reader](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Reader.docx)
+[Schema](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Schema.docx)
+[Storage](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Storage.docx)
+
 # Build
 
 Epipog is setup to build using Gradle. If you have not installed gradle, it is recommended
@@ -61,17 +73,21 @@ the package, run the unit tests (_Test<N>), display any failures and report the 
 	
 # Executing
 
-This project has a builtin web server interface using Spring.io RESTful web service. If you are not
+This project has a command line interface and a builtin web server has a builtin web server interface using Spring.io RESTful web service. If you are not
 familiar with spring.io or using it to build a RESTful web service, a very good tutorial can be found
 at: http://spring.io/guides/gs/rest-service/ .
 
+## Command Line Interface
+
+## Web Service Interface
+
 The endpoints on the service act as a micro-service, where the action has persistence across micro-service invocations.
 
-## Starting the web server
+### Starting the web server
 
 	> java -jar build\libs\epipog-v1.1.jar
 	
-## Making REST api calls to the packages
+### Making REST api calls to the packages
 
 Each package has its own URL endpoint:
 
