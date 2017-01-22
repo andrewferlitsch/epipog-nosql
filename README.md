@@ -119,7 +119,29 @@ Below are the command line options:
 
 ### Examples
 
+__Create a (empty) collection and assign a schema__
 
+	> java -cp %PACKAGE% epipog -c mycollection -S city:string32,state:string32,postal:integer
+	
+__Import data from a CSV file (default) into a collection and store in JSON data store__
+
+	> java -cp %PACKAGE% epipog -c mycollection -i data.csv -D json
+	
+__Query all rows in the collection__
+
+	> java -cp %PACKAGE% epipog -c mycollection -s "*"
+	
+__Query for all rows where city > H and output only city and postal__
+
+	> java -cp %PACKAGE% epipog -c mycollection -s "city,postal" -w "city>H"
+	
+__Query for all rows and sort by state in ascending order__
+
+	> java -cp %PACKAGE% epipog -c mycollection -s "*" -o state
+	
+__Delete a collection__
+	
+	> java -cp %PACKAGE% epipog -x -c mycollection
 
 ## Web Service Interface
 
