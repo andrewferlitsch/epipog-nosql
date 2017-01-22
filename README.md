@@ -27,7 +27,7 @@ See our weekly to track our development and planning across sprints.
 
 # Design
 
-This release is designed using an OOD (Object Oriented Design) using an Abstract Factory Design model. The pipeline is partitioned into
+This release is designed using an OOD (Object Oriented Design) using an Abstract Factory Design model. The data pipeline is partitioned into
 components which are dynamically instantiated and injected from an abstract or interface definition (the "factory"). Each
 component is additionally supported with a micro-service interface.
 
