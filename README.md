@@ -230,7 +230,7 @@ import statement:
 	
 [Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Collection.docx)
 
-[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.collection.md)
 
 
 ### Index
@@ -242,7 +242,7 @@ import statement:
 	
 [Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Index.docx)
 
-[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.index.md)
 
 ### Data Store
 
@@ -251,9 +251,9 @@ import statement:
 
 	import epipog.datastore.*;
 	
-[Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Data Store.docx)
+[Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/DataStore.docx)
 
-[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.datastore.md)
 
 ### Storage
 
@@ -264,4 +264,4 @@ import statement:
 	
 [Specification](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Storage.docx)
 
-[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.schema.md)
+[Micro-Service](https://github.com/andrewferlitsch/epipog/blob/master/src/main/java/webserver/README.storage.md)
