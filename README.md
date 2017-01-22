@@ -35,15 +35,15 @@ component is additionally supported with a micro-service interface.
 
 Each module (package/library) has a detailed specification.
 
-[Collection](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Collection.docx)
-[Data](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Data.docx)
-[Data Store](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/DataStore.docx)
-[Ejector](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Ejector.docx)
-[Index](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Index.docx)
-[Parse](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Parse.docx)
-[Reader](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Reader.docx)
-[Schema](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Schema.docx)
-[Storage](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Storage.docx)
+	[Collection](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Collection.docx)
+	[Data](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Data.docx)
+	[Data Store](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/DataStore.docx)
+	[Ejector](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Ejector.docx)
+	[Index](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Index.docx)
+	[Parse](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Parse.docx)
+	[Reader](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Reader.docx)
+	[Schema](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Schema.docx)
+	[Storage](https://github.com/andrewferlitsch/epipog/blob/master/specs/modules/Storage.docx)
 
 # Build
 
