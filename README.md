@@ -87,6 +87,40 @@ at: http://spring.io/guides/gs/rest-service/ .
 
 ## Command Line Interface
 
+### Invocation
+
+The command line version of this release can be invoked by, where %PACKAGE% is the path to the compiled packages (class libraries):
+
+	>java -cp %PACKAGE% epipog
+	
+Below are the command line options:
+
+	Usage: epipog <options>
+		-c collection	# collection name
+		-D datastore	# datastore (binary,csv,psv,tsv,json)
+		-e				# extend schema
+		-i insert		# insert
+		-I file			# insert from file
+		-l				# list collections
+		-L				# list schema in collection
+		-k link[:u]		# Index (link)
+		-n				# no header (csv)
+		-o orderby		# order by (sort)
+		-O sort type	# sort type (quick,insertion)
+		-R reader		# reader type (mem,line,mapped)
+		-s select		# select fields from collection
+		-S schema		# schema
+		-t type			# input file type
+		-T storage		# storage (single, multi)
+		-v volume		# storage volume
+		-V				# validate
+		-w where(s)		# where clause
+		-x				# delete a collection
+
+### Examples
+
+
+
 ## Web Service Interface
 
 The endpoints on the service act as a micro-service, where the action has persistence across micro-service invocations.
